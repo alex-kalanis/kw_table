@@ -1,0 +1,38 @@
+{
+    "name": "alex-kalanis/kw_table",
+    "description": "Table engine for KWCMS",
+    "keywords": [
+        "filtering",
+        "sorting",
+        "tables",
+        "table"
+    ],
+    "license": "BSD-3-Clause",
+    "type": "library",
+    "require": {
+        "alex-kalanis/kw_forms": ">=1.0",
+        "alex-kalanis/kw_input": ">=1.0",
+        "alex-kalanis/kw_mapper": ">=1.0",
+        "alex-kalanis/kw_paging": ">=1.0",
+        "ext-ctype": "*",
+        "ext-mbstring": "*",
+        "php": ">=7.2.0"
+    },
+    "require-dev": {
+        "alex-kalanis/kw_clipr": ">=1.0",
+        "ext-json": "*",
+        "phpunit/phpunit": ">=7.2"
+    },
+    "suggest": {
+        "alex-kalanis/kw_clipr": "CLI Processor"
+    },
+    "autoload": {
+        "psr-4": {
+            "kalanis\\kw_table\\": "php-src/"
+        }
+    },
+    "scripts": {
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
