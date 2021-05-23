@@ -3,10 +3,11 @@
 namespace kalanis\kw_table\Table;
 
 
+use kalanis\kw_address_handler\Handler;
+use kalanis\kw_address_handler\SingleVariable;
 use kalanis\kw_mapper\Interfaces\IQueryBuilder;
 use kalanis\kw_table\Interfaces\Table\IColumn;
 use kalanis\kw_table\TableException;
-use kalanis\kw_table\UrlHandler\UrlVariable;
 
 
 /**
@@ -21,7 +22,9 @@ class Sorter implements IQueryBuilder
 
     /** @var IColumn[] */
     protected $columns = [];
-    /** @var UrlVariable */
+    /** @var Handler */
+    protected $urlHandler = null;
+    /** @var SingleVariable */
     protected $urlVariable = null;
     /** @var string */
     protected $currentColumnName = '';
@@ -30,9 +33,10 @@ class Sorter implements IQueryBuilder
     /** @var string[][] */
     protected $ordering = [];
 
-    public function __construct(UrlVariable $urlVariable)
+    public function __construct(Handler $urlHandler)
     {
-        $this->urlVariable = $urlVariable;
+        $this->urlHandler = $urlHandler;
+        $this->urlVariable = new SingleVariable($this->urlHandler->getParams());
         $currentDirection = $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->getVariableValue();
         if ($this->isValidDirection($currentDirection)) {
             $this->currentDirection = $currentDirection;
@@ -63,7 +67,7 @@ class Sorter implements IQueryBuilder
     protected function checkColumnName(string $columnName): bool
     {
         if (!array_key_exists($columnName, $this->columns)) {
-            throw new TableException(sprintf('Column %s doesn\'t exist', $columnName));
+            throw new TableException(sprintf('Column *%s* doesn\'t exist', $columnName));
         }
         return true;
     }
@@ -105,7 +109,7 @@ class Sorter implements IQueryBuilder
 
         $this->urlVariable->setVariableName(static::PARAM_COLUMN)->setVariableValue($column->getSourceName());
         $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->setVariableValue($this->getDirection($column));
-        return $this->urlVariable->getUrl();
+        return $this->urlHandler->getAddress();
     }
 
     public function isSorted(IColumn $column): bool

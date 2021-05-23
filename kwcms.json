@@ -9,6 +9,7 @@
     "alex-kalanis/kw_forms": "dev-master",
     "alex-kalanis/kw_mapper": "dev-master",
     "alex-kalanis/kw_paging": "dev-master",
+    "alex-kalanis/kw_address_handler": "dev-master",
     "php": ">=7.2.0"
   },
   "suggest": {

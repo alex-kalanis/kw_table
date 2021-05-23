@@ -3,10 +3,11 @@
 namespace kalanis\kw_table\Connector;
 
 
+use kalanis\kw_address_handler\Handler;
+use kalanis\kw_address_handler\SingleVariable;
 use kalanis\kw_pager\Interfaces\IPager;
 use kalanis\kw_paging\Interfaces\ILink;
 use kalanis\kw_paging\Positions;
-use kalanis\kw_table\UrlHandler\UrlVariable;
 
 
 /**
@@ -22,7 +23,7 @@ $inputs = new kalanis\kw_input\Interfaces\Inputs();
 
 $pager = new BasicPager();
 $pager->setMaxResults(32)->setLimit(10)->setActualPage(1);
-$urlLink = new PageLink(new UrlVariable(new UrlHandler($inputs)), $pager, 'paging');
+$urlLink = new PageLink(new Handler($inputs), $pager, 'paging');
 
 ...
 
@@ -39,18 +40,21 @@ class PageLink implements ILink
 {
     const DEFAULT_VAR_NAME = 'page';
 
-    /** @var UrlVariable */
+    /** @var Handler */
+    protected $urlHandler;
+    /** @var SingleVariable */
     protected $urlVariable;
     /** @var IPager */
     protected $pager;
     /** @var string */
     protected $varName = self::DEFAULT_VAR_NAME;
 
-    public function __construct(UrlVariable $urlVariable, IPager $pager, string $variableName = self::DEFAULT_VAR_NAME)
+    public function __construct(Handler $urlHandler, IPager $pager, string $variableName = self::DEFAULT_VAR_NAME)
     {
-        $urlVariable->setVariableName($variableName);
-        $urlVariable->setVariableValue(Positions::FIRST_PAGE);
-        $this->urlVariable = $urlVariable;
+        $this->urlHandler = $urlHandler;
+        $this->urlVariable = new SingleVariable($urlHandler->getParams());
+        $this->urlVariable->setVariableName($variableName);
+        $this->urlVariable->setVariableValue(Positions::FIRST_PAGE);
         $this->pager = $pager;
     }
 
@@ -68,6 +72,6 @@ class PageLink implements ILink
     public function getPageLink(): string
     {
         $this->urlVariable->setVariableValue((string)$this->pager->getActualPage());
-        return $this->urlVariable->getUrl();
+        return (string)$this->urlHandler->getAddress();
     }
 }
