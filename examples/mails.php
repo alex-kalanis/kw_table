@@ -82,7 +82,7 @@ class MailTable
 {
     protected $table = null;
 
-    public function __construct(\kalanis\kw_input\Interfaces\IInputs $inputs)
+    public function __construct(\kalanis\kw_input\Interfaces\IVariables $inputs)
     {
         $helper = new \kalanis\kw_table\Helper();
         $helper->fillKwPage($inputs);
@@ -145,6 +145,6 @@ class MailTable
 
 # and now... Build and render!
 
-$mt = new MailTable($inputs);
+$mt = new MailTable(new \kalanis\kw_input\Variables($inputs));
 $mt->composeTable();
 echo $mt->getTable()->render();

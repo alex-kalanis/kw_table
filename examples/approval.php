@@ -14,7 +14,7 @@ class FileApproval
 {
     protected $table = null;
 
-    public function __construct(\kalanis\kw_input\Interfaces\IInputs $inputs)
+    public function __construct(\kalanis\kw_input\Interfaces\IVariables $inputs)
     {
         $helper = new \kalanis\kw_table\Helper();
         $helper->fillKwPage($inputs, 'approvalForm');

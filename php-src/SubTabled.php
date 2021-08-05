@@ -5,6 +5,7 @@ namespace kalanis\kw_table;
 
 use kalanis\kw_table\Table\Output\AOutput;
 
+
 /**
  * Class SubTabled
  * @package kalanis\kw_table
