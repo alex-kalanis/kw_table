@@ -92,7 +92,7 @@ class HtmlTemplates extends AOutput
 
     protected function getCells(): string
     {
-        $cell = '';
+        $cell = [];
         foreach ($this->table->getTableData() as $row) {
             $this->templateRow->reset()->setData($row->getCellStyle($row->getSource()));
             foreach ($row as $column) {
@@ -101,27 +101,27 @@ class HtmlTemplates extends AOutput
                     $column->getCellStyle($row->getSource())
                 )->render());
             }
-            $cell .= $this->templateRow->render();
+            $cell[] = $this->templateRow->render();
         }
-        return $cell;
+        return implode('', $cell);
     }
 
     protected function getHeader(): string
     {
         $sorter = $this->table->getSorter();
-        $line = '';
+        $this->templateRow->reset()->setData();
         foreach ($this->table->getColumns() as $column) {
             if ($sorter && $sorter->isSorted($column)) {
-                $line .= $this->templateHeadSorted->reset()->setData(
+                $this->templateRow->addCell($this->templateHeadSorted->reset()->setData(
                     $sorter->getHeaderText($column), $sorter->getHref($column)
-                )->render();
+                )->render());
             } else {
-                $line .= $this->templateHead->reset()->setData(
+                $this->templateRow->addCell($this->templateHead->reset()->setData(
                     $column->getHeaderText()
-                )->render();
+                )->render());
             }
         }
-        return $line;
+        return $this->templateRow->render();
     }
 
     protected function getHeadFilter(): string
@@ -131,13 +131,13 @@ class HtmlTemplates extends AOutput
             return '';
         }
 
-        $line = '';
+        $this->templateRow->reset()->setData();
         foreach ($this->table->getColumns() as $column) {
-            $line .= $this->templateHead->reset()->setData(
+            $this->templateRow->addCell($this->templateHead->reset()->setData(
                 $column->hasHeaderFilterField() ? $headerFilter->renderHeaderInput($column) : ''
-            )->render();
+            )->render());
         }
-        return $line;
+        return $this->templateRow->render();
     }
 
     protected function getFootFilter(): string
@@ -147,12 +147,12 @@ class HtmlTemplates extends AOutput
             return '';
         }
 
-        $line = '';
+        $this->templateRow->reset()->setData();
         foreach ($this->table->getColumns() as $column) {
-            $line .= $this->templateCell->reset()->setData(
+            $this->templateRow->addCell($this->templateCell->reset()->setData(
                 $column->hasFooterFilterField() ? $footerFilter->renderFooterInput($column) : ''
-            )->render();
+            )->render());
         }
-        return $line;
+        return $this->templateRow->render();
     }
 }

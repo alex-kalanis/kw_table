@@ -50,6 +50,6 @@ class Options extends AField
 
     public function add(): void
     {
-        $this->form->addSelect($this->alias, null, null, $this->options, $this->attributes);
+        $this->form->addSelect($this->alias, '', null, $this->options, $this->attributes);
     }
 }

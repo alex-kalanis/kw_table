@@ -32,6 +32,7 @@ class TableRow extends ATemplate
     public function setData(string $rowStyle = ''): self
     {
         $this->updateItem('{ROW_STYLE}', $rowStyle);
+        $this->updateItem('{ROW_CONTENT}', '');
         return $this;
     }
 }

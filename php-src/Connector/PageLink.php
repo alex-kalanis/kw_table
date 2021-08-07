@@ -46,6 +46,8 @@ class PageLink implements ILink
     protected $urlVariable;
     /** @var IPager */
     protected $pager;
+    /** @var int */
+    protected $page = 0;
     /** @var string */
     protected $varName = self::DEFAULT_VAR_NAME;
 
@@ -54,24 +56,29 @@ class PageLink implements ILink
         $this->urlHandler = $urlHandler;
         $this->urlVariable = new SingleVariable($urlHandler->getParams());
         $this->urlVariable->setVariableName($variableName);
-        $this->urlVariable->setVariableValue(Positions::FIRST_PAGE);
+        $this->page = intval($this->urlVariable->getVariableValue() ?: Positions::FIRST_PAGE);
+        $this->urlVariable->setVariableValue($this->page);
         $this->pager = $pager;
     }
 
     public function setPageNumber(int $page): void
     {
-        $this->pager->setActualPage(
-            $this->pager->pageExists($page)
+        $this->page = $this->pager->pageExists($page)
                 ? $page
                 : ($page > $this->pager->getPagesCount()
                     ? max($this->pager->getPagesCount(), Positions::FIRST_PAGE)
                     : Positions::FIRST_PAGE)
-        );
+        ;
+    }
+
+    public function getPageNumber(): int
+    {
+        return intval($this->page);
     }
 
     public function getPageLink(): string
     {
-        $this->urlVariable->setVariableValue((string)$this->pager->getActualPage());
+        $this->urlVariable->setVariableValue((string)$this->page);
         return (string)$this->urlHandler->getAddress();
     }
 }

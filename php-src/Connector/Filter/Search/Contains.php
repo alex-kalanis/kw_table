@@ -11,7 +11,9 @@ class Contains extends AType
 {
     public function setFiltering(string $colName, $value)
     {
-        $this->search->like($colName, '%' . $value . '%');
+        if ('' !== $value) {
+            $this->search->like($colName, $value);
+        }
         return $this;
     }
 }

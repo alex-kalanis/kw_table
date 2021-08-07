@@ -41,24 +41,22 @@ class Helper
      */
     public function fillKwPage(InputInterface\IVariables $inputs, string $alias = 'filter'): self
     {
-        $urlHandler = new Handler(new Sources\Inputs($inputs));
-
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
-        $inputVariables->loadEntries(InputInterface\IEntry::SOURCE_GET);
         $inputFiles = new Adapters\InputFilesAdapter($inputs);
-        $inputFiles->loadEntries(InputInterface\IEntry::SOURCE_GET);
         $form = new Form($alias);
-        $form->setInputs($inputVariables, $inputFiles);
         $this->table->addHeaderFilter(new KwForm($form));
+        $form->setInputs($inputVariables, $inputFiles);
 
         // sorter links
-        $sorter = new Sorter($urlHandler);
+        $sorter = new Sorter(new Handler(new Sources\Inputs($inputs)));
         $this->table->addSorter($sorter);
 
         // pager
         $pager = new BasicPager();
-        $this->table->addPager(new Render\SimplifiedPager(new Positions($pager), new PageLink($urlHandler, $pager)));
+        $pageLink = new PageLink(new Handler(new Sources\Inputs($inputs)), $pager);
+        $pager->setActualPage($pageLink->getPageNumber());
+        $this->table->addPager(new Render\SimplifiedPager(new Positions($pager), $pageLink));
 
         return $this;
     }
@@ -71,23 +69,21 @@ class Helper
      */
     public function fillKwCli(InputInterface\IVariables $inputs, string $alias = 'filter'): self
     {
-        $urlHandler = new Handler(new Sources\Inputs($inputs));
-
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
-        $inputVariables->loadEntries(InputInterface\IEntry::SOURCE_GET);
         $inputFiles = new Adapters\InputFilesAdapter($inputs);
-        $inputFiles->loadEntries(InputInterface\IEntry::SOURCE_GET);
         $form = new Form($alias);
-        $form->setInputs($inputVariables, $inputFiles);
         $this->table->addHeaderFilter(new KwForm($form));
+        $form->setInputs($inputVariables, $inputFiles);
 
         // sorter links
-        $sorter = new Sorter($urlHandler);
+        $sorter = new Sorter(new Handler(new Sources\Inputs($inputs)));
         $this->table->addSorter($sorter);
 
         // pager
         $pager = new BasicPager();
+        $pageLink = new PageLink(new Handler(new Sources\Inputs($inputs)), $pager);
+        $pager->setActualPage($pageLink->getPageNumber());
         $this->table->addPager(new Render\CliPager(new Positions($pager)));
 
         // output
@@ -104,23 +100,21 @@ class Helper
      */
     public function fillKwJson(InputInterface\IVariables $inputs, string $alias = 'filter'): self
     {
-        $urlHandler = new Handler(new Sources\Inputs($inputs));
-
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
-        $inputVariables->loadEntries(InputInterface\IEntry::SOURCE_GET);
         $inputFiles = new Adapters\InputFilesAdapter($inputs);
-        $inputFiles->loadEntries(InputInterface\IEntry::SOURCE_GET);
         $form = new Form($alias);
-        $form->setInputs($inputVariables, $inputFiles);
         $this->table->addHeaderFilter(new KwForm($form));
+        $form->setInputs($inputVariables, $inputFiles);
 
         // sorter links
-        $sorter = new Sorter($urlHandler);
+        $sorter = new Sorter(new Handler(new Sources\Inputs($inputs)));
         $this->table->addSorter($sorter);
 
         // pager
         $pager = new BasicPager();
+        $pageLink = new PageLink(new Handler(new Sources\Inputs($inputs)), $pager);
+        $pager->setActualPage($pageLink->getPageNumber());
         $this->table->addPager(new Render\CliPager(new Positions($pager)));
 
         // output

@@ -30,6 +30,8 @@ class Sorter implements IQueryBuilder
     protected $currentColumnName = '';
     /** @var string */
     protected $currentDirection = self::ORDER_ASC;
+    /** @var string[] */
+    protected $primaryOrdering = [];
     /** @var string[][] */
     protected $ordering = [];
 
@@ -46,7 +48,7 @@ class Sorter implements IQueryBuilder
 
     public function getOrderings(): array
     {
-        return $this->ordering;
+        return empty($this->ordering) ? [$this->primaryOrdering] : $this->ordering;
     }
 
     public function addOrdering(string $columnName, string $direction = self::ORDER_ASC)
@@ -54,9 +56,14 @@ class Sorter implements IQueryBuilder
         $this->ordering[] = [$columnName, $direction];
     }
 
-    public function addPrimaryOrdering(string $columnName, string $direction = self::ORDER_ASC)
+    public function addPrependOrdering(string $columnName, string $direction = self::ORDER_ASC)
     {
         array_unshift($this->ordering, [$columnName, $direction]);
+    }
+
+    public function addPrimaryOrdering(string $columnName, string $direction = self::ORDER_ASC)
+    {
+        $this->primaryOrdering = [$columnName, $direction];
     }
 
     /**

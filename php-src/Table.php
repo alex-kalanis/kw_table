@@ -147,7 +147,7 @@ class Table
      */
     public function setDefaultSorting(string $columnName, string $order = Table\Sorter::ORDER_ASC): self
     {
-        if (!isset($this->sorter)) {
+        if (empty($this->sorter)) {
             throw new MapperException('Need to ser sorter first!');
         }
         $this->sorter->addPrimaryOrdering($columnName, $order);
@@ -163,7 +163,7 @@ class Table
 
     public function addPrimaryOrdering(string $columnName, string $order = Table\Sorter::ORDER_ASC): self
     {
-        $this->sorter->addPrimaryOrdering($columnName, $order);
+        $this->sorter->addPrependOrdering($columnName, $order);
         return $this;
     }
 
@@ -207,15 +207,15 @@ class Table
     {
         $this->dataSource = $source;
 
-        if (isset($this->headerFilter)) {
+        if (!empty($this->headerFilter)) {
             $this->applyFilter();
         }
 
-        if (isset($this->sorter)) {
+        if (!empty($this->sorter)) {
             $this->applySorter();
         }
 
-        if (isset($this->outputPager)) {
+        if (!empty($this->outputPager)) {
             $this->applyPager();
         }
 
@@ -271,7 +271,7 @@ class Table
      */
     public function applyPager(): self
     {
-        if (null === $this->outputPager->getPager()->getMaxResults()) {
+        if (empty($this->outputPager->getPager()->getMaxResults())) {
             $this->outputPager->getPager()->setMaxResults($this->dataSource->getTotalCount());
         }
         $this->dataSource->setPagination($this->outputPager->getPager()->getOffset(), $this->outputPager->getPager()->getLimit());
@@ -370,7 +370,7 @@ class Table
     public function addSortedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {
         if ($column->isSortable()) {
-            if (!isset($this->sorter)) {
+            if (empty($this->sorter)) {
                 throw new MapperException('Need to set sorter first!!!');
             }
             $this->sorter->addColumn($column);

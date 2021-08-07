@@ -20,6 +20,6 @@ class DateRange extends AField
 
     public function add(): void
     {
-        $this->form->addDateRange($this->alias, null, null, $this->attributes);
+        $this->form->addDateRange($this->alias, '', null, $this->attributes);
     }
 }

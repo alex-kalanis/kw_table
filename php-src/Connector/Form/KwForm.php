@@ -23,8 +23,8 @@ class KwForm implements Connector\IForm
 
     public function __construct(Form $form)
     {
-        $form->addSubmit('apply');
         $form->setMethod('get');
+        $form->addHidden('apply' . ucfirst($form->getAlias()), 'apply');
         $this->form = $form;
     }
 
@@ -84,7 +84,7 @@ class KwForm implements Connector\IForm
             return $this->formProcess;
         }
 
-        $this->formProcess = $this->form->process();
+        $this->formProcess = $this->form->process('apply' . ucfirst($this->form->getAlias()));
         $this->formData = $this->form->getValues();
         return $this->formProcess;
     }

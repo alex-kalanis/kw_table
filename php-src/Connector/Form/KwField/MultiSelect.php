@@ -40,6 +40,6 @@ class MultiSelect extends AField
 
     public function add(): void
     {
-        $this->form->addCheckbox($this->alias, null, null, $this->value, $this->attributes);
+        $this->form->addCheckbox($this->alias, '', null, $this->value, $this->attributes);
     }
 }

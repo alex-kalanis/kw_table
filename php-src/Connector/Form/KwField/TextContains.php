@@ -20,6 +20,6 @@ class TextContains extends AField
 
     public function add(): void
     {
-        $this->form->addText($this->alias, null, null, $this->attributes);
+        $this->form->addText($this->alias, '', null, $this->attributes);
     }
 }

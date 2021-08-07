@@ -42,7 +42,7 @@ class FileApproval
         $this->table->addSortedColumn('Added', $columnAdded);
 
         $columnActions = new Columns\Multi('&nbsp;&nbsp;');
-        $columnActions->addColumn(new Columns\Func('id', array($this, 'viewLink')));
+        $columnActions->addColumn(new Columns\Func('id', [$this, 'viewLink']));
         $columnActions->style('width:100px', new Rules\Always());
 
         $this->table->addColumn('Actions', $columnActions, null, new Form\KwField\Options(static::getStatuses(), [

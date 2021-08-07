@@ -20,6 +20,6 @@ class DateTimePicker extends AField
 
     public function add(): void
     {
-        $this->form->addDateTimePicker($this->alias, null, null, $this->attributes);
+        $this->form->addDateTimePicker($this->alias, '', null, $this->attributes);
     }
 }
