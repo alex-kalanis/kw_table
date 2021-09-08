@@ -8,6 +8,7 @@ use kalanis\kw_table\Connector\Filter\Factory;
 use kalanis\kw_table\Connector\Rows\Arrays as RowArray;
 use kalanis\kw_table\Interfaces\Connector\IConnector;
 use kalanis\kw_table\Interfaces\Connector\IFilterType;
+use kalanis\kw_table\Interfaces\Table\IRow;
 
 
 /**
@@ -32,8 +33,13 @@ class Arrays extends AConnector implements IConnector
 
     public function setFiltering(string $colName, string $value, IFilterType $type): void
     {
-        $type->setDataSource(new RowArray($this->dataSource));
+        $type->setDataSource($this->getTranslated($this->dataSource));
         $type->setFiltering($colName, $value);
+    }
+
+    protected function getTranslated($data): IRow
+    {
+        return new RowArray($data);
     }
 
     public function setSorting(string $colName, string $direction): void

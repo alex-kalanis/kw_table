@@ -9,6 +9,7 @@ use kalanis\kw_table\Connector\Filter\Factory;
 use kalanis\kw_table\Connector\Rows\Mapper;
 use kalanis\kw_table\Interfaces\Connector\IConnector;
 use kalanis\kw_table\Interfaces\Connector\IFilterType;
+use kalanis\kw_table\Interfaces\Table\IRow;
 
 
 /**
@@ -35,8 +36,13 @@ class Search extends AConnector implements IConnector
     protected function parseData(): void
     {
         foreach ($this->rawData as $mapper) {
-            $this->translatedData[] = new Mapper($mapper);
+            $this->translatedData[] = $this->getTranslated($mapper);
         }
+    }
+
+    protected function getTranslated(ARecord $data): IRow
+    {
+        return new Mapper($data);
     }
 
     public function setFiltering(string $colName, string $value, IFilterType $type): void
