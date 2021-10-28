@@ -53,7 +53,7 @@ class Mapper extends AConnector implements IConnector
 
     public function getTotalCount(): int
     {
-        return intval(!empty($this->rawData));
+        return count($this->rawData);
     }
 
     public function fetchData(): void
