@@ -3,6 +3,7 @@
 namespace kalanis\kw_table\Connector\Sources;
 
 
+use kalanis\kw_mapper\MapperException;
 use kalanis\kw_mapper\Records\ARecord;
 use kalanis\kw_mapper\Search\Search as MapperSearch;
 use kalanis\kw_table\Connector\Filter\Factory;
@@ -35,12 +36,8 @@ class Search extends AConnector implements IConnector
 
     protected function parseData(): void
     {
-        foreach ($this->rawData as $record) {
-            if (!empty($record->getMapper()->getPrimaryKeys())) {
-                $this->translatedData[$this->getPrimaryKey($record)] = $this->getTranslated($record);
-            } else {
-                $this->translatedData[] = $this->getTranslated($record);
-            }
+        foreach ($this->rawData as $mapper) {
+            $this->translatedData[$this->getPrimaryKey($mapper)] = $this->getTranslated($mapper);
         }
     }
 
@@ -49,6 +46,11 @@ class Search extends AConnector implements IConnector
         return new Mapper($data);
     }
 
+    /**
+     * @param ARecord $record
+     * @return string
+     * @throws MapperException
+     */
     protected function getPrimaryKey(ARecord $record): string
     {
         $pks = $record->getMapper()->getPrimaryKeys();

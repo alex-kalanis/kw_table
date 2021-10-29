@@ -11,6 +11,7 @@ use kalanis\kw_table\Interfaces\Connector;
 /**
  * Class KwForm
  * @package Admin\Listing\Connector
+ * Use KwForm as source of params
  */
 class KwForm implements Connector\IForm
 {

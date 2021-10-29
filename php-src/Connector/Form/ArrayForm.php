@@ -6,7 +6,11 @@ namespace kalanis\kw_table\Connector\Form;
 use kalanis\kw_table\Interfaces\Connector;
 
 
-
+/**
+ * Class ArrayForm
+ * @package kalanis\kw_table\Connector\Form
+ * Pass params in simple array
+ */
 class ArrayForm implements Connector\IForm
 {
     /** @var string[] */

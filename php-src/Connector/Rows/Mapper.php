@@ -7,6 +7,10 @@ use kalanis\kw_mapper\Records\ARecord;
 use kalanis\kw_table\Interfaces\Table\IRow;
 
 
+/**
+ * Class Mapper
+ * @package kalanis\kw_table\Connector\Rows
+ */
 class Mapper implements IRow
 {
     protected $record;
@@ -23,5 +27,10 @@ class Mapper implements IRow
         } else {
             return $this->record->__get($property);
         }
+    }
+
+    public function __isset($name)
+    {
+        return $this->record->offsetExists($name);
     }
 }
