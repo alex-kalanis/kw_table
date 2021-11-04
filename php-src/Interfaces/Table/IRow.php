@@ -19,4 +19,10 @@ interface IRow
      * @throws MapperException
      */
     public function getValue($property);
+
+    /**
+     * @param string|int $name
+     * @return bool
+     */
+    public function __isset($name);
 }

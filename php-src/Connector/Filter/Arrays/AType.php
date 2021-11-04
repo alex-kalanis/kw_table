@@ -31,4 +31,9 @@ abstract class AType implements IFilterType
         $this->dataSource = $dataSource;
         return $this;
     }
+
+    public function getDataSource()
+    {
+        return $this->dataSource;
+    }
 }

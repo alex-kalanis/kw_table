@@ -23,6 +23,12 @@ interface IFilterType
     public function setDataSource($dataSource);
 
     /**
+     * @return mixed
+     * @throws MapperException
+     */
+    public function getDataSource();
+
+    /**
      * @param string $colName
      * @param mixed $value
      * @return mixed
