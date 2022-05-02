@@ -1,19 +1,13 @@
 # kw_table
 
-Table engine for managing entries from mapper.
+Table engine for managing entries from datasources.
 
 ## PHP Installation
 
 ```
 {
     "require": {
-        "alex-kalanis/kw_table": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "http",
-            "url":  "https://github.com/alex-kalanis/kw_table.git"
-        }
+        "alex-kalanis/kw_table": "2.0"
     }
 }
 ```
@@ -28,7 +22,7 @@ familiar with composer)
 
 2.) Add some external packages with connection to the local or remote services.
 
-3.) Connect the "kalanis\kw_table\Table" into your app. Extends it for setting your case.
+3.) Connect the "kalanis\kw_table\core\Table" into your app. Extends it for setting your case.
 
 4.) Extend your libraries by interfaces inside the package.
 
@@ -37,7 +31,7 @@ familiar with composer)
 
 ## Basics
 
-At first you want to use ```\kalanis\kw_table\Helper```, because compiling the whole table's
+At first you want to use ```\kalanis\kw_table\kw\Helper```, because compiling the whole table's
 dependencies is really mindblowing. Then you can start to experiment with changing classes.
 When you have enough experiences, then you can make your own extensions of provided classes.
 Especially filtering forms are really complicated - so try them first as normal, external

@@ -19,3 +19,6 @@ phpunit-*
 
 # external libs
 php-tests/external/
+
+# discarded files
+*discard*
