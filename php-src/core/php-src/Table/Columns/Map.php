@@ -25,11 +25,11 @@ class Map extends AColumn
 
     public function getValue(IRow $source)
     {
-        $value = (string) parent::getValue($source);
+        $value = strval(parent::getValue($source));
 
         if (isset($this->map[$value])) {
             return $this->map[$value];
-        } elseif (empty($value)) {
+        } else if (empty($value)) {
             return $this->emptyValue;
         } else {
             return $value;

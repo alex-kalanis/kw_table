@@ -16,32 +16,41 @@ class REval extends ARule implements IRule
 {
     public function validate($value): bool
     {
-        if (preg_match('/(<|>|<=|>=|=|==)\s?(.*)/i', $this->base, $matches)) {
-            switch ($matches[1]) {
-                case "<":
-                    return $value < $matches[2];
-                    break;
-                case ">":
-                    return $value > $matches[2];
-                    break;
-                case "<=":
-                    return $value <= $matches[2];
-                    break;
-                case ">=":
-                    return $value >= $matches[2];
-                    break;
-                case "=":
-                    return $value == $matches[2];
-                    break;
-                case "==":
-                    return $value === $matches[2];
-                    break;
-                default:
-                    throw new TableException('Unrecognized expression');
-                    break;
-            }
+        if (preg_match('/([^\s]+)\s(.*)/i', $this->base, $matches)) {
+            return $this->compare($value, $matches[1], $matches[2]);
+        } elseif(preg_match('/(<|>|<=|>=|=|==)(.*)/i', $this->base, $matches)) {
+            return $this->compare($value, $matches[1], $matches[2]);
         } else {
-            throw new TableException('Unrecognized expression');
+            throw new TableException('Unrecognized expression pattern');
+        }
+    }
+
+    /**
+     * @param mixed $value
+     * @param string $expression
+     * @param string $against
+     * @return bool
+     * @throws TableException
+     */
+    protected function compare($value, $expression, $against): bool
+    {
+        switch ($expression) {
+            case "<":
+                return $value < $against;
+            case ">":
+                return $value > $against;
+            case "<=":
+                return $value <= $against;
+            case ">=":
+                return $value >= $against;
+            case "=":
+                return $value == $against;
+            case "!=":
+                return $value != $against;
+            case "==":
+                return $value === $against;
+            default:
+                throw new TableException('Unrecognized expression sign');
         }
     }
 }

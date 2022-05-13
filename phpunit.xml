@@ -41,8 +41,7 @@
 
     <testsuites>
         <testsuite name="ALL">
-            <directory>php-tests/FilesTests</directory>
-            <directory>php-tests/RunningTests</directory>
+            <directory>php-tests/core</directory>
         </testsuite>
         <testsuite name="debugs">
             <directory>php-tests/DebugsTests</directory>

@@ -375,7 +375,7 @@ class Table
     {
         if ($column->isSortable()) {
             if (empty($this->sorter)) {
-                throw new ConnectException('Need to set sorter first!!!');
+                throw new ConnectException('Need to set sorter class first!!!');
             }
             $this->sorter->addColumn($column);
         }

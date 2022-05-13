@@ -14,15 +14,14 @@
         "alex-kalanis/kw_connect": ">=2.0",
         "alex-kalanis/kw_forms": ">=2.0",
         "alex-kalanis/kw_input": ">=2.0",
-        "alex-kalanis/kw_mapper": ">=0.7",
         "alex-kalanis/kw_paging": ">=1.0",
         "ext-ctype": "*",
-        "ext-json": "*",
         "ext-mbstring": "*",
         "php": ">=7.2.0"
     },
     "require-dev": {
         "alex-kalanis/kw_clipr": ">=1.0",
+        "alex-kalanis/kw_mapper": ">=0.7",
         "ext-json": "*",
         "phpunit/phpunit": ">=7.2"
     },
@@ -31,7 +30,15 @@
     },
     "autoload": {
         "psr-4": {
-            "kalanis\\kw_table\\": "php-src/"
+            "kalanis\\kw_table\\form_kw\\": "php-src/form_kw/",
+            "kalanis\\kw_table\\form_nette\\": "php-src/form_nette/",
+            "kalanis\\kw_table\\kw\\": "php-src/kw/",
+            "kalanis\\kw_table\\nette\\": "php-src/nette/",
+            "kalanis\\kw_table\\output_cli\\": "php-src/output_cli/",
+            "kalanis\\kw_table\\output_direct\\": "php-src/output_direct/php-src/",
+            "kalanis\\kw_table\\output_json\\": "php-src/output_json/",
+            "kalanis\\kw_table\\output_kw\\": "php-src/output_kw/php-src/",
+            "kalanis\\kw_table\\core\\": "php-src/core/php-src/"
         }
     },
     "scripts": {

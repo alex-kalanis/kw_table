@@ -9,6 +9,11 @@ use kalanis\kw_table\core\Interfaces\Table\IColumn;
 use kalanis\kw_table\core\Table\AStyle;
 
 
+/**
+ * Class Row
+ * @package kalanis\kw_table\core\Table\Internal
+ * Styled row in table
+ */
 class Row extends AStyle
 {
     /** @var IColumn[] */

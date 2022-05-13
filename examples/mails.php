@@ -5,9 +5,9 @@ use kalanis\kw_mapper\Interfaces\IEntryType;
 use kalanis\kw_mapper\Mappers;
 use kalanis\kw_mapper\Records;
 use kalanis\kw_mapper\Storage;
-use kalanis\kw_table\Connector\Form\KwField;
-use kalanis\kw_table\Table\Columns;
-use kalanis\kw_table\Table\Rules;
+use kalanis\kw_table\core\Table\Columns;
+use kalanis\kw_table\core\Table\Rules;
+use kalanis\kw_table\form_kw\Fields as KwField;
 
 # at first it's necessary to have defined datasource
 
@@ -84,7 +84,7 @@ class MailTable
 
     public function __construct(\kalanis\kw_input\Interfaces\IVariables $inputs)
     {
-        $helper = new \kalanis\kw_table\Helper();
+        $helper = new \kalanis\kw_table\kw\Helper();
         $helper->fillKwPage($inputs);
         $this->table = $helper->getTable();
     }
@@ -92,6 +92,7 @@ class MailTable
     /**
      * @param string $name
      * @throws \kalanis\kw_mapper\MapperException
+     * @throws \kalanis\kw_connect\core\ConnectException
      */
     public function composeTable(string $name = ''): void
     {
@@ -115,13 +116,13 @@ class MailTable
         if (!empty($name)) {
             $search->exact('fromMail', $name);
         }
-        $this->table->addDataSource(new \kalanis\kw_table\Connector\Sources\Search($search));
+        $this->table->addDataSetConnector(new \kalanis\kw_connect\Search\Connector($search));
     }
 
     public function fromMail($mailId): string
     {
         /** @var Mails $record */
-        $record = $this->table->getDataSource()->getByKey($mailId);
+        $record = $this->table->getDataSetConnector()->getByKey($mailId);
         return sprintf('<%s> %s',
             $record->fromName,
             $record->fromMail
@@ -137,7 +138,7 @@ class MailTable
         ];
     }
 
-    public function getTable(): \kalanis\kw_table\Table
+    public function getTable(): \kalanis\kw_table\core\Table
     {
         return $this->table;
     }

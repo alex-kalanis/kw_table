@@ -25,8 +25,7 @@ class CStatic extends AColumn
 
     public function getValue(IRow $source)
     {
-        if (!empty($this->class)) return $this->returnWithClass();
-        return $this->value;
+        return !empty($this->class) ? $this->returnWithClass() : $this->value;
     }
 
     private function returnWithClass()

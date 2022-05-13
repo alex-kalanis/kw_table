@@ -1,5 +1,8 @@
 <?php
 
+use kalanis\kw_connect\core\Interfaces\IConnector;
+use kalanis\kw_connect\core\Interfaces\IFilterFactory;
+use kalanis\kw_table\core\Interfaces\Form\IField;
 use PHPUnit\Framework\TestCase;
 
 
@@ -9,4 +12,43 @@ use PHPUnit\Framework\TestCase;
  */
 class CommonTestClass extends TestCase
 {
+    protected function basicData(): array
+    {
+        return [
+            ['id' => 1, 'name' => 'abc', 'desc' => 'fill', 'size' => 123, 'enabled' => 1],
+            ['id' => 2, 'name' => 'def', 'desc' => 'dude', 'size' => 456, 'enabled' => 0],
+            ['id' => 3, 'name' => 'ghi', 'desc' => 'know', 'size' => 789, 'enabled' => 1],
+            ['id' => 4, 'name' => 'jkl', 'desc' => 'hate', 'size' => 123, 'enabled' => 0],
+            ['id' => 5, 'name' => 'mno', 'desc' => 'call', 'size' => 456, 'enabled' => 1],
+            ['id' => 6, 'name' => 'pqr', 'desc' => 'that', 'size' => 789, 'enabled' => 0],
+            ['id' => 7, 'name' => 'stu', 'desc' => 'life', 'size' => 321, 'enabled' => 0],
+            ['id' => 8, 'name' => 'vwx', 'desc' => 'felt', 'size' => 654, 'enabled' => 1],
+            ['id' => 9, 'name' => 'yz-', 'desc' => 'love', 'size' => 987, 'enabled' => 1],
+        ];
+    }
+}
+
+
+class XField implements IField
+{
+    public function setAlias(string $alias): void
+    {
+    }
+
+    public function add(): void
+    {
+    }
+
+    public function setAttributes(array $attributes): void
+    {
+    }
+
+    public function setDataSourceConnector(IConnector $dataSource): void
+    {
+    }
+
+    public function getFilterAction(): string
+    {
+        return IFilterFactory::ACTION_EXACT;
+    }
 }

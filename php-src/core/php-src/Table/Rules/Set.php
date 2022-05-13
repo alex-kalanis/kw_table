@@ -17,16 +17,16 @@ class Set implements IRule
     /** @var IRule[] */
     protected $rules = [];
     /** @var bool */
-    protected $any = true;
+    protected $all = true;
 
     public function addRule(IRule $rule)
     {
         $this->rules[] = $rule;
     }
 
-    public function allMustPass($any = false)
+    public function allMustPass($all = true)
     {
-        $this->any = (bool)$any;
+        $this->all = (bool)$all;
     }
 
     /**
@@ -45,7 +45,7 @@ class Set implements IRule
             }
         }
 
-        if ($this->any == true && $trueCount > 0) {
+        if (false == $this->all && 0 < $trueCount) {
             return true;
         }
 

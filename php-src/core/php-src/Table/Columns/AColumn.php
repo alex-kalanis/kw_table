@@ -16,7 +16,6 @@ use kalanis\kw_table\core\Table\AStyle;
  */
 abstract class AColumn extends AStyle implements IColumn
 {
-
     protected $source;
     /** @var string */
     protected $sourceName = '';
@@ -35,7 +34,7 @@ abstract class AColumn extends AStyle implements IColumn
      * @param string $text
      * @return $this
      */
-    public function setHeaderText(string $text)
+    public function setHeaderText(?string $text)
     {
         $this->headerText = $text;
         return $this;
@@ -81,7 +80,7 @@ abstract class AColumn extends AStyle implements IColumn
      * @return mixed
      * @throws ConnectException
      */
-    protected function getOverrideValue(IRow $source, $override)
+    public function getOverrideValue(IRow $source, $override)
     {
         return $this->value($source, $override);
     }
@@ -117,14 +116,22 @@ abstract class AColumn extends AStyle implements IColumn
     protected function formatData($data)
     {
         foreach ($this->wrappers as $tag => $attribute) {
-            $data = sprintf('<%s %s>%s</%s>', $tag, $attribute, $data, $tag);
+            if (is_array($attribute)) {
+                $fill = '';
+                foreach ($attribute as $k => $v) {
+                    $fill .= sprintf('%s="%s"', $k, $v);
+                }
+            } else {
+                $fill = $attribute;
+            }
+            $data = sprintf('<%s %s>%s</%s>', $tag, $fill, $data, $tag);
         }
         return $data;
     }
 
     public function isSortable(): bool
     {
-        return $this instanceof IColumn;
+        return true;
     }
 
     public function hasHeaderFilterField(): bool

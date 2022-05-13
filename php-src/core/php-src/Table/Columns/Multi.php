@@ -35,14 +35,6 @@ class Multi extends AColumn
         $this->columns[] = $column;
     }
 
-    /**
-     * @return IColumn[]
-     */
-    public function getColumns(): array
-    {
-        return $this->columns;
-    }
-
     public function getValue(IRow $source)
     {
         $result = [];

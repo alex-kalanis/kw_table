@@ -16,7 +16,7 @@ class MultipleValue extends AMultipleValue
 {
     protected $field = null;
 
-    public function __construct(AField $field, ?string $label = null, ?string $alias = null)
+    public function __construct(AField $field, ?string $label = null, string $alias = '')
     {
         $this->field = $field;
         $this->alias = $alias;

@@ -1,9 +1,9 @@
 <?php
 
 use kalanis\kw_mapper\Storage;
-use kalanis\kw_table\Connector\Form;
-use kalanis\kw_table\Table\Columns;
-use kalanis\kw_table\Table\Rules;
+use kalanis\kw_table\core\Table\Columns;
+use kalanis\kw_table\core\Table\Rules;
+use kalanis\kw_table\form_kw\Fields as KwField;
 
 
 /**
@@ -16,7 +16,7 @@ class FileApproval
 
     public function __construct(\kalanis\kw_input\Interfaces\IVariables $inputs)
     {
-        $helper = new \kalanis\kw_table\Helper();
+        $helper = new \kalanis\kw_table\kw\Helper();
         $helper->fillKwPage($inputs, 'approvalForm');
         $this->table = $helper->getTable();
     }
@@ -24,6 +24,7 @@ class FileApproval
     /**
      * @param \kalanis\kw_mapper\Search\Search $search
      * @throws \kalanis\kw_mapper\MapperException
+     * @throws \kalanis\kw_connect\core\ConnectException
      */
     public function composeTable($search)
     {
@@ -32,7 +33,7 @@ class FileApproval
 
         $columnUserId = new Columns\Func('id', [$this, 'idLink']);
         $columnUserId->style('width:40px', new Rules\Always());
-        $this->table->addSortedColumn('ID', $columnUserId, null, new Form\KwField\InputCallback([$this, 'footerLink']) );
+        $this->table->addSortedColumn('ID', $columnUserId, null, new KwField\InputCallback([$this, 'footerLink']) );
 
         $this->table->addSortedColumn('Title', new Columns\RowData(['name','admins.adminId'], [$this, 'titleCallback']));
         $this->table->addSortedColumn('Size', new Columns\MultiColumnLink('fileSize', [new Columns\Basic('id')], [$this, 'fileSize']));
@@ -45,16 +46,16 @@ class FileApproval
         $columnActions->addColumn(new Columns\Func('id', [$this, 'viewLink']));
         $columnActions->style('width:100px', new Rules\Always());
 
-        $this->table->addColumn('Actions', $columnActions, null, new Form\KwField\Options(static::getStatuses(), [
+        $this->table->addColumn('Actions', $columnActions, null, new KwField\Options(static::getStatuses(), [
             'id' => 'multiselectChange',
             'data-toggle' => 'modal-ajax-wide-table',
         ]));
         $columnCheckbox = new Columns\Multi('&nbsp;&nbsp;', 'checkboxes');
         $columnCheckbox->addColumn(new Columns\MultiSelectCheckbox('id'));
-        $this->table->addColumn('', $columnCheckbox, null, new Form\KwField\MultiSelect( '0', ['id' => 'multiselectAll']) );
+        $this->table->addColumn('', $columnCheckbox, null, new KwField\MultiSelect( '0', ['id' => 'multiselectAll']) );
 
         $this->table->setDefaultSorting('id', \kalanis\kw_mapper\Interfaces\IQueryBuilder::ORDER_DESC);
-        $this->table->addDataSource(new \kalanis\kw_table\Connector\Sources\Search($search));
+        $this->table->addDataSetConnector(new \kalanis\kw_connect\Search\Connector($search));
     }
 
     public function titleCallback($params)
@@ -76,12 +77,12 @@ class FileApproval
     public function fileSize($data)
     {
         // example of another way to get data through
-        $ormVideo = $this->table->getDataSource()->getByKey($data[1]);
+        $ormVideo = $this->table->getDataSetConnector()->getByKey($data[1]);
         $filesizeMB = round(($data[0] / 10), 2);
         return $filesizeMB . ' kB';
     }
 
-    public function getTable(): \kalanis\kw_table\Table
+    public function getTable(): \kalanis\kw_table\core\Table
     {
         return $this->table;
     }

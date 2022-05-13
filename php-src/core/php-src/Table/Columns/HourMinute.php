@@ -25,17 +25,10 @@ class HourMinute extends AColumn
         if (empty($minutes)) {
             return '0:00';
         } else {
-            if ($minutes < 0) {
-                $addMinus = '-';
-            } elseif ($minutes > 0) {
-                $addMinus = '';
-            } else {
-                $addMinus = '';
-            }
-
+            $addMinus = ($minutes < 0) ? '- ' : '';
             $hours = floor(abs($minutes) / 60);
             $minutes = abs($minutes) - ($hours * 60);
-            return $addMinus . ' ' . $hours . ':' . sprintf('%02d', $minutes);
+            return sprintf('%s%01d:%02d', $addMinus, $hours, $minutes);
         }
     }
 }

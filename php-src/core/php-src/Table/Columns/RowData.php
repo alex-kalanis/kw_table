@@ -22,7 +22,7 @@ class RowData extends AColumn
      */
     public function __construct(array $columns, callable $callback)
     {
-        $this->sourceName = $columns[0];
+        $this->sourceName = reset($columns);
         $this->columns = $columns;
         $this->callback = $callback;
     }

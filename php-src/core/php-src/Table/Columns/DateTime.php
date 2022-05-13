@@ -22,7 +22,7 @@ class DateTime extends AColumn
         $this->sourceName = $sourceName;
         $this->format = $format;
         $this->timestamp = $timestamp;
-        $this->dateTime = $dateTime ? $dateTime : new \DateTime();
+        $this->dateTime = $dateTime ?: new \DateTime();
     }
 
     public function getValue(IRow $source)

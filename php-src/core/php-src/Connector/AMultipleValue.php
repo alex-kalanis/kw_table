@@ -14,9 +14,9 @@ use kalanis\kw_forms\Exceptions\RenderException;
  */
 abstract class AMultipleValue
 {
-    protected $alias = null;
+    protected $alias = '';
     protected $label = null;
-    protected $columnName = null;
+    protected $columnName = '';
 
     public function setColumn(string $columnName): void
     {
@@ -35,7 +35,7 @@ abstract class AMultipleValue
         $this->label = $label;
     }
 
-    public function getLabel(): string
+    public function getLabel(): ?string
     {
         return $this->label;
     }

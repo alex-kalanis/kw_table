@@ -21,7 +21,7 @@ class DataSourceSet implements IRule
     protected $dataSource = null;
     /** @var mixed[string, IRule] key on orm , rule itself */
     protected $rules = [];
-    protected $any = true;
+    protected $all = true;
 
     public function setDataSource(IConnector $dataSource)
     {
@@ -35,38 +35,34 @@ class DataSourceSet implements IRule
         return $this;
     }
 
-    public function mustPass($all = false)
+    public function allMustPass($all = true)
     {
-        $this->any = !(bool)$all;
+        $this->all = (bool)$all;
         return $this;
     }
 
     /**
      * Check each item
-     * @param string $value key to get data object in source
+     * @param string|int $value key to get data object in source
      * @return bool
      * @throws TableException
      * @throws ConnectException
      *
      * It is not defined what came from the data source, so for that it has check
      */
-    public function validate($value = 'id'): bool
+    public function validate($value = '0'): bool
     {
         $trueCount = 0;
         $data = $this->dataSource->getByKey($value);
 
         foreach ($this->rules as list($key, $rule)) {
             /** @var IRule $rule */
-            $checkValue = is_object($data)
-                ? ($data instanceof IRow ? $data->getValue($key) : $data->$key)
-                : (is_array($data) ? $data[$key] : null );
-
-            if ($rule->validate($checkValue)) {
+            if ($rule->validate($this->valueToCheck($data, $key))) {
                 $trueCount++;
             }
         }
 
-        if ((true == $this->any) && (0 < $trueCount)) {
+        if ((false == $this->all) && (0 < $trueCount)) {
             return true;
         }
 
@@ -75,5 +71,18 @@ class DataSourceSet implements IRule
         }
 
         return false;
+    }
+
+    /**
+     * @param mixed $data
+     * @param string|int $key
+     * @return mixed|null
+     * @throws ConnectException
+     */
+    protected function valueToCheck($data, $key)
+    {
+        return is_object($data)
+            ? ($data instanceof IRow ? $data->getValue($key) : $data->$key)
+            : (is_array($data) ? $data[$key] : null );
     }
 }
