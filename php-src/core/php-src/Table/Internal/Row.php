@@ -7,6 +7,7 @@ use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IRow;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
 use kalanis\kw_table\core\Table\AStyle;
+use kalanis\kw_table\core\Table\TSourceName;
 
 
 /**
@@ -16,6 +17,8 @@ use kalanis\kw_table\core\Table\AStyle;
  */
 class Row extends AStyle
 {
+    use TSourceName;
+
     /** @var IColumn[] */
     protected $columns = [];
     /** @var IRow */
@@ -47,12 +50,12 @@ class Row extends AStyle
 
     /**
      * @param IRow $source
-     * @param $override
+     * @param string $overrideProperty
      * @return mixed
      * @throws ConnectException
      */
-    protected function getOverrideValue(IRow $source, $override)
+    protected function getOverrideValue(IRow $source, string $overrideProperty)
     {
-        return $source->getValue($override);
+        return $source->getValue($overrideProperty);
     }
 }

@@ -5,9 +5,8 @@ namespace kalanis\kw_table\core\Table;
 
 use kalanis\kw_address_handler\Handler;
 use kalanis\kw_address_handler\SingleVariable;
-use kalanis\kw_mapper\Interfaces\IQueryBuilder;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
-use kalanis\kw_table\core\TableException;
+use kalanis\kw_table\core\Interfaces\Table\IOrder;
 
 
 /**
@@ -15,7 +14,7 @@ use kalanis\kw_table\core\TableException;
  * @package kalanis\kw_table\core\Table
  * It works two ways - check if desired column is used for sorting and fill header link for use it with another column
  */
-class Sorter implements IQueryBuilder
+class Sorter implements IOrder
 {
     const PARAM_COLUMN = 'column';
     const PARAM_DIRECTION = 'direction';
@@ -46,6 +45,39 @@ class Sorter implements IQueryBuilder
         }
     }
 
+    public function fetch(): self
+    {
+        if (empty($this->columns)) {
+            return $this;
+        }
+
+        $columnName = $this->urlVariable->setVariableName(static::PARAM_COLUMN)->getVariableValue();
+        $direction = $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->getVariableValue();
+        if ($this->isValidDirection($direction)) {
+            $this->currentDirection = $direction;
+        }
+
+        if (array_key_exists($columnName, $this->columns)) {
+            $this->currentColumnName = $columnName;
+            $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
+        } elseif (empty($this->ordering)) {
+            $this->currentColumnName = $this->getPrimaryOrder()->getSourceName();
+            $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
+        }
+
+        return $this;
+    }
+
+    protected function isValidDirection(string $direction): bool
+    {
+        return in_array($direction, [static::ORDER_ASC, static::ORDER_DESC]);
+    }
+
+    protected function getPrimaryOrder(): IColumn
+    {
+        return reset($this->columns);
+    }
+
     public function getOrderings(): array
     {
         return empty($this->ordering) ? [$this->primaryOrdering] : $this->ordering;
@@ -64,37 +96,6 @@ class Sorter implements IQueryBuilder
     public function addPrimaryOrdering(string $columnName, string $direction = self::ORDER_ASC)
     {
         $this->primaryOrdering = [$columnName, $direction];
-    }
-
-    /**
-     * @param string $columnName
-     * @return bool
-     * @throws TableException
-     */
-    protected function checkColumnName(string $columnName): bool
-    {
-        if (!array_key_exists($columnName, $this->columns)) {
-            throw new TableException(sprintf('Column *%s* does not exist', $columnName));
-        }
-        return true;
-    }
-
-    /**
-     * @param string $direction
-     * @return bool
-     * @throws TableException
-     */
-    protected function checkDirection(string $direction): bool
-    {
-        if (!$this->isValidDirection($direction)) {
-            throw new TableException('Bad direction, set ASC or DESC');
-        }
-        return true;
-    }
-
-    protected function isValidDirection(string $direction): bool
-    {
-        return in_array($direction, [static::ORDER_ASC, static::ORDER_DESC]);
     }
 
     public function notEmpty(): bool
@@ -147,33 +148,5 @@ class Sorter implements IQueryBuilder
     public function isActive(IColumn $column): bool
     {
         return $column->getSourceName() == $this->currentColumnName;
-    }
-
-    public function fetch(): self
-    {
-        if (empty($this->columns)) {
-            return $this;
-        }
-
-        $columnName = $this->urlVariable->setVariableName(static::PARAM_COLUMN)->getVariableValue();
-        $direction = $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->getVariableValue();
-        if ($this->isValidDirection($direction)) {
-            $this->currentDirection = $direction;
-        }
-
-        if (array_key_exists($columnName, $this->columns)) {
-            $this->currentColumnName = $columnName;
-            $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
-        } elseif (empty($this->ordering)) {
-            $this->currentColumnName = $this->getPrimaryOrder()->getSourceName();
-            $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
-        }
-
-        return $this;
-    }
-
-    protected function getPrimaryOrder(): IColumn
-    {
-        return reset($this->columns);
     }
 }

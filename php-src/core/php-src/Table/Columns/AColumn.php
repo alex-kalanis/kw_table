@@ -8,6 +8,7 @@ use kalanis\kw_connect\core\Interfaces\IRow;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
 use kalanis\kw_table\core\Table\AStyle;
+use kalanis\kw_table\core\Table\TSourceName;
 
 
 /**
@@ -16,6 +17,8 @@ use kalanis\kw_table\core\Table\AStyle;
  */
 abstract class AColumn extends AStyle implements IColumn
 {
+    use TSourceName;
+
     protected $source;
     /** @var string */
     protected $sourceName = '';
@@ -53,14 +56,9 @@ abstract class AColumn extends AStyle implements IColumn
         return $this->formatData($this->getValue($source));
     }
 
-    public function getSourceName(): string
-    {
-        return $this->sourceName;
-    }
-
     public function getFilterName(): string
     {
-        return empty($this->filterName) ? $this->sourceName : $this->filterName ;
+        return empty($this->filterName) ? $this->getSourceName() : $this->filterName ;
     }
 
     /**
@@ -71,18 +69,18 @@ abstract class AColumn extends AStyle implements IColumn
      */
     public function getValue(IRow $source)
     {
-        return $this->value($source, $this->sourceName);
+        return $this->value($source, $this->getSourceName());
     }
 
     /**
      * @param IRow $source
-     * @param string|int $override
+     * @param string $overrideProperty
      * @return mixed
      * @throws ConnectException
      */
-    public function getOverrideValue(IRow $source, $override)
+    public function getOverrideValue(IRow $source, string $overrideProperty)
     {
-        return $this->value($source, $override);
+        return $this->value($source, $overrideProperty);
     }
 
     /**

@@ -27,11 +27,20 @@ abstract class AStyle extends AIterator
     /** @var string[] */
     protected $wrappers = [];
 
-    abstract protected function getOverrideValue(IRow $source, $override);
-
     protected function getIterableName(): string
     {
         return 'attributes';
+    }
+
+    /**
+     * Add CSS classes: class => condition
+     * @param IRule[] $classes
+     */
+    public function classArray(array $classes): void
+    {
+        foreach ($classes as $class => $condition) {
+            $this->__call('class', [$class, $condition]);
+        }
     }
 
     /**
@@ -49,31 +58,49 @@ abstract class AStyle extends AIterator
     }
 
     /**
-     * When condition value equals current value then add cell style
-     * @param string $style
-     * @param IRule $condition
-     * @param string|null $sourceName
+     * Add colors from array -> color => conditions
+     * @param IRule[] $data
      */
-    public function style(string $style, IRule $condition, ?string $sourceName = null): void
+    public function colorizeArray(array $data): void
     {
-        $this->styles[] = [static::KEY_CONDITION => $condition, static::KEY_STYLE => $style, static::KEY_OVERRIDE => $sourceName];
+        foreach ($data as $colour => $condition) {
+            $this->colorize($colour, $condition);
+        }
     }
 
     /**
-     * Apply style?
-     * @param IRow $source
-     * @param array $style
-     * @return bool
+     * When condition is met colour the cell
+     * @param string $colour
+     * @param IRule|null $condition
      */
-    protected function isStyleApplied(IRow $source, array $style): bool
+    public function colorize(string $colour, ?IRule $condition): void
     {
-        $property = ((isset($style[static::KEY_OVERRIDE]) && !empty($style[static::KEY_OVERRIDE])) ? $style[static::KEY_OVERRIDE] : $this->sourceName);
+        $this->style('background-color: ' . $colour, $condition);
+    }
 
-        if ($style[static::KEY_CONDITION]->validate($this->getOverrideValue($source, $property))) {
-            return true;
-        } else {
-            return false;
-        }
+    /**
+     * When condition value equals current value then add cell style
+     * @param string $style
+     * @param IRule|null $condition
+     * @param string|null $sourceName
+     */
+    public function style(string $style, ?IRule $condition, ?string $sourceName = null): void
+    {
+        $this->styles[] = [
+            static::KEY_STYLE => $style,
+            static::KEY_CONDITION => $condition,
+            static::KEY_OVERRIDE => $sourceName
+        ];
+    }
+
+    /**
+     * Return attribute content by obtained conditions
+     * @param IRow $source
+     * @return string
+     */
+    public function getCellStyle(IRow $source): string
+    {
+        return $this->getAttributes($source) . $this->getStyleAttribute($source);
     }
 
     /**
@@ -88,13 +115,28 @@ abstract class AStyle extends AIterator
             $attribute = [];
             foreach ($attr as $style) {
                 if (empty($style[static::KEY_CONDITION]) || $this->isStyleApplied($source, $style)) {
-                    $attribute[] = $this->getAttributeRealValue($source, $style['style']);
+                    $attribute[] = $this->getAttributeRealValue($source, $style[static::KEY_STYLE]);
                 }
             }
             $return[] = $key . '="' . $this->joinAttributeParts($attribute) . '"';
         }
 
         return $this->joinAttributeParts($return);
+    }
+
+    /**
+     * Returns attribute value with checking if we do not want any value from row
+     * @param IRow $source
+     * @param string $value
+     * @return mixed
+     */
+    protected function getAttributeRealValue(IRow $source, string $value)
+    {
+        if (preg_match('/value\:(.*)/i', $value, $matches)) {
+            return $this->getOverrideValue($source, $matches[1]);
+        } else {
+            return $value;
+        }
     }
 
     /**
@@ -109,21 +151,6 @@ abstract class AStyle extends AIterator
     }
 
     /**
-     * Returns attribute value with checking if we do not want any value from row
-     * @param IRow $source
-     * @param      $value
-     * @return mixed
-     */
-    protected function getAttributeRealValue(IRow $source, $value)
-    {
-        if (preg_match('/value\:(.*)/i', $value, $matches)) {
-            return $this->getOverrideValue($source, $matches[1]);
-        } else {
-            return $value;
-        }
-    }
-
-    /**
      * Merge attribute Style - different for a bit different ordering
      * @param IRow $source
      * @return string
@@ -132,7 +159,7 @@ abstract class AStyle extends AIterator
     {
         $return = [];
         foreach ($this->styles as $style) {
-            if ($this->isStyleApplied($source, $style)) {
+            if (empty($style[static::KEY_CONDITION]) || $this->isStyleApplied($source, $style)) {
                 $return[] = $style[static::KEY_STYLE];
             }
         }
@@ -141,44 +168,26 @@ abstract class AStyle extends AIterator
     }
 
     /**
-     * Return attribute content by obtained conditions
+     * Apply style?
      * @param IRow $source
+     * @param array $style
+     * @return bool
+     */
+    protected function isStyleApplied(IRow $source, array $style): bool
+    {
+        $property = (!empty($style[static::KEY_OVERRIDE])) ? $style[static::KEY_OVERRIDE] : $this->getSourceName();
+        return (bool)$style[static::KEY_CONDITION]->validate($this->getOverrideValue($source, $property));
+    }
+
+    /**
      * @return string
      */
-    public function getCellStyle(IRow $source): string
-    {
-        return $this->getAttributes($source) . $this->getStyleAttribute($source);
-    }
+    abstract public function getSourceName(): string;
 
     /**
-     * When condition is met colour the cell
-     * @param string $colour
-     * @param IRule $condition
+     * @param IRow $source
+     * @param string $overrideProperty
+     * @return mixed
      */
-    public function colorize(string $colour, IRule $condition): void
-    {
-        $this->style('background-color: ' . $colour, $condition);
-    }
-
-    /**
-     * Add colors from array -> color => conditions
-     * @param IRule[] $data
-     */
-    public function colorizeArray(array $data): void
-    {
-        foreach ($data as $colour => $condition) {
-            $this->style('background-color: ' . $colour, $condition);
-        }
-    }
-
-    /**
-     * Add CSS classes: class => condition
-     * @param IRule[] $classes
-     */
-    public function classArray(array $classes): void
-    {
-        foreach ($classes as $class => $condition) {
-            $this->__call('class', [$class, $condition]);
-        }
-    }
+    abstract protected function getOverrideValue(IRow $source, string $overrideProperty);
 }

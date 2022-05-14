@@ -333,6 +333,7 @@ class Table
      * @param IField|null $headerFilterField
      * @param IField|null $footerFilterField
      * @return $this
+     * @throws ConnectException
      */
     public function addColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {

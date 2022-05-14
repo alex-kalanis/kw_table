@@ -8,12 +8,12 @@ namespace kalanis\kw_table\core\Table\Rows;
  * @package kalanis\kw_table\core\Table\Rows
  * Abstract class what can be added into the row
  */
-class ARow
+abstract class ARow
 {
     protected $functionName = '';
     protected $functionArgs = [];
 
-    public function setFunctionName(callable $functionName)
+    public function setFunctionName($functionName)
     {
         $this->functionName = $functionName;
         return $this;
