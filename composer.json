@@ -11,7 +11,7 @@
     "type": "library",
     "require": {
         "alex-kalanis/kw_address_handler": ">=2.0",
-        "alex-kalanis/kw_connect": ">=2.0",
+        "alex-kalanis/kw_connect": ">=3.0",
         "alex-kalanis/kw_forms": ">=2.0",
         "alex-kalanis/kw_input": ">=2.0",
         "alex-kalanis/kw_paging": ">=1.0",
@@ -21,11 +21,11 @@
     },
     "require-dev": {
         "alex-kalanis/kw_clipr": ">=1.0",
-        "alex-kalanis/kw_mapper": ">=0.7",
         "ext-json": "*",
         "phpunit/phpunit": ">=7.2"
     },
     "suggest": {
+        "alex-kalanis/kw_mapper": "Mapper for accessing resources in KWCMS",
         "alex-kalanis/kw_clipr": "CLI Processor"
     },
     "autoload": {
@@ -38,7 +38,7 @@
             "kalanis\\kw_table\\output_direct\\": "php-src/output_direct/php-src/",
             "kalanis\\kw_table\\output_json\\": "php-src/output_json/",
             "kalanis\\kw_table\\output_kw\\": "php-src/output_kw/php-src/",
-            "kalanis\\kw_table\\core\\": "php-src/core/php-src/"
+            "kalanis\\kw_table\\core\\": "php-src/core/"
         }
     },
     "scripts": {

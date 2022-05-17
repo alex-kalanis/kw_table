@@ -3,9 +3,9 @@
 namespace kalanis\kw_table\form_nette;
 
 
-use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\core\Interfaces\Form\IFilterForm;
+use kalanis\kw_table\core\TableException;
 use Nette\Application\UI\Form as BaseForm;
 use Nette\Bridges\FormsLatte\Runtime;
 use Nette\Forms\Controls\BaseControl;
@@ -33,7 +33,7 @@ class NetteFilter implements IFilterForm
     public function addField(IField $field): void
     {
         if (!$field instanceof Fields\AField) {
-            throw new ConnectException('Not an instance of \kalanis\kw_table\form_nette\Fields\AField.');
+            throw new TableException('Not an instance of \kalanis\kw_table\form_nette\Fields\AField.');
         }
 
         $field->prepareAlias();

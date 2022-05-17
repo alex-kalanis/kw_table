@@ -1,6 +1,6 @@
 <?php
 
-namespace core\Columns;
+namespace coreTests\Columns;
 
 
 use CommonTestClass;

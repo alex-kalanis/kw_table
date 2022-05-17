@@ -1,6 +1,6 @@
 <?php
 
-namespace core\Connector;
+namespace coreTests\Connector;
 
 
 use CommonTestClass;

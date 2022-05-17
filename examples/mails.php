@@ -103,15 +103,15 @@ class MailTable
         $this->table->rowClass('statusCrashed', new Rules\Exact(Mails::STATUS_FAIL), 'status');
 
         // columns
-        $this->table->addSortedColumn('ID', new Columns\Basic('id'), new KwField\TextExact());
+        $this->table->addOrderedColumn('ID', new Columns\Basic('id'), new KwField\TextExact());
         $this->table->addColumn('From', new Columns\Func('id', [$this, 'fromMail']));
-        $this->table->addSortedColumn('To name', new Columns\Bold('toName'), new KwField\TextContains());
-        $this->table->addSortedColumn('To mail', new Columns\Basic('toMail'), new KwField\TextContains());
-        $this->table->addSortedColumn('Attempt', new Columns\Date('attempt', 'Y-m-d H:i:s'));
+        $this->table->addOrderedColumn('To name', new Columns\Bold('toName'), new KwField\TextContains());
+        $this->table->addOrderedColumn('To mail', new Columns\Basic('toMail'), new KwField\TextContains());
+        $this->table->addOrderedColumn('Attempt', new Columns\Date('attempt', 'Y-m-d H:i:s'));
         $this->table->addColumn('Status', new Columns\Map('status', static::mailStatuses()), new KwField\Options(static::mailStatuses()));
 
         // sorting and connecting datasource
-        $this->table->setDefaultSorting('id',\kalanis\kw_mapper\Interfaces\IQueryBuilder::ORDER_DESC);
+        $this->table->addOrdering('id',\kalanis\kw_mapper\Interfaces\IQueryBuilder::ORDER_DESC);
         $search = new \kalanis\kw_mapper\Search\Search(new Mails());
         if (!empty($name)) {
             $search->exact('fromMail', $name);

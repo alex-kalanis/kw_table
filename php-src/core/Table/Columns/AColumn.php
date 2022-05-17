@@ -127,7 +127,7 @@ abstract class AColumn extends AStyle implements IColumn
         return $data;
     }
 
-    public function isSortable(): bool
+    public function canOrder(): bool
     {
         return true;
     }

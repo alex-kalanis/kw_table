@@ -35,16 +35,19 @@
 
     <filter>
         <whitelist>
-            <directory suffix=".php">php-src/</directory>
+            <directory suffix=".php">php-src/core/</directory>
+            <!--directory suffix=".php">php-src/form_kw/</directory>
+            <directory suffix=".php">php-src/kw/</directory>
+            <directory suffix=".php">php-src/output_cli/</directory>
+            <directory suffix=".php">php-src/output_direct/</directory>
+            <directory suffix=".php">php-src/output_json/</directory>
+            <directory suffix=".php">php-src/output_kw/</directory-->
         </whitelist>
     </filter>
 
     <testsuites>
         <testsuite name="ALL">
-            <directory>php-tests/core</directory>
-        </testsuite>
-        <testsuite name="debugs">
-            <directory>php-tests/DebugsTests</directory>
+            <directory>php-tests/coreTests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

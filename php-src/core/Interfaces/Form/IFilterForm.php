@@ -3,8 +3,8 @@
 namespace kalanis\kw_table\core\Interfaces\Form;
 
 
-use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_forms\Exceptions\RenderException;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -17,7 +17,7 @@ interface IFilterForm
     /**
      * Add entry which will modify search params in table datasource
      * @param IField $field
-     * @throws ConnectException
+     * @throws TableException
      */
     public function addField(IField $field): void;
 

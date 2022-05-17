@@ -1,6 +1,6 @@
 <?php
 
-namespace core\Columns;
+namespace coreTests\Columns;
 
 
 use CommonTestClass;
@@ -24,7 +24,7 @@ class SimpleColumnTest extends CommonTestClass
         $this->assertEquals('name', $lib->getHeaderText());
         $lib->setHeaderText('else');
         $this->assertEquals('else', $lib->getHeaderText());
-        $this->assertTrue($lib->isSortable());
+        $this->assertTrue($lib->canOrder());
 
         $data = $this->getRow();
         $this->assertEquals('def', $lib->getValue($data));

@@ -39,8 +39,8 @@ class Table
     /** @var IOutput|null */
     protected $outputPager = null;
 
-    /** @var Table\Sorter|null */
-    protected $sorter = null;
+    /** @var Table\Order|null */
+    protected $order = null;
 
     /** @var Table\Filter|null */
     protected $headerFilter = null;
@@ -100,9 +100,9 @@ class Table
         $this->callRows[] = new Table\Rows\ClassRow($class, $rule, $cell);
     }
 
-    public function addSorter(Table\Sorter $sorter): self
+    public function addOrder(Table\Order $sorter): self
     {
-        $this->sorter = $sorter;
+        $this->order = $sorter;
         return $this;
     }
 
@@ -137,31 +137,41 @@ class Table
     }
 
     /**
+     * Basic order
      * @param string $columnName
      * @param string $order
      * @return $this
-     * @throws ConnectException
+     * @throws TableException
      */
-    public function setDefaultSorting(string $columnName, string $order = Table\Sorter::ORDER_ASC): self
+    public function addOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
-        if (empty($this->sorter)) {
-            throw new ConnectException('Need to set sorter first!');
+        $this->checkOrder();
+        $this->order->addOrdering($columnName, $order);
+        return $this;
+    }
+
+    /**
+     * More important order
+     * @param string $columnName
+     * @param string $order
+     * @return $this
+     * @throws TableException
+     */
+    public function addPrimaryOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
+    {
+        $this->checkOrder();
+        $this->order->addPrependOrdering($columnName, $order);
+        return $this;
+    }
+
+    /**
+     * @throws TableException
+     */
+    protected function checkOrder(): void
+    {
+        if (empty($this->order)) {
+            throw new TableException('Need to set order library first!');
         }
-        $this->sorter->addPrimaryOrdering($columnName, $order);
-
-        return $this;
-    }
-
-    public function addOrdering(string $columnName, string $order = Table\Sorter::ORDER_ASC): self
-    {
-        $this->sorter->addOrdering($columnName, $order);
-        return $this;
-    }
-
-    public function addPrimaryOrdering(string $columnName, string $order = Table\Sorter::ORDER_ASC): self
-    {
-        $this->sorter->addPrependOrdering($columnName, $order);
-        return $this;
     }
 
     public function getOutputPager(): ?IOutput
@@ -169,9 +179,9 @@ class Table
         return $this->outputPager;
     }
 
-    public function getSorter(): ?Table\Sorter
+    public function getOrder(): ?Table\Order
     {
-        return $this->sorter;
+        return $this->order;
     }
 
     public function getHeaderFilter(): ?Table\Filter
@@ -204,17 +214,9 @@ class Table
     {
         $this->dataSetConnector = $dataSetConnector;
 
-        if (!empty($this->headerFilter)) {
-            $this->applyFilter();
-        }
-
-        if (!empty($this->sorter)) {
-            $this->applySorter();
-        }
-
-        if (!empty($this->outputPager)) {
-            $this->applyPager();
-        }
+        $this->applyFilter();
+        $this->applyOrder();
+        $this->applyPager();
 
         $this->dataSetConnector->fetchData();
         return $this;
@@ -231,10 +233,14 @@ class Table
      */
     public function applyFilter(): self
     {
-        $this->headerFilter->fetch();
+        if (empty($this->headerFilter)) {
+            return $this;
+        }
+
+        $this->headerFilter->process();
 
         foreach ($this->columns as $column) {
-            if ($this->headerFilter->isValue($column)) {
+            if ($this->headerFilter->hasValue($column)) {
 
                 $filterField = $column->getHeaderFilterField();
                 if ($filterField) {
@@ -254,14 +260,15 @@ class Table
      * @return $this
      * @throws ConnectException
      */
-    public function applySorter(): self
+    public function applyOrder(): self
     {
-        $this->sorter->fetch();
-        $orderings = $this->sorter->getOrderings();
-        if (!empty($orderings)) {
-            foreach ($orderings AS $ordering) {
-                $this->dataSetConnector->setSorting($ordering[0], $ordering[1]);
-            }
+        if (empty($this->order)) {
+            return $this;
+        }
+
+        $this->order->process();
+        foreach ($this->order->getOrdering() as list($columnName, $direction)) {
+            $this->dataSetConnector->setOrdering($columnName, $direction);
         }
         return $this;
     }
@@ -272,6 +279,10 @@ class Table
      */
     public function applyPager(): self
     {
+        if (empty($this->outputPager)) {
+            return $this;
+        }
+
         if (empty($this->outputPager->getPager()->getMaxResults())) {
             $this->outputPager->getPager()->setMaxResults($this->dataSetConnector->getTotalCount());
         }
@@ -333,7 +344,7 @@ class Table
      * @param IField|null $headerFilterField
      * @param IField|null $footerFilterField
      * @return $this
-     * @throws ConnectException
+     * @throws TableException
      */
     public function addColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {
@@ -370,15 +381,13 @@ class Table
      * @param IField|null $headerFilterField
      * @param IField|null $footerFilterField
      * @return $this
-     * @throws ConnectException
+     * @throws TableException
      */
-    public function addSortedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
+    public function addOrderedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {
-        if ($column->isSortable()) {
-            if (empty($this->sorter)) {
-                throw new ConnectException('Need to set sorter class first!!!');
-            }
-            $this->sorter->addColumn($column);
+        if ($column->canOrder()) {
+            $this->checkOrder();
+            $this->order->addColumn($column);
         }
 
         $this->addColumn($headerText, $column, $headerFilterField, $footerFilterField);

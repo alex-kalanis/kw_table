@@ -5,16 +5,16 @@ namespace kalanis\kw_table\core\Table;
 
 use kalanis\kw_address_handler\Handler;
 use kalanis\kw_address_handler\SingleVariable;
+use kalanis\kw_connect\core\Interfaces\IOrder;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
-use kalanis\kw_table\core\Interfaces\Table\IOrder;
 
 
 /**
- * Class Sorter
+ * Class Order
  * @package kalanis\kw_table\core\Table
- * It works two ways - check if desired column is used for sorting and fill header link for use it with another column
+ * It works two ways - check if desired column is used for ordering and fill header link for use it with another column
  */
-class Sorter implements IOrder
+class Order implements IOrder
 {
     const PARAM_COLUMN = 'column';
     const PARAM_DIRECTION = 'direction';
@@ -45,7 +45,7 @@ class Sorter implements IOrder
         }
     }
 
-    public function fetch(): self
+    public function process(): self
     {
         if (empty($this->columns)) {
             return $this;
@@ -57,11 +57,12 @@ class Sorter implements IOrder
             $this->currentDirection = $direction;
         }
 
+        // fill primary ordering which will be shown in table
         if (array_key_exists($columnName, $this->columns)) {
             $this->currentColumnName = $columnName;
             $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
         } elseif (empty($this->ordering)) {
-            $this->currentColumnName = $this->getPrimaryOrder()->getSourceName();
+            $this->currentColumnName = $this->getFirstColumn()->getSourceName();
             $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
         }
 
@@ -73,34 +74,39 @@ class Sorter implements IOrder
         return in_array($direction, [static::ORDER_ASC, static::ORDER_DESC]);
     }
 
-    protected function getPrimaryOrder(): IColumn
+    protected function getFirstColumn(): IColumn
     {
         return reset($this->columns);
     }
 
-    public function getOrderings(): array
+    protected function addPrimaryOrdering(string $columnName, string $direction)
+    {
+        $this->primaryOrdering = [$columnName, $direction];
+    }
+
+    public function getOrdering(): array
     {
         return empty($this->ordering) ? [$this->primaryOrdering] : $this->ordering;
     }
 
+    /**
+     * Basic ordering
+     * @param string $columnName
+     * @param string $direction
+     */
     public function addOrdering(string $columnName, string $direction = self::ORDER_ASC)
     {
         $this->ordering[] = [$columnName, $direction];
     }
 
+    /**
+     * Add more important ordering
+     * @param string $columnName
+     * @param string $direction
+     */
     public function addPrependOrdering(string $columnName, string $direction = self::ORDER_ASC)
     {
         array_unshift($this->ordering, [$columnName, $direction]);
-    }
-
-    public function addPrimaryOrdering(string $columnName, string $direction = self::ORDER_ASC)
-    {
-        $this->primaryOrdering = [$columnName, $direction];
-    }
-
-    public function notEmpty(): bool
-    {
-        return !empty($this->columns);
     }
 
     public function addColumn(IColumn $column): self
@@ -111,7 +117,7 @@ class Sorter implements IOrder
 
     public function getHref(IColumn $column): ?string
     {
-        if (!$this->isSorted($column)) {
+        if (!$this->isInOrder($column)) {
             return null;
         }
 
@@ -120,7 +126,7 @@ class Sorter implements IOrder
         return $this->urlHandler->getAddress();
     }
 
-    public function isSorted(IColumn $column): bool
+    public function isInOrder(IColumn $column): bool
     {
         return array_key_exists($column->getSourceName(), $this->columns);
     }

@@ -3,10 +3,10 @@
 namespace kalanis\kw_table\form_kw;
 
 
-use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_forms\Form as BaseForm;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\core\Interfaces\Form\IFilterForm;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -33,7 +33,7 @@ class KwFilter implements IFilterForm
     public function addField(IField $field): void
     {
         if (!$field instanceof Fields\AField) {
-            throw new ConnectException('Not an instance of \kalanis\kw_table\form_kw\Fields\AField.');
+            throw new TableException('Not an instance of \kalanis\kw_table\form_kw\Fields\AField.');
         }
 
         $field->setForm($this->form);

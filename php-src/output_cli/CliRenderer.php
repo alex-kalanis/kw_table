@@ -57,7 +57,7 @@ class CliRenderer extends Table\AOutput
 
     protected function fillHeaders(): void
     {
-        $sorter = $this->table->getSorter();
+        $sorter = $this->table->getOrder();
         $headerFilter = $this->table->getHeaderFilter();
         $line = [];
         foreach ($this->table->getColumns() as $column) {
@@ -66,7 +66,7 @@ class CliRenderer extends Table\AOutput
             } else {
                 $line[] = $this->withFilter($column) . static::HEADER_PARAM_SEPARATOR . $column->getHeaderText();
             }
-            if ($sorter && $sorter->isSorted($column)) {
+            if ($sorter && $sorter->isInOrder($column)) {
                 $line[] = $this->withSortDirection($sorter, $column) . static::HEADER_PARAM_SEPARATOR . $column->getHeaderText();
             } else {
                 $line[] = $column->getHeaderText();
@@ -75,9 +75,9 @@ class CliRenderer extends Table\AOutput
         $this->prettyTable->setHeaders($line);
     }
 
-    protected function withSortDirection(Table\Sorter $sorter, Table\Columns\AColumn $column): string
+    protected function withSortDirection(Table\Order $sorter, Table\Columns\AColumn $column): string
     {
-        return ($sorter->isActive($column) ? '*' : '') . ($sorter->getDirection($column) == Table\Sorter::ORDER_ASC ? '^' : 'v');
+        return ($sorter->isActive($column) ? '*' : '') . ($sorter->getDirection($column) == Table\Order::ORDER_ASC ? '^' : 'v');
     }
 
     protected function withFilter(Table\Columns\AColumn $column): string

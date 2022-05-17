@@ -12,6 +12,7 @@ interface IFilterMulti
 {
     /**
      * @return array <string, string>
+     * array of [action: string; current value: string]
      */
     public function getPairs(): array;
 }

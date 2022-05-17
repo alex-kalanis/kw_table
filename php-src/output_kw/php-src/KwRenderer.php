@@ -120,10 +120,10 @@ class KwRenderer extends Table\AOutput
 
     protected function getHeader(): string
     {
-        $sorter = $this->table->getSorter();
+        $sorter = $this->table->getOrder();
         $this->templateRow->reset()->setData();
         foreach ($this->table->getColumns() as $column) {
-            if ($sorter && $sorter->isSorted($column)) {
+            if ($sorter && $sorter->isInOrder($column)) {
                 $this->templateRow->addCell($this->templateHeadSorted->reset()->setData(
                     $sorter->getHeaderText($column), $sorter->getHref($column)
                 )->render());

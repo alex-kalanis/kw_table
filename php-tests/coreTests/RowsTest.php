@@ -1,10 +1,11 @@
 <?php
 
-namespace core;
+namespace coreTests;
 
 
 use CommonTestClass;
 use kalanis\kw_connect\arrays\Row;
+use kalanis\kw_table\core\Table\Columns\Basic;
 use kalanis\kw_table\core\Table\Rows;
 use kalanis\kw_table\core\Table\Internal;
 
@@ -18,6 +19,7 @@ class RowsTest extends CommonTestClass
         $src = $this->getRow();
         $lib->setSource($src);
         $this->assertEquals($src, $lib->getSource());
+        $lib->addColumn(new Basic('foo'));
     }
 
     public function testRowAb(): void

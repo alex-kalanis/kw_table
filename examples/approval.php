@@ -33,14 +33,14 @@ class FileApproval
 
         $columnUserId = new Columns\Func('id', [$this, 'idLink']);
         $columnUserId->style('width:40px', new Rules\Always());
-        $this->table->addSortedColumn('ID', $columnUserId, null, new KwField\InputCallback([$this, 'footerLink']) );
+        $this->table->addOrderedColumn('ID', $columnUserId, null, new KwField\InputCallback([$this, 'footerLink']) );
 
-        $this->table->addSortedColumn('Title', new Columns\RowData(['name','admins.adminId'], [$this, 'titleCallback']));
-        $this->table->addSortedColumn('Size', new Columns\MultiColumnLink('fileSize', [new Columns\Basic('id')], [$this, 'fileSize']));
+        $this->table->addOrderedColumn('Title', new Columns\RowData(['name','admins.adminId'], [$this, 'titleCallback']));
+        $this->table->addOrderedColumn('Size', new Columns\MultiColumnLink('fileSize', [new Columns\Basic('id')], [$this, 'fileSize']));
 
         $columnAdded = new Columns\Date('added', 'Y-m-d H:i:s');
         $columnAdded->style('width:150px', new Rules\Always());
-        $this->table->addSortedColumn('Added', $columnAdded);
+        $this->table->addOrderedColumn('Added', $columnAdded);
 
         $columnActions = new Columns\Multi('&nbsp;&nbsp;');
         $columnActions->addColumn(new Columns\Func('id', [$this, 'viewLink']));
@@ -54,7 +54,7 @@ class FileApproval
         $columnCheckbox->addColumn(new Columns\MultiSelectCheckbox('id'));
         $this->table->addColumn('', $columnCheckbox, null, new KwField\MultiSelect( '0', ['id' => 'multiselectAll']) );
 
-        $this->table->setDefaultSorting('id', \kalanis\kw_mapper\Interfaces\IQueryBuilder::ORDER_DESC);
+        $this->table->addOrdering('id', \kalanis\kw_mapper\Interfaces\IQueryBuilder::ORDER_DESC);
         $this->table->addDataSetConnector(new \kalanis\kw_connect\Search\Connector($search));
     }
 

@@ -3,8 +3,8 @@
 namespace kalanis\kw_table\core\Table;
 
 
-use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IFilterType;
+use kalanis\kw_forms\Exceptions\RenderException;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\core\Interfaces\Form\IFilterForm;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
@@ -37,7 +37,7 @@ class Filter
         $this->formConnector = $connector;
     }
 
-    public function isValue(IColumn $column): bool
+    public function hasValue(IColumn $column): bool
     {
         return isset($this->columnsValues[$column->getSourceName()]) && $this->columnsValues[$column->getSourceName()] !== IFilterType::EMPTY_FILTER;
     }
@@ -48,7 +48,7 @@ class Filter
      */
     public function getValue(IColumn $column)
     {
-        if (!$this->isValue($column)) {
+        if (!$this->hasValue($column)) {
             return IFilterType::EMPTY_FILTER;
         }
         return $this->columnsValues[$column->getSourceName()];
@@ -62,36 +62,48 @@ class Filter
     /**
      * @param IColumn $column
      * @return $this
-     * @throws ConnectException
+     * @throws TableException
      */
     public function addHeaderColumn(IColumn $column): self
     {
         $filterField = $column->getHeaderFilterField();
-        $filterField->setAlias($this->headerPrefix . $column->getFilterName());
-        $this->formConnector->addField($filterField);
-        $this->headerColumns[$this->headerPrefix . $column->getSourceName()] = $column;
+        if ($filterField) {
+            $filterField->setAlias($this->headerPrefix . $column->getFilterName());
+            $this->formConnector->addField($filterField);
+            $this->headerColumns[$this->headerPrefix . $column->getSourceName()] = $column;
+        }
         return $this;
     }
 
     /**
      * @param IColumn $column
      * @return $this
-     * @throws ConnectException
+     * @throws TableException
      */
     public function addFooterColumn(IColumn $column): self
     {
         $filterField = $column->getFooterFilterField();
-        $filterField->setAlias($this->footerPrefix . $column->getFilterName());
-        $this->formConnector->addField($filterField);
-        $this->footerColumns[$this->footerPrefix . $column->getSourceName()] = $column;
+        if ($filterField) {
+            $filterField->setAlias($this->footerPrefix . $column->getFilterName());
+            $this->formConnector->addField($filterField);
+            $this->footerColumns[$this->footerPrefix . $column->getSourceName()] = $column;
+        }
         return $this;
     }
 
+    /**
+     * @return string
+     * @throws RenderException
+     */
     public function renderStart(): string
     {
         return $this->formConnector->renderStart();
     }
 
+    /**
+     * @return string
+     * @throws RenderException
+     */
     public function renderEnd(): string
     {
         return $this->formConnector->renderEnd();
@@ -101,6 +113,7 @@ class Filter
      * @param IColumn $column
      * @return string
      * @throws TableException
+     * @throws RenderException
      */
     public function renderHeaderInput(IColumn $column): string
     {
@@ -121,6 +134,7 @@ class Filter
      * @param IColumn $column
      * @return string
      * @throws TableException
+     * @throws RenderException
      */
     public function renderFooterInput(IColumn $column): string
     {
@@ -137,7 +151,7 @@ class Filter
         }
     }
 
-    public function fetch(): self
+    public function process(): self
     {
         $formValues = $this->formConnector->getValues();
         $original = [];
@@ -174,7 +188,7 @@ class Filter
         if ($filterField instanceof IFilterMulti) {
             return $filterField->getPairs();
         } elseif (isset($formValues[$filterName])) {
-            return isset($formValues[$filterName]) ? $formValues[$filterName] : '' ;
+            return $formValues[$filterName];
         } else {
             return null;
         }
@@ -188,14 +202,16 @@ class Filter
      */
     protected function addValuesToArray(array &$original, string $sourceName, $values): void
     {
-        if (!isset($original[$sourceName])) {
+        if (empty($values)) {
+            return;
+        } elseif (!isset($original[$sourceName])) {
             // no target, flush it directly
             $original[$sourceName] = $values;
         } elseif (is_array($original[$sourceName])) {
             // target is array
             if (is_array($values)) {
                 // source is array too
-                $original[$sourceName] += $values;
+                $original[$sourceName] = array_merge($original[$sourceName], $values);
             } else {
                 // source is primitive
                 $original[$sourceName][] = $values;
@@ -207,7 +223,7 @@ class Filter
             $original[$sourceName][] = $current;
             // now target is array
             if (is_array($values)) {
-                $original[$sourceName] += $values;
+                $original[$sourceName] = array_merge($original[$sourceName], $values);
             } else {
                 $original[$sourceName][] = $values;
             }

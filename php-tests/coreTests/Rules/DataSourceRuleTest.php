@@ -1,6 +1,6 @@
 <?php
 
-namespace core\Rules;
+namespace coreTests\Rules;
 
 
 use CommonTestClass;

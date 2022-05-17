@@ -41,7 +41,7 @@ interface IColumn
      * Can be results sorted by this column?
      * @return bool
      */
-    public function isSortable(): bool;
+    public function canOrder(): bool;
 
     /**
      * Set different header text than source name
