@@ -31,12 +31,15 @@
         "psr-4": {
             "kalanis\\kw_table\\form_kw\\": "php-src/form_kw/",
             "kalanis\\kw_table\\form_nette\\": "php-src/form_nette/",
+            "kalanis\\kw_table\\form_nette_bootstrap\\": "php-src/form_nette_bootstrap/",
+            "kalanis\\kw_table\\form_nette_lte\\": "php-src/form_nette_lte/",
             "kalanis\\kw_table\\kw\\": "php-src/kw/",
             "kalanis\\kw_table\\nette\\": "php-src/nette/",
             "kalanis\\kw_table\\output_cli\\": "php-src/output_cli/",
             "kalanis\\kw_table\\output_direct\\": "php-src/output_direct/php-src/",
             "kalanis\\kw_table\\output_json\\": "php-src/output_json/",
             "kalanis\\kw_table\\output_kw\\": "php-src/output_kw/php-src/",
+            "kalanis\\kw_table\\output_latte\\": "php-src/output_latte/php-src/",
             "kalanis\\kw_table\\core\\": "php-src/core/"
         }
     },

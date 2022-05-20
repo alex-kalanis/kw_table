@@ -1,0 +1,114 @@
+{if $table->showPagerOnHead() && $table->getOutputPager() }
+    {$table->getOutputPager()->render()|noescape}
+{/if}
+
+{var $headerFilter = $table->getHeaderFilter()}
+{var $footerFilter = $table->getFooterFilter()}
+{if $headerFilter}
+    {$headerFilter->renderStart()}
+{elseif $footerFilter}
+    {$footerFilter->renderStart()}
+{/if}
+
+<table class="{$table->getClassesInString()}">
+    <thead>
+    <tr>
+        {var $sorter = $table->getSorter()}
+        {foreach $table->getColumns() as $column}
+            {if $sorter && $sorter->isSorted($column)}
+                <th><a href="{$sorter->getHref($column)}">{$sorter->getHeaderText($column)}</a></th>
+            {else}
+                <th>{$column->getHeaderText()}</th>
+            {/if}
+        {/foreach}
+    </tr>
+    {if $headerFilter}
+        <tr>
+            {foreach $table->getColumns() as $column}
+                {if $column->hasHeaderFilterField()}
+                    <th>{$headerFilter->renderHeaderInput($column)|noescape}</th>
+                {else}
+                    <th></th>
+                {/if}
+            {/foreach}
+        </tr>
+    {/if}
+    </thead>
+    <tbody>
+    {foreach $table->getTableData() as $row}
+        <tr {$row->getCellStyle($row->getSource())|noescape}>
+            {foreach $row as $col}
+                <td {$col->getCellStyle($row->getSource())|noescape}>{$col->translate($row->getSource())}</td>
+            {/foreach}
+        </tr>
+    {/foreach}
+    </tbody>
+    {if $footerFilter}
+        <tfoot>
+            <tr>
+                {foreach $table->getColumns() as $column}
+                    {if $column->hasFooterFilterField()}
+                        <td>{$footerFilter->renderFooterInput($column)|noescape}</td>
+                    {else}
+                        <td></td>
+                    {/if}
+                {/foreach}
+            </tr>
+        </tfoot>
+    {/if}
+</table>
+
+{if $headerFilter}
+    {$headerFilter->renderEnd()}
+{elseif $footerFilter}
+    {$footerFilter->renderEnd()}
+{/if}
+
+{if $table->showPagerOnFoot() && $table->getOutputPager() }
+    {$table->getOutputPager()->render()|noescape}
+{/if}
+
+<div class="clearfix"></div>
+{var $formName = $headerFilter ? $headerFilter->getFormName() : ( $footerFilter ? $footerFilter->getFormName() : '' ) }
+{if ($formName && ($headerFilter || $footerFilter)}
+    <script>
+        $('input').keyup(function (e) {
+            if (e.which == 13) {
+                $(this).parents('[name={$formName}]').submit();
+            }
+        });
+        $('select[data-toggle]').change(function (e) {
+            e.preventDefault();
+            var $ajaxModal = $('#ajaxModal');
+            var $form = $(this).parents('[name={$formName}]');
+            $ajaxModal.find('.modal-dialog').removeClass('modal-lg');
+            var selectValue = $(this).val();
+            if (($form.find('.multiselect:checked').length > 0) && ('' != selectValue)) {
+                if($form.attr('data-wide')) {
+                    $ajaxModal.find('.modal-dialog').addClass('modal-lg');
+                }
+                var baseUrl = 'https://' + (new URL(window.location.href)).host;
+                $.ajax({
+                    type: $form.attr('method'),
+                    url: (new URL($form.attr('action'), baseUrl)).pathname,
+                    data: $form.serialize(),
+                    success: function ($data) {
+                        $ajaxModal.find('.modal-content').html($data);
+                        $ajaxModal.modal('show');
+                        datepicker();
+                    }
+                });
+            }
+            var elements = $(this).children();
+            for(var i = 0; i < elements.length; i++){
+                elements[i].selected = false;
+            }
+
+            e.stopPropagation();
+            return false;
+        });
+        $('select:not([data-toggle])').change(function () {
+            $(this).parents('[name={$formName}]').submit();
+        });
+    </script>
+{/if}
