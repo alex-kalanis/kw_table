@@ -5,6 +5,7 @@ namespace kalanis\kw_table\form_kw\Fields;
 
 use kalanis\kw_connect\core\Interfaces\IConnector;
 use kalanis\kw_connect\core\Interfaces\IFilterFactory;
+use kalanis\kw_forms\Exceptions\RenderException;
 use kalanis\kw_forms\Form;
 use kalanis\kw_table\core\Interfaces\Table\IFilterMulti;
 use kalanis\kw_table\core\Interfaces\Table\IFilterRender;
@@ -98,6 +99,11 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
         return implode($this->separator, array_map([$this, 'renderField'], $this->fields));
     }
 
+    /**
+     * @param MultipleValue $field
+     * @return string
+     * @throws RenderException
+     */
     public function renderField(MultipleValue $field): string
     {
         return $field->renderContent();

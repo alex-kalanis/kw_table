@@ -93,6 +93,7 @@ class MailTable
      * @param string $name
      * @throws \kalanis\kw_mapper\MapperException
      * @throws \kalanis\kw_connect\core\ConnectException
+     * @throws \kalanis\kw_table\core\TableException
      */
     public function composeTable(string $name = ''): void
     {

@@ -13,6 +13,13 @@ use kalanis\kw_table\core\Interfaces\Table\IColumn;
  * Class Order
  * @package kalanis\kw_table\core\Table
  * It works two ways - check if desired column is used for ordering and fill header link for use it with another column
+ *
+ * The implementation is simple
+ * First array is from system defined by programmer ($this->ordering)
+ * If there is none, then get array of columns ($this->>columns)
+ * Then prepend params from handler ($this->>currentDirection, $this->currentColumnName) if they contains anything usable
+ *
+ * First from this list is an active one ($this->primaryOrdering / $this->>activeOrdering) and will be used for compare
  */
 class Order implements IOrder
 {
@@ -26,11 +33,13 @@ class Order implements IOrder
     /** @var SingleVariable */
     protected $urlVariable = null;
     /** @var string */
-    protected $currentColumnName = '';
+    protected $masterColumnName = '';
     /** @var string */
-    protected $currentDirection = self::ORDER_ASC;
-    /** @var string[] */
-    protected $primaryOrdering = [];
+    protected $masterDirection = '';
+    /** @var string */
+    protected $addressColumnName = '';
+    /** @var string */
+    protected $addressDirection = '';
     /** @var string[][] */
     protected $ordering = [];
 
@@ -38,11 +47,6 @@ class Order implements IOrder
     {
         $this->urlHandler = $urlHandler;
         $this->urlVariable = new SingleVariable($this->urlHandler->getParams());
-        $currentDirection = $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->getVariableValue();
-        if ($this->isValidDirection($currentDirection)) {
-            $this->currentDirection = $currentDirection;
-            $this->currentColumnName = $this->urlVariable->setVariableName(static::PARAM_COLUMN)->getVariableValue();
-        }
     }
 
     public function process(): self
@@ -51,20 +55,29 @@ class Order implements IOrder
             return $this;
         }
 
-        $columnName = $this->urlVariable->setVariableName(static::PARAM_COLUMN)->getVariableValue();
-        $direction = $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->getVariableValue();
-        if ($this->isValidDirection($direction)) {
-            $this->currentDirection = $direction;
+        $defaultDirection = static::ORDER_ASC; // info about default direction - can be passed from address handler
+        $addrDirection = $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->getVariableValue();
+        $addrColumnName = $this->urlVariable->setVariableName(static::PARAM_COLUMN)->getVariableValue();
+        if ($this->isValidDirection($addrDirection)) {
+            $this->addressDirection = $defaultDirection = $addrDirection;
+            $this->addressColumnName = $addrColumnName;
         }
 
-        // fill primary ordering which will be shown in table
-        if (array_key_exists($columnName, $this->columns)) {
-            $this->currentColumnName = $columnName;
-            $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
-        } elseif (empty($this->ordering)) {
-            $this->currentColumnName = $this->getFirstColumn()->getSourceName();
-            $this->addPrimaryOrdering($this->currentColumnName, $this->currentDirection);
+        $this->ordering = array_filter($this->ordering, [$this, 'checkOrder']);
+
+        if (empty($this->ordering)) {
+            foreach ($this->columns as $item) {
+                $this->addOrdering($item->getSourceName(), $defaultDirection);
+            }
         }
+
+        if (!empty($this->addressColumnName) && $this->checkColumn($this->addressColumnName)) {
+            $this->addPrependOrdering($this->addressColumnName, $this->addressDirection);
+        }
+
+        $first = reset($this->ordering);
+        $this->masterColumnName = $first[0];
+        $this->masterDirection = $first[1];
 
         return $this;
     }
@@ -74,19 +87,19 @@ class Order implements IOrder
         return in_array($direction, [static::ORDER_ASC, static::ORDER_DESC]);
     }
 
-    protected function getFirstColumn(): IColumn
+    public function checkOrder(array $ordering): bool
     {
-        return reset($this->columns);
+        return $this->checkColumn(reset($ordering));
     }
 
-    protected function addPrimaryOrdering(string $columnName, string $direction)
+    public function checkColumn(string $columnName): bool
     {
-        $this->primaryOrdering = [$columnName, $direction];
+        return array_key_exists($columnName, $this->columns);
     }
 
     public function getOrdering(): array
     {
-        return empty($this->ordering) ? [$this->primaryOrdering] : $this->ordering;
+        return $this->ordering;
     }
 
     /**
@@ -122,19 +135,19 @@ class Order implements IOrder
         }
 
         $this->urlVariable->setVariableName(static::PARAM_COLUMN)->setVariableValue($column->getSourceName());
-        $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->setVariableValue($this->getDirection($column));
+        $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->setVariableValue($this->getActiveDirection($column));
         return $this->urlHandler->getAddress();
     }
 
     public function isInOrder(IColumn $column): bool
     {
-        return array_key_exists($column->getSourceName(), $this->columns);
+        return $this->checkColumn($column->getSourceName());
     }
 
-    public function getDirection(IColumn $column): string
+    public function getActiveDirection(IColumn $column): string
     {
         if ($this->isActive($column)) {
-            if (static::ORDER_ASC == $this->currentDirection) {
+            if (static::ORDER_ASC == $this->masterDirection) {
                 return static::ORDER_DESC;
             }
         }
@@ -144,15 +157,34 @@ class Order implements IOrder
 
     public function getHeaderText(IColumn $header, string $leftSign = '*', string $rightSign = ''): string
     {
-        if ($this->isActive($header)) {
-            return $leftSign . $header->getHeaderText() . $rightSign;
-        }
-
-        return $header->getHeaderText();
+        return $this->isActive($header)
+            ? $leftSign . $header->getHeaderText() . $rightSign
+            : $header->getHeaderText()
+        ;
     }
 
     public function isActive(IColumn $column): bool
     {
-        return $column->getSourceName() == $this->currentColumnName;
+        return $column->getSourceName() == $this->masterColumnName;
+    }
+
+    public function getMasterColumnName(): string
+    {
+        return $this->masterColumnName;
+    }
+
+    public function getMasterDirection(): string
+    {
+        return $this->masterDirection;
+    }
+
+    public function getAddressColumnName(): string
+    {
+        return $this->addressColumnName;
+    }
+
+    public function getAddressDirection(): string
+    {
+        return $this->addressDirection;
     }
 }

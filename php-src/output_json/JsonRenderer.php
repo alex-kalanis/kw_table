@@ -22,8 +22,8 @@ class JsonRenderer extends Table\AOutput
     public function __construct(Table $table)
     {
         parent::__construct($table);
-        if ($table->getOutputPager() && $table->getOutputPager()->getPager()) {
-            $this->positions = new Positions($table->getOutputPager()->getPager());
+        if ($table->getPager() && $table->getPager()->getPager()) {
+            $this->positions = new Positions($table->getPager()->getPager());
         }
     }
 
@@ -71,7 +71,7 @@ class JsonRenderer extends Table\AOutput
             if ($sorter->isInOrder($column)) {
                 $line[$column->getSourceName()] = [
                     'is_active' => intval($sorter->isActive($column)),
-                    'direction' => $sorter->getDirection($column),
+                    'direction' => $sorter->getActiveDirection($column),
                 ];
             }
         }

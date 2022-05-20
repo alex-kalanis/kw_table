@@ -14,7 +14,7 @@ use kalanis\kw_table\core\Interfaces\Form\IField;
  */
 abstract class AField implements IField
 {
-    /** @var Form */
+    /** @var Form|null */
     protected $form = null;
     /** @var string */
     protected $alias = '';
@@ -36,7 +36,7 @@ abstract class AField implements IField
         $this->form = $form;
     }
 
-    public function getForm(): Form
+    public function getForm(): ?Form
     {
         return $this->form;
     }

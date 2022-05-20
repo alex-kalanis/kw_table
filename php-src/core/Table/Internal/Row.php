@@ -3,7 +3,6 @@
 namespace kalanis\kw_table\core\Table\Internal;
 
 
-use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IRow;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
 use kalanis\kw_table\core\Table\AStyle;
@@ -46,16 +45,5 @@ class Row extends AStyle
     protected function getIterableName(): string
     {
         return 'columns';
-    }
-
-    /**
-     * @param IRow $source
-     * @param string $overrideProperty
-     * @return mixed
-     * @throws ConnectException
-     */
-    protected function getOverrideValue(IRow $source, string $overrideProperty)
-    {
-        return $source->getValue($overrideProperty);
     }
 }

@@ -63,10 +63,10 @@ class KwRenderer extends Table\AOutput
 
     protected function renderPagers(): void
     {
-        if (empty($this->table->getOutputPager())) {
+        if (empty($this->table->getPager())) {
             return;
         }
-        $paging = $this->table->getOutputPager();
+        $paging = $this->table->getPager();
         if ($this->table->showPagerOnHead()) {
             $this->templateBase->addPagerHead($paging->render());
         }

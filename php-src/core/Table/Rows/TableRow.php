@@ -10,7 +10,11 @@ namespace kalanis\kw_table\core\Table\Rows;
  */
 class TableRow extends ARow
 {
-    public function __construct(callable $funcName, array $funcArgs)
+    /**
+     * @param callable $funcName
+     * @param string[] $funcArgs
+     */
+    public function __construct($funcName, array $funcArgs)
     {
         $this->setFunctionName($funcName);
         $this->setFunctionArgs($funcArgs);

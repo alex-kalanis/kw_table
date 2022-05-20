@@ -57,27 +57,24 @@ class CliRenderer extends Table\AOutput
 
     protected function fillHeaders(): void
     {
-        $sorter = $this->table->getOrder();
-        $headerFilter = $this->table->getHeaderFilter();
+        $order = $this->table->getOrder();
         $line = [];
         foreach ($this->table->getColumns() as $column) {
-            if ($headerFilter) {
-                $line[] = $this->withSortDirection($sorter, $column) . $this->withFilter($column) . static::HEADER_PARAM_SEPARATOR . $column->getHeaderText();
+            if ($order && $order->isInOrder($column)) {
+                $line[] = $this->withOrderDirection($order, $column) . $this->withFilter($column) . static::HEADER_PARAM_SEPARATOR . $column->getHeaderText();
             } else {
                 $line[] = $this->withFilter($column) . static::HEADER_PARAM_SEPARATOR . $column->getHeaderText();
-            }
-            if ($sorter && $sorter->isInOrder($column)) {
-                $line[] = $this->withSortDirection($sorter, $column) . static::HEADER_PARAM_SEPARATOR . $column->getHeaderText();
-            } else {
-                $line[] = $column->getHeaderText();
             }
         }
         $this->prettyTable->setHeaders($line);
     }
 
-    protected function withSortDirection(Table\Order $sorter, Table\Columns\AColumn $column): string
+    protected function withOrderDirection(Table\Order $order, Table\Columns\AColumn $column): string
     {
-        return ($sorter->isActive($column) ? '*' : '') . ($sorter->getDirection($column) == Table\Order::ORDER_ASC ? '^' : 'v');
+        return $order->getActiveDirection($column) == Table\Order::ORDER_ASC
+            ? ($order->isActive($column) ? '*^' : 'v')
+            : ($order->isActive($column) ? '*v' : '^')
+        ;
     }
 
     protected function withFilter(Table\Columns\AColumn $column): string
@@ -102,6 +99,6 @@ class CliRenderer extends Table\AOutput
 
     protected function getPager(): string
     {
-        return $this->table->getOutputPager() ? $this->table->getOutputPager()->render() : '' ;
+        return $this->table->getPager() ? PHP_EOL . $this->table->getPager()->render() . PHP_EOL : '' ;
     }
 }

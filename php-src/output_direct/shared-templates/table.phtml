@@ -1,6 +1,6 @@
 <?php /** @var  \kalanis\kw_table\core\Table $table */ ?>
-<?php if ($table->showPagerOnHead() && $table->getOutputPager()): ?>
-    <?= $table->getOutputPager()->render() ?>
+<?php if ($table->showPagerOnHead() && $table->getPager()): ?>
+    <?= $table->getPager()->render() ?>
 <?php endif; ?>
 
 <?php $headerFilter = $table->getHeaderFilter() ?>
@@ -58,8 +58,8 @@
 
 <?= $headerFilter ? $headerFilter->renderEnd() : ($footerFilter ? $footerFilter->renderEnd() : '') ?>
 
-<?php if ($table->showPagerOnFoot() && $table->getOutputPager()): ?>
-    <?= $table->getOutputPager()->render() ?>
+<?php if ($table->showPagerOnFoot() && $table->getPager()): ?>
+    <?= $table->getPager()->render() ?>
 <?php endif; ?>
 
 <div class="clearfix"></div>

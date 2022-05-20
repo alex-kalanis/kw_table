@@ -77,7 +77,8 @@ class KwFilter implements IFilterForm
 
     public function renderField(string $alias): string
     {
-        return $this->form->getControl($alias)->renderInput();
+        $control = $this->form->getControl($alias);
+        return $control ? $control->renderInput() : '';
     }
 
     protected function process(): bool

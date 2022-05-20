@@ -21,9 +21,6 @@ class Table
 {
     const PAGER_LIMIT_DEFAULT = 30;
 
-    /** @var int */
-    protected $colCount = 0;
-
     /** @var IConnector|null */
     protected $dataSetConnector = null;
 
@@ -37,7 +34,7 @@ class Table
     protected $classes = ['table', 'table-bordered', 'table-striped', 'table-hover', 'table-condensed', 'bootstrap-datatable', 'listtable'];
 
     /** @var IOutput|null */
-    protected $outputPager = null;
+    protected $pager = null;
 
     /** @var Table\Order|null */
     protected $order = null;
@@ -48,7 +45,7 @@ class Table
     /** @var Table\Filter|null */
     protected $footerFilter = null;
 
-    /** @var Table\AOutput */
+    /** @var Table\AOutput|null */
     protected $output = null;
 
     /** @var Table\Internal\Row[]|Table[] */
@@ -100,9 +97,9 @@ class Table
         $this->callRows[] = new Table\Rows\ClassRow($class, $rule, $cell);
     }
 
-    public function addOrder(Table\Order $sorter): self
+    public function addOrder(Table\Order $order): self
     {
-        $this->order = $sorter;
+        $this->order = $order;
         return $this;
     }
 
@@ -132,7 +129,7 @@ class Table
 
     public function addPager(IOutput $pager): self
     {
-        $this->outputPager = $pager;
+        $this->pager = $pager;
         return $this;
     }
 
@@ -151,7 +148,7 @@ class Table
     }
 
     /**
-     * More important order
+     * More important order when some is already set
      * @param string $columnName
      * @param string $order
      * @return $this
@@ -174,9 +171,9 @@ class Table
         }
     }
 
-    public function getOutputPager(): ?IOutput
+    public function getPager(): ?IOutput
     {
-        return $this->outputPager;
+        return $this->pager;
     }
 
     public function getOrder(): ?Table\Order
@@ -199,7 +196,7 @@ class Table
         $this->output = $output;
     }
 
-    public function getOutput(): Table\AOutput
+    public function getOutput(): ?Table\AOutput
     {
         return $this->output;
     }
@@ -279,28 +276,28 @@ class Table
      */
     public function applyPager(): self
     {
-        if (empty($this->outputPager)) {
+        if (empty($this->pager)) {
             return $this;
         }
 
-        if (empty($this->outputPager->getPager()->getMaxResults())) {
-            $this->outputPager->getPager()->setMaxResults($this->dataSetConnector->getTotalCount());
+        if (empty($this->pager->getPager()->getMaxResults())) {
+            $this->pager->getPager()->setMaxResults($this->dataSetConnector->getTotalCount());
         }
         $this->dataSetConnector->setPagination(
-            $this->outputPager->getPager()->getOffset(),
-            $this->outputPager->getPager()->getLimit()
+            $this->pager->getPager()->getOffset(),
+            $this->pager->getPager()->getLimit()
         );
         return $this;
     }
 
     /**
      * Returns column to another update
-     * @param string|int $alias
-     * @return IColumn
+     * @param int $position
+     * @return IColumn|null
      */
-    public function &getColumn($alias)
+    public function getColumn(int $position): ?IColumn
     {
-        return $this->columns[$alias];
+        return $this->columns[$position] ?? null ;
     }
 
     /**
@@ -355,7 +352,7 @@ class Table
             $column->setHeaderFiltering($headerFilterField);
         }
 
-        if ($column->hasHeaderFilterField()) {
+        if ($column->hasHeaderFilterField() && $this->headerFilter) {
             $this->headerFilter->addHeaderColumn($column);
         }
 
@@ -364,13 +361,11 @@ class Table
             $column->setFooterFiltering($footerFilterField);
         }
 
-        if ($column->hasFooterFilterField()) {
+        if ($column->hasFooterFilterField() && $this->footerFilter) {
             $this->footerFilter->addFooterColumn($column);
         }
 
-        $alias = $this->colCount;
-        $this->colCount++;
-        $this->columns[$alias] = $column;
+        $this->columns[] = $column;
 
         return $this;
     }
@@ -454,6 +449,9 @@ class Table
     public function render(): string
     {
         $this->translateData();
+        if (!$this->output) {
+            throw new TableException('Need to set output first!');
+        }
         return $this->output->render();
     }
 
@@ -464,7 +462,7 @@ class Table
 
     public function colCount(): int
     {
-        return $this->colCount;
+        return count($this->columns);
     }
 
     public function showPagerOnHead(): bool

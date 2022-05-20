@@ -4,6 +4,7 @@ namespace kalanis\kw_table\core\Table;
 
 
 use kalanis\kw_connect\core\AIterator;
+use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IRow;
 use kalanis\kw_table\core\Interfaces\Table\IRule;
 
@@ -184,10 +185,8 @@ abstract class AStyle extends AIterator
      */
     abstract public function getSourceName(): string;
 
-    /**
-     * @param IRow $source
-     * @param string $overrideProperty
-     * @return mixed
-     */
-    abstract protected function getOverrideValue(IRow $source, string $overrideProperty);
+    protected function getOverrideValue(IRow $source, string $overrideProperty)
+    {
+        return $source->getValue($overrideProperty);
+    }
 }

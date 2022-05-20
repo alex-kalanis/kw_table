@@ -36,6 +36,7 @@ class StyleTest extends CommonTestClass
         $this->assertEquals('class="foo bar"', $lib->getAttributes($this->getRow()));
         $lib->setSource('name');
         $this->assertEquals('class="bar def"', $lib->getAttributes($this->getRow()));
+        iterator_to_array($lib);
     }
 
     public function testStyles(): void
@@ -72,17 +73,6 @@ class StyleTest extends CommonTestClass
 class XStyle extends AStyle
 {
     use TSourceName;
-
-    /**
-     * @param IRow $source
-     * @param string $overrideProperty
-     * @return mixed
-     * @throws ConnectException
-     */
-    protected function getOverrideValue(IRow $source, string $overrideProperty)
-    {
-        return $source->getValue($overrideProperty);
-    }
 
     public function setSource(string $source): void
     {

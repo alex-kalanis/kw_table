@@ -16,13 +16,20 @@ class InputCallback extends AField implements IFilterRender
 {
     protected $callback = null;
 
-    public function __construct(callable $callback, array $attributes = [])
+    /**
+     * @param callable $callback
+     * @param string[] $attributes
+     */
+    public function __construct($callback, array $attributes = [])
     {
         $this->setCallback($callback);
         parent::__construct($attributes);
     }
 
-    public function setCallback(callable $callback): void
+    /**
+     * @param callable $callback
+     */
+    public function setCallback($callback): void
     {
         $this->callback = $callback;
     }

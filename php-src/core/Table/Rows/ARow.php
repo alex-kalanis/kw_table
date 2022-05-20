@@ -13,6 +13,10 @@ abstract class ARow
     protected $functionName = '';
     protected $functionArgs = [];
 
+    /**
+     * @param callable $functionName
+     * @return $this
+     */
     public function setFunctionName($functionName)
     {
         $this->functionName = $functionName;
