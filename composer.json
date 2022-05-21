@@ -37,6 +37,8 @@
             "kalanis\\kw_table\\output_direct\\": "php-src/output_direct/php-src/",
             "kalanis\\kw_table\\output_json\\": "php-src/output_json/",
             "kalanis\\kw_table\\output_kw\\": "php-src/output_kw/php-src/",
+            "kalanis\\kw_table\\output_blade\\": "php-src/output_blade/php-src/",
+            "kalanis\\kw_table\\output_twig\\": "php-src/output_twig/php-src/",
             "kalanis\\kw_table\\core\\": "php-src/core/"
         }
     },

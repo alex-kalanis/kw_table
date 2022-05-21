@@ -41,6 +41,7 @@ class FilterTest extends CommonTestClass
         $lib->translateData();
         $this->assertNotEmpty($lib->getHeaderFilter());
         $this->assertNotEmpty($lib->getFooterFilter());
+        $this->assertEmpty($lib->getFormName()); // ArrayFilterForm has no form name
     }
 
     /**
@@ -57,5 +58,6 @@ class FilterTest extends CommonTestClass
 
         $this->assertEmpty($lib->getHeaderFilter());
         $this->assertEmpty($lib->getFooterFilter());
+        $this->assertEmpty($lib->getFormName());
     }
 }

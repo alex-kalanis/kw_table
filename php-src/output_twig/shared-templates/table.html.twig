@@ -1,0 +1,102 @@
+{% if table.showPagerOnHead and table.pager %}
+    {% table.pager.render|raw %}
+{% endif %}
+
+{{ table.headerFilter ? table.headerFilter.renderStart|raw : (table.footerFilter ? table.footerFilter.renderStart|raw : '') }}
+
+<table class="{{ table.classesInString }}">
+    <thead>
+    <tr>
+        {% for column in table.columns %}
+            {% if table.order and table.order.inOrder(column)) %}
+                <th><a href="{{ table.order.href(column) }}">{{ table.order.headerText(column) }}</a></th>
+            {% else %}
+                <th>{{ column.headerText }}</th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% if table.headerFilter %}
+        <tr>
+            {% for column in table.columns %}
+                {% if column.headerFilterField %}
+                    <th>{{ table.headerFilter.renderHeaderInput(column)|raw }}</th>
+                {% else %}
+                    <th></th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endif %}
+    </thead>
+    <tbody>
+    {% for row in table.tableData %}
+        <tr {{ row.cellStyle(row.source)|raw }}>
+            {% for col in row %}
+                <td {{ col.cellStyle(row.source)|raw }}>{{ col.translate(row.source)|raw }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+    {% if table.footerFilter %}
+        <tfoot>
+        <tr>
+            {% for column in table.columns %}
+                {% if column.footerFilterField %}
+                    <td>{{ table.footerFilter.renderFooterInput(column)|raw }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        </tfoot>
+    {% endif %}
+</table>
+
+{{ table.headerFilter ? table.headerFilter.renderEnd|raw : (table.footerFilter ? table.footerFilter.renderEnd|raw : '') }}
+
+{% if table.showPagerOnFoot and table.pager %}
+    {% table.pager.render|raw %}
+{% endif %}
+
+<div class="clearfix"></div>
+{% if table.formName and (table.headerFilter or table.footerFilter) %}
+    <script>
+        $('input').keyup(function (e) {
+            if (e.which == 13) {
+                $(this).parents('[name={{ table.formName|e('js') }}]').submit();
+            }
+        });
+        $('select[data-toggle]').change(function (e) {
+            e.preventDefault();
+            var $ajaxModal = $('#ajaxModal');
+            var $form = $(this).parents('[name={{ table.formName|e('js') }}]');
+            $ajaxModal.find('.modal-dialog').removeClass('modal-lg');
+            var selectValue = $(this).val();
+            if (($form.find('.multiselect:checked').length > 0) && ('' != selectValue)) {
+                if($form.attr('data-wide')) {
+                    $ajaxModal.find('.modal-dialog').addClass('modal-lg');
+                }
+                var baseUrl = 'https://' + (new URL(window.location.href)).host;
+                $.ajax({
+                    type: $form.attr('method'),
+                    url: (new URL($form.attr('action'), baseUrl)).pathname,
+                    data: $form.serialize(),
+                    success: function ($data) {
+                        $ajaxModal.find('.modal-content').html($data);
+                        $ajaxModal.modal('show');
+                        datepicker();
+                    }
+                });
+            }
+            var elements = $(this).children();
+            for(var i = 0; i < elements.length; i++){
+                elements[i].selected = false;
+            }
+
+            e.stopPropagation();
+            return false;
+        });
+        $('select:not([data-toggle])').change(function () {
+            $(this).parents('[name={{ table.formName|e('js') }}]').submit();
+        });
+    </script>
+{% endif %}

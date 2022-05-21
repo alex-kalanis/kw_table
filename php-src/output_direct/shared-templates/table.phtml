@@ -10,10 +10,10 @@
 <table class="<?= $table->getClassesInString() ?>">
     <thead>
     <tr>
-        <?php $sorter = $table->getOrder() ?>
+        <?php $order = $table->getOrder() ?>
         <?php foreach ($table->getColumns() as $column): /** @var \kalanis\kw_table\core\Table\Columns\AColumn $column */ ?>
-            <?php if ($sorter && $sorter->isInOrder($column)): ?>
-                <th><a href="<?= $sorter->getHref($column) ?>"><?= $sorter->getHeaderText($column) ?></a></th>
+            <?php if ($order && $order->isInOrder($column)): ?>
+                <th><a href="<?= $order->getHref($column) ?>"><?= $order->getHeaderText($column) ?></a></th>
             <?php else: ?>
                 <th><?= $column->getHeaderText(); ?></th>
             <?php endif; ?>
@@ -63,7 +63,7 @@
 <?php endif; ?>
 
 <div class="clearfix"></div>
-<?php $formName = $headerFilter ? $headerFilter->getFormName() : ( $footerFilter ? $footerFilter->getFormName() : '' ) ?>
+<?php $formName = $table->getFormName() ?>
 <?php if ($formName && ($headerFilter || $footerFilter)): ?>
     <script>
         $('input').keyup(function (e) {
