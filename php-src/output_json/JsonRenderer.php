@@ -62,16 +62,16 @@ class JsonRenderer extends Table\AOutput
 
     protected function getSorters(): array
     {
-        $sorter = $this->table->getOrder();
-        if (!$sorter) {
+        $order = $this->table->getOrder();
+        if (!$order) {
             return [];
         }
         $line = [];
         foreach ($this->table->getColumns() as $column) {
-            if ($sorter->isInOrder($column)) {
+            if ($order->isInOrder($column)) {
                 $line[$column->getSourceName()] = [
-                    'is_active' => intval($sorter->isActive($column)),
-                    'direction' => $sorter->getActiveDirection($column),
+                    'is_active' => intval($order->isActive($column)),
+                    'direction' => $order->getActiveDirection($column),
                 ];
             }
         }

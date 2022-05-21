@@ -51,9 +51,8 @@ class Helper
         $this->table->addHeaderFilter(new KwFilter($form));
         $form->setInputs($inputVariables, $inputFiles);
 
-        // sorter links
-        $sorter = new Order(new Handler(new Sources\Inputs($inputs)));
-        $this->table->addOrder($sorter);
+        // order links
+        $this->table->addOrder(new Order(new Handler(new Sources\Inputs($inputs))));
 
         // pager
         $pager = new BasicPager();
@@ -82,9 +81,8 @@ class Helper
         $this->table->addHeaderFilter(new KwFilter($form));
         $form->setInputs($inputVariables, $inputFiles);
 
-        // sorter links
-        $sorter = new Order(new Handler(new Sources\Inputs($inputs)));
-        $this->table->addOrder($sorter);
+        // order links
+        $this->table->addOrder(new Order(new Handler(new Sources\Inputs($inputs))));
 
         // pager
         $pager = new BasicPager();
@@ -113,9 +111,8 @@ class Helper
         $this->table->addHeaderFilter(new KwFilter($form));
         $form->setInputs($inputVariables, $inputFiles);
 
-        // sorter links
-        $sorter = new Order(new Handler(new Sources\Inputs($inputs)));
-        $this->table->addOrder($sorter);
+        // order links
+        $this->table->addOrder(new Order(new Handler(new Sources\Inputs($inputs))));
 
         // pager
         $pager = new BasicPager();

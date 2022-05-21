@@ -7,7 +7,7 @@ Table engine for managing entries from datasources.
 ```
 {
     "require": {
-        "alex-kalanis/kw_table": "2.0"
+        "alex-kalanis/kw_table": "1.0"
     }
 }
 ```

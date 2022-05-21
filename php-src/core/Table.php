@@ -191,6 +191,11 @@ class Table
         return $this->footerFilter;
     }
 
+    public function getFormName(): string
+    {
+        return $this->headerFilter ? $this->headerFilter->getFormName() : ( $this->footerFilter ? $this->footerFilter->getFormName() : '' );
+    }
+
     public function setOutput(Table\AOutput $output)
     {
         $this->output = $output;

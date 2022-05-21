@@ -89,7 +89,7 @@ class KwRenderer extends Table\AOutput
     {
         $headerFilter = $this->table->getHeaderFilter();
         $footerFilter = $this->table->getFooterFilter();
-        $formName = $headerFilter ? $headerFilter->getFormName() : ( $footerFilter ? $footerFilter->getFormName() : '' );
+        $formName = $this->table->getFormName();
         if ($formName && ($headerFilter || $footerFilter)) {
             $this->templateBase->addScript(
                 $this->templateScript->reset()->setData($formName)->render()
@@ -120,12 +120,12 @@ class KwRenderer extends Table\AOutput
 
     protected function getHeader(): string
     {
-        $sorter = $this->table->getOrder();
+        $order = $this->table->getOrder();
         $this->templateRow->reset()->setData();
         foreach ($this->table->getColumns() as $column) {
-            if ($sorter && $sorter->isInOrder($column)) {
+            if ($order && $order->isInOrder($column)) {
                 $this->templateRow->addCell($this->templateHeadSorted->reset()->setData(
-                    $sorter->getHeaderText($column), $sorter->getHref($column)
+                    $order->getHeaderText($column), $order->getHref($column)
                 )->render());
             } else {
                 $this->templateRow->addCell($this->templateHead->reset()->setData(

@@ -43,9 +43,8 @@ class Helper
         $form = new Form($container, $alias);
         $this->table->addHeaderFilter(new NetteFilter($form));
 
-        // sorter links
-        $sorter = new Order(new Handler(new Sources\ServerRequest()));
-        $this->table->addOrder($sorter);
+        // order links
+        $this->table->addOrder(new Order(new Handler(new Sources\ServerRequest())));
 
         // pager
         $pager = new BasicPager();

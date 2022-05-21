@@ -27,8 +27,7 @@ class OrderTest extends CommonTestClass
 
         $src = new Sources();
         $src->setAddress('//foo/bar');
-        $order = new Order(new Handler($src));
-        $lib->addOrder($order);
+        $lib->addOrder(new Order(new Handler($src)));
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
