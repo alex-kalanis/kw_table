@@ -70,25 +70,25 @@ class RenderTest extends CommonTestClass
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'));
+        $lib->addColumn('title', new Columns\Basic('desc'));
 
         $lib->addOrdering('id', IOrder::ORDER_DESC);
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $this->assertEquals(
-              '| ----- | ------ | ------- |' . PHP_EOL
-            . '| *^:id | v:name | v:title |' . PHP_EOL
-            . '| ----- | ------ | ------- |' . PHP_EOL
-            . '| 9     | yz-    | love    |' . PHP_EOL
-            . '| 8     | vwx    | felt    |' . PHP_EOL
-            . '| 7     | stu    | life    |' . PHP_EOL
-            . '| 6     | pqr    | that    |' . PHP_EOL
-            . '| 5     | mno    | call    |' . PHP_EOL
-            . '| 4     | jkl    | hate    |' . PHP_EOL
-            . '| 3     | ghi    | know    |' . PHP_EOL
-            . '| 2     | def    | dude    |' . PHP_EOL
-            . '| 1     | abc    | fill    |' . PHP_EOL
-            . '| ----- | ------ | ------- |' . PHP_EOL
+              '| ----- | ------ | ------ |' . PHP_EOL
+            . '| *^:id | v:name | :title |' . PHP_EOL
+            . '| ----- | ------ | ------ |' . PHP_EOL
+            . '| 9     | yz-    | love   |' . PHP_EOL
+            . '| 8     | vwx    | felt   |' . PHP_EOL
+            . '| 7     | stu    | life   |' . PHP_EOL
+            . '| 6     | pqr    | that   |' . PHP_EOL
+            . '| 5     | mno    | call   |' . PHP_EOL
+            . '| 4     | jkl    | hate   |' . PHP_EOL
+            . '| 3     | ghi    | know   |' . PHP_EOL
+            . '| 2     | def    | dude   |' . PHP_EOL
+            . '| 1     | abc    | fill   |' . PHP_EOL
+            . '| ----- | ------ | ------ |' . PHP_EOL
             , $lib->render());
     }
 
@@ -107,25 +107,25 @@ class RenderTest extends CommonTestClass
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'));
+        $lib->addColumn('title', new Columns\Basic('desc'));
 
         $lib->addOrdering('id', IOrder::ORDER_DESC);
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $this->assertEquals(
-              '| ---- | ------- | ------- |' . PHP_EOL
-            . '| v:id | *v:name | v:title |' . PHP_EOL
-            . '| ---- | ------- | ------- |' . PHP_EOL
-            . '| 1    | abc     | fill    |' . PHP_EOL
-            . '| 2    | def     | dude    |' . PHP_EOL
-            . '| 3    | ghi     | know    |' . PHP_EOL
-            . '| 4    | jkl     | hate    |' . PHP_EOL
-            . '| 5    | mno     | call    |' . PHP_EOL
-            . '| 6    | pqr     | that    |' . PHP_EOL
-            . '| 7    | stu     | life    |' . PHP_EOL
-            . '| 8    | vwx     | felt    |' . PHP_EOL
-            . '| 9    | yz-     | love    |' . PHP_EOL
-            . '| ---- | ------- | ------- |' . PHP_EOL
+              '| ---- | ------- | ------ |' . PHP_EOL
+            . '| v:id | *v:name | :title |' . PHP_EOL
+            . '| ---- | ------- | ------ |' . PHP_EOL
+            . '| 1    | abc     | fill   |' . PHP_EOL
+            . '| 2    | def     | dude   |' . PHP_EOL
+            . '| 3    | ghi     | know   |' . PHP_EOL
+            . '| 4    | jkl     | hate   |' . PHP_EOL
+            . '| 5    | mno     | call   |' . PHP_EOL
+            . '| 6    | pqr     | that   |' . PHP_EOL
+            . '| 7    | stu     | life   |' . PHP_EOL
+            . '| 8    | vwx     | felt   |' . PHP_EOL
+            . '| 9    | yz-     | love   |' . PHP_EOL
+            . '| ---- | ------- | ------ |' . PHP_EOL
             , $lib->render());
     }
 
@@ -144,25 +144,25 @@ class RenderTest extends CommonTestClass
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'));
+        $lib->addColumn('title', new Columns\Basic('desc'));
 
         $lib->addOrdering('id', IOrder::ORDER_DESC);
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $this->assertEquals(
-              '| ---- | ------- | ------- |' . PHP_EOL
-            . '| v:id | *^:name | v:title |' . PHP_EOL
-            . '| ---- | ------- | ------- |' . PHP_EOL
-            . '| 9    | yz-     | love    |' . PHP_EOL
-            . '| 8    | vwx     | felt    |' . PHP_EOL
-            . '| 7    | stu     | life    |' . PHP_EOL
-            . '| 6    | pqr     | that    |' . PHP_EOL
-            . '| 5    | mno     | call    |' . PHP_EOL
-            . '| 4    | jkl     | hate    |' . PHP_EOL
-            . '| 3    | ghi     | know    |' . PHP_EOL
-            . '| 2    | def     | dude    |' . PHP_EOL
-            . '| 1    | abc     | fill    |' . PHP_EOL
-            . '| ---- | ------- | ------- |' . PHP_EOL
+              '| ---- | ------- | ------ |' . PHP_EOL
+            . '| v:id | *^:name | :title |' . PHP_EOL
+            . '| ---- | ------- | ------ |' . PHP_EOL
+            . '| 9    | yz-     | love   |' . PHP_EOL
+            . '| 8    | vwx     | felt   |' . PHP_EOL
+            . '| 7    | stu     | life   |' . PHP_EOL
+            . '| 6    | pqr     | that   |' . PHP_EOL
+            . '| 5    | mno     | call   |' . PHP_EOL
+            . '| 4    | jkl     | hate   |' . PHP_EOL
+            . '| 3    | ghi     | know   |' . PHP_EOL
+            . '| 2    | def     | dude   |' . PHP_EOL
+            . '| 1    | abc     | fill   |' . PHP_EOL
+            . '| ---- | ------- | ------ |' . PHP_EOL
             , $lib->render());
     }
 
@@ -182,7 +182,7 @@ class RenderTest extends CommonTestClass
         $src->setAddress('//foo/bar');
         $lib->addOrder(new Order(new Handler($src)));
 
-        $lib->addColumn('id', new Columns\Basic('id'), new TextContains());
+        $lib->addColumn('id', new Columns\Basic('id'));
         $lib->addColumn('name', new Columns\Basic('name'), new TextContains());
         $lib->addColumn('title', new Columns\Basic('desc'), new TextContains());
 
@@ -190,15 +190,15 @@ class RenderTest extends CommonTestClass
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $this->assertEquals(
-              '| ---- | ------ | ------- |' . PHP_EOL
-            . '| >:id | >:name | >:title |' . PHP_EOL
-            . '| ---- | ------ | ------- |' . PHP_EOL
-            . '| 9    | yz-    | love    |' . PHP_EOL
-            . '| 8    | vwx    | felt    |' . PHP_EOL
-            . '| 7    | stu    | life    |' . PHP_EOL
-            . '| 4    | jkl    | hate    |' . PHP_EOL
-            . '| 2    | def    | dude    |' . PHP_EOL
-            . '| ---- | ------ | ------- |' . PHP_EOL
+              '| --- | ------ | ------- |' . PHP_EOL
+            . '| :id | >:name | >:title |' . PHP_EOL
+            . '| --- | ------ | ------- |' . PHP_EOL
+            . '| 9   | yz-    | love    |' . PHP_EOL
+            . '| 8   | vwx    | felt    |' . PHP_EOL
+            . '| 7   | stu    | life    |' . PHP_EOL
+            . '| 4   | jkl    | hate    |' . PHP_EOL
+            . '| 2   | def    | dude    |' . PHP_EOL
+            . '| --- | ------ | ------- |' . PHP_EOL
             , $lib->render());
     }
 
@@ -332,19 +332,19 @@ class RenderTest extends CommonTestClass
         $pager->setActualPage(2);
         $lib->addPager(new CliPager(new Positions($pager)));
 
-        $lib->addOrderedColumn('id', new Columns\Basic('id'), new TextContains());
+        $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'), new TextContains());
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'), new TextContains());
+        $lib->addColumn('title', new Columns\Basic('desc'), new TextContains());
 
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $this->assertEquals(
-              '| ------ | ------- | -------- |' . PHP_EOL
-            . '| *v>:id | v>:name | v>:title |' . PHP_EOL
-            . '| ------ | ------- | -------- |' . PHP_EOL
-            . '| 8      | vwx     | felt     |' . PHP_EOL
-            . '| 9      | yz-     | love     |' . PHP_EOL
-            . '| ------ | ------- | -------- |' . PHP_EOL
+              '| ----- | ------- | ------- |' . PHP_EOL
+            . '| *v:id | v>:name | >:title |' . PHP_EOL
+            . '| ----- | ------- | ------- |' . PHP_EOL
+            . '| 8     | vwx     | felt    |' . PHP_EOL
+            . '| 9     | yz-     | love    |' . PHP_EOL
+            . '| ----- | ------- | ------- |' . PHP_EOL
             . '' . PHP_EOL
             . '<< 1 | < 1 | 2 | - | --' . PHP_EOL
             . 'Showing results 4 - 5 of total 5' . PHP_EOL

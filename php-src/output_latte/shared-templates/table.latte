@@ -2,12 +2,10 @@
     {$table->getOutputPager()->render()|noescape}
 {/if}
 
-{var $headerFilter = $table->getHeaderFilter()}
-{var $footerFilter = $table->getFooterFilter()}
-{if $headerFilter}
-    {$headerFilter->renderStart()}
-{elseif $footerFilter}
-    {$footerFilter->renderStart()}
+{if $table->getHeaderFilter()}
+    {$table->getHeaderFilter()->renderStart()}
+{elseif $table->getFooterFilter()}
+    {$table->getFooterFilter()->renderStart()}
 {/if}
 
 <table class="{$table->getClassesInString()}">
@@ -22,11 +20,11 @@
             {/if}
         {/foreach}
     </tr>
-    {if $headerFilter}
+    {if $table->getHeaderFilter()}
         <tr>
             {foreach $table->getColumns() as $column}
                 {if $column->hasHeaderFilterField()}
-                    <th>{$headerFilter->renderHeaderInput($column)|noescape}</th>
+                    <th>{$table->getHeaderFilter()->renderHeaderInput($column)|noescape}</th>
                 {else}
                     <th></th>
                 {/if}
@@ -43,12 +41,12 @@
         </tr>
     {/foreach}
     </tbody>
-    {if $footerFilter}
+    {if $table->getFooterFilter()}
         <tfoot>
             <tr>
                 {foreach $table->getColumns() as $column}
                     {if $column->hasFooterFilterField()}
-                        <td>{$footerFilter->renderFooterInput($column)|noescape}</td>
+                        <td>{$table->getFooterFilter()->renderFooterInput($column)|noescape}</td>
                     {else}
                         <td></td>
                     {/if}
@@ -58,10 +56,10 @@
     {/if}
 </table>
 
-{if $headerFilter}
-    {$headerFilter->renderEnd()}
-{elseif $footerFilter}
-    {$footerFilter->renderEnd()}
+{if $table->getHeaderFilter()}
+    {$table->getHeaderFilter()->renderEnd()}
+{elseif $table->getFooterFilter()}
+    {$table->getFooterFilter()->renderEnd()}
 {/if}
 
 {if $table->showPagerOnFoot() && $table->getOutputPager() }
@@ -69,8 +67,8 @@
 {/if}
 
 <div class="clearfix"></div>
-{var $formName = $headerFilter ? $headerFilter->getFormName() : ( $footerFilter ? $footerFilter->getFormName() : '' ) }
-{if ($formName && ($headerFilter || $footerFilter)}
+{var $formName = $table->getHeaderFilter() ? $table->getHeaderFilter()->getFormName() : ( $table->getFooterFilter() ? $table->getFooterFilter()->getFormName() : '' ) }
+{if ($formName && ($table->getHeaderFilter() || $table->getFooterFilter())}
     <script>
         $('input').keyup(function (e) {
             if (e.which == 13) {

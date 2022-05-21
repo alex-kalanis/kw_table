@@ -57,14 +57,14 @@ class RenderTest extends CommonTestClass
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'));
+        $lib->addColumn('title', new Columns\Basic('desc'));
 
         $lib->addOrdering('id', IOrder::ORDER_DESC);
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $lib->setOutput(new JsonRenderer($lib));
         $this->assertEquals(
-            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":1,"direction":"ASC"},"name":{"is_active":0,"direction":"ASC"},"desc":{"is_active":0,"direction":"ASC"}},"filtered":[],"body":[{"id":9,"name":"yz-","desc":"love"},{"id":8,"name":"vwx","desc":"felt"},{"id":7,"name":"stu","desc":"life"},{"id":6,"name":"pqr","desc":"that"},{"id":5,"name":"mno","desc":"call"},{"id":4,"name":"jkl","desc":"hate"},{"id":3,"name":"ghi","desc":"know"},{"id":2,"name":"def","desc":"dude"},{"id":1,"name":"abc","desc":"fill"}],"pager":[]}'
+            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":1,"direction":"ASC"},"name":{"is_active":0,"direction":"ASC"}},"filtered":[],"body":[{"id":9,"name":"yz-","desc":"love"},{"id":8,"name":"vwx","desc":"felt"},{"id":7,"name":"stu","desc":"life"},{"id":6,"name":"pqr","desc":"that"},{"id":5,"name":"mno","desc":"call"},{"id":4,"name":"jkl","desc":"hate"},{"id":3,"name":"ghi","desc":"know"},{"id":2,"name":"def","desc":"dude"},{"id":1,"name":"abc","desc":"fill"}],"pager":[]}'
             , $lib->render());
     }
 
@@ -82,14 +82,14 @@ class RenderTest extends CommonTestClass
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'));
+        $lib->addColumn('title', new Columns\Basic('desc'));
 
         $lib->addOrdering('id', IOrder::ORDER_DESC);
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $lib->setOutput(new JsonRenderer($lib));
         $this->assertEquals(
-            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":0,"direction":"ASC"},"name":{"is_active":1,"direction":"DESC"},"desc":{"is_active":0,"direction":"ASC"}},"filtered":[],"body":[{"id":1,"name":"abc","desc":"fill"},{"id":2,"name":"def","desc":"dude"},{"id":3,"name":"ghi","desc":"know"},{"id":4,"name":"jkl","desc":"hate"},{"id":5,"name":"mno","desc":"call"},{"id":6,"name":"pqr","desc":"that"},{"id":7,"name":"stu","desc":"life"},{"id":8,"name":"vwx","desc":"felt"},{"id":9,"name":"yz-","desc":"love"}],"pager":[]}'
+            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":0,"direction":"ASC"},"name":{"is_active":1,"direction":"DESC"}},"filtered":[],"body":[{"id":1,"name":"abc","desc":"fill"},{"id":2,"name":"def","desc":"dude"},{"id":3,"name":"ghi","desc":"know"},{"id":4,"name":"jkl","desc":"hate"},{"id":5,"name":"mno","desc":"call"},{"id":6,"name":"pqr","desc":"that"},{"id":7,"name":"stu","desc":"life"},{"id":8,"name":"vwx","desc":"felt"},{"id":9,"name":"yz-","desc":"love"}],"pager":[]}'
             , $lib->render());
     }
 
@@ -107,14 +107,14 @@ class RenderTest extends CommonTestClass
 
         $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'));
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'));
+        $lib->addColumn('title', new Columns\Basic('desc'));
 
         $lib->addOrdering('id', IOrder::ORDER_DESC);
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $lib->setOutput(new JsonRenderer($lib));
         $this->assertEquals(
-            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":0,"direction":"ASC"},"name":{"is_active":1,"direction":"ASC"},"desc":{"is_active":0,"direction":"ASC"}},"filtered":[],"body":[{"id":9,"name":"yz-","desc":"love"},{"id":8,"name":"vwx","desc":"felt"},{"id":7,"name":"stu","desc":"life"},{"id":6,"name":"pqr","desc":"that"},{"id":5,"name":"mno","desc":"call"},{"id":4,"name":"jkl","desc":"hate"},{"id":3,"name":"ghi","desc":"know"},{"id":2,"name":"def","desc":"dude"},{"id":1,"name":"abc","desc":"fill"}],"pager":[]}'
+            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":0,"direction":"ASC"},"name":{"is_active":1,"direction":"ASC"}},"filtered":[],"body":[{"id":9,"name":"yz-","desc":"love"},{"id":8,"name":"vwx","desc":"felt"},{"id":7,"name":"stu","desc":"life"},{"id":6,"name":"pqr","desc":"that"},{"id":5,"name":"mno","desc":"call"},{"id":4,"name":"jkl","desc":"hate"},{"id":3,"name":"ghi","desc":"know"},{"id":2,"name":"def","desc":"dude"},{"id":1,"name":"abc","desc":"fill"}],"pager":[]}'
             , $lib->render());
     }
 
@@ -133,7 +133,7 @@ class RenderTest extends CommonTestClass
         $src->setAddress('//foo/bar');
         $lib->addOrder(new Order(new Handler($src)));
 
-        $lib->addColumn('id', new Columns\Basic('id'), new TextContains());
+        $lib->addColumn('id', new Columns\Basic('id'));
         $lib->addColumn('name', new Columns\Basic('name'), new TextContains());
         $lib->addColumn('title', new Columns\Basic('desc'), new TextContains());
 
@@ -142,7 +142,7 @@ class RenderTest extends CommonTestClass
 
         $lib->setOutput(new JsonRenderer($lib));
         $this->assertEquals(
-            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":[],"filtered":{"id":null,"name":null,"desc":"e"},"body":[{"id":9,"name":"yz-","desc":"love"},{"id":8,"name":"vwx","desc":"felt"},{"id":7,"name":"stu","desc":"life"},{"id":4,"name":"jkl","desc":"hate"},{"id":2,"name":"def","desc":"dude"}],"pager":[]}'
+            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":[],"filtered":{"name":null,"desc":"e"},"body":[{"id":9,"name":"yz-","desc":"love"},{"id":8,"name":"vwx","desc":"felt"},{"id":7,"name":"stu","desc":"life"},{"id":4,"name":"jkl","desc":"hate"},{"id":2,"name":"def","desc":"dude"}],"pager":[]}'
             , $lib->render());
     }
 
@@ -196,15 +196,15 @@ class RenderTest extends CommonTestClass
         $pager->setActualPage(2);
         $lib->addPager(new CliPager(new Positions($pager)));
 
-        $lib->addOrderedColumn('id', new Columns\Basic('id'), new TextContains());
+        $lib->addOrderedColumn('id', new Columns\Basic('id'));
         $lib->addOrderedColumn('name', new Columns\Basic('name'), new TextContains());
-        $lib->addOrderedColumn('title', new Columns\Basic('desc'), new TextContains());
+        $lib->addColumn('title', new Columns\Basic('desc'), new TextContains());
 
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $lib->setOutput(new JsonRenderer($lib));
         $this->assertEquals(
-            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":1,"direction":"DESC"},"name":{"is_active":0,"direction":"ASC"},"desc":{"is_active":0,"direction":"ASC"}},"filtered":{"id":null,"name":null,"desc":"e"},"body":[{"id":8,"name":"vwx","desc":"felt"},{"id":9,"name":"yz-","desc":"love"}],"pager":{"positions":{"first":1,"prev":1,"actual":2,"next":2,"last":2},"results":{"from":4,"to":5,"total":5}}}'
+            '{"header":{"id":"id","name":"name","desc":"title"},"sorted":{"id":{"is_active":1,"direction":"DESC"},"name":{"is_active":0,"direction":"ASC"}},"filtered":{"name":null,"desc":"e"},"body":[{"id":8,"name":"vwx","desc":"felt"},{"id":9,"name":"yz-","desc":"love"}],"pager":{"positions":{"first":1,"prev":1,"actual":2,"next":2,"last":2},"results":{"from":4,"to":5,"total":5}}}'
             , $lib->render());
     }
 }

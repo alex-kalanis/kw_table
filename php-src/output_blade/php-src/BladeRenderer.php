@@ -4,6 +4,7 @@ namespace kalanis\kw_table\output_blade;
 
 
 use kalanis\kw_table\core\Table;
+use Illuminate\View\Compilers\BladeCompiler;
 
 
 /**
@@ -24,6 +25,6 @@ class BladeRenderer extends Table\AOutput
     public function render(): string
     {
         $source = @file_get_contents($this->templatePath);
-        return \Illuminate\View\Compilers\BladeCompiler::render($source, ['table' => $this->table], true);
+        return BladeCompiler::render($source, ['table' => $this->table], true);
     }
 }
