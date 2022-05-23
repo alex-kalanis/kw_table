@@ -3,6 +3,7 @@
 namespace kalanis\kw_table\output_kw;
 
 
+use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_table\core\Table;
 use kalanis\kw_table\core\TableException;
 
@@ -26,6 +27,7 @@ class SubTabled extends Table
 
     /**
      * Update columns to readable format
+     * @throws ConnectException
      * @throws TableException
      */
     public function translateData(): void
@@ -37,6 +39,12 @@ class SubTabled extends Table
         if (empty($this->columns)) {
             throw new TableException('You need to define at least one column');
         }
+
+        $this->applyFilter();
+        $this->applyOrder();
+        $this->applyPager();
+
+        $this->dataSetConnector->fetchData();
 
         foreach ($this->dataSetConnector as $source) {
             $rowData = new Table\Internal\Row();
@@ -64,7 +72,11 @@ class SubTabled extends Table
         }
     }
 
-    protected function addRowCallback(callable $function, array $arguments = [])
+    /**
+     * @param callable $function
+     * @param string[] $arguments styles
+     */
+    protected function addRowCallback($function, array $arguments = [])
     {
         $this->rowCallback[] = new Table\Rows\TableRow($function, $arguments);
     }

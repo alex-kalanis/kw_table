@@ -4,8 +4,6 @@ namespace kwTests;
 
 
 use CommonTestClass;
-use kalanis\kw_connect\arrays\Connector;
-use kalanis\kw_connect\core\Interfaces\IFilterFactory;
 use kalanis\kw_forms\Adapters\ArrayAdapter;
 use kalanis\kw_forms\Exceptions\FormsException;
 use kalanis\kw_forms\Exceptions\RenderException;

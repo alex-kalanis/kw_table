@@ -65,7 +65,6 @@ class Table
 
     /**
      * @param IConnector|null $dataSetConnector
-     * @throws ConnectException
      */
     public function __construct(IConnector $dataSetConnector = null)
     {
@@ -210,23 +209,189 @@ class Table
      * Change data source
      * @param IConnector $dataSetConnector
      * @return $this
-     * @throws ConnectException
      */
     public function addDataSetConnector(IConnector $dataSetConnector): self
     {
         $this->dataSetConnector = $dataSetConnector;
-
-        $this->applyFilter();
-        $this->applyOrder();
-        $this->applyPager();
-
-        $this->dataSetConnector->fetchData();
         return $this;
     }
 
     public function getDataSetConnector(): ?IConnector
     {
         return $this->dataSetConnector;
+    }
+
+    /**
+     * Returns column to another update
+     * @param int $position
+     * @return IColumn|null
+     */
+    public function getColumn(int $position): ?IColumn
+    {
+        return $this->columns[$position] ?? null ;
+    }
+
+    /**
+     * Return columns
+     * @return Table\Internal\Row[]|Table[]
+     */
+    public function &getTableData(): array
+    {
+        return $this->tableData;
+    }
+
+    /**
+     * @return IColumn[]
+     */
+    public function &getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * Return classes used for styles
+     * @return string[]
+     */
+    public function &getClasses(): array
+    {
+        return $this->classes;
+    }
+
+    public function getClassesInString(): string
+    {
+        if (!empty($this->classes)) {
+            return implode(" ", $this->classes);
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param string  $headerText
+     * @param IColumn $column
+     * @param IField|null $headerFilterField
+     * @param IField|null $footerFilterField
+     * @return $this
+     * @throws TableException
+     */
+    public function addOrderedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
+    {
+        if ($column->canOrder()) {
+            $this->checkOrder();
+            $this->order->addColumn($column);
+        }
+
+        $this->addColumn($headerText, $column, $headerFilterField, $footerFilterField);
+
+        return $this;
+    }
+
+    /**
+     * @param string $headerText
+     * @param IColumn $column
+     * @param IField|null $headerFilterField
+     * @param IField|null $footerFilterField
+     * @return $this
+     * @throws TableException
+     */
+    public function addColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
+    {
+        $column->setHeaderText($headerText);
+
+        if (isset($headerFilterField)) {
+            $headerFilterField->setAttributes($this->defaultHeaderFilterFieldAttributes);
+            $column->setHeaderFiltering($headerFilterField);
+        }
+
+        if ($column->hasHeaderFilterField() && $this->headerFilter) {
+            $this->headerFilter->addHeaderColumn($column);
+        }
+
+        if (isset($footerFilterField)) {
+            $footerFilterField->setAttributes($this->defaultFooterFilterFieldAttributes);
+            $column->setFooterFiltering($footerFilterField);
+        }
+
+        if ($column->hasFooterFilterField() && $this->footerFilter) {
+            $this->footerFilter->addFooterColumn($column);
+        }
+
+        $this->columns[] = $column;
+
+        return $this;
+    }
+
+    /**
+     * Add Css class to the table
+     * @param string $class
+     */
+    public function addClass(string $class): void
+    {
+        $this->classes[] = $class;
+    }
+
+    /**
+     * Remover Css class from the table
+     * @param string $class
+     */
+    public function removeClass($class): void
+    {
+        if (($key = array_search($class, $this->classes)) !== false) {
+            unset($this->classes[$key]);
+        }
+    }
+
+    /**
+     * Render complete table - just helper method
+     * @return string
+     * @throws ConnectException
+     * @throws TableException
+     */
+    public function render(): string
+    {
+        $this->translateData();
+        if (!$this->output) {
+            throw new TableException('Need to set output first!');
+        }
+        return $this->output->render();
+    }
+
+    /**
+     * Update columns to readable format
+     * @throws ConnectException
+     * @throws TableException
+     */
+    public function translateData(): void
+    {
+        if (is_null($this->dataSetConnector)) {
+            throw new TableException('Cannot create table from empty dataset');
+        }
+
+        if (empty($this->columns)) {
+            throw new TableException('You need to define at least one column');
+        }
+
+        $this->applyFilter();
+        $this->applyOrder();
+        $this->applyPager();
+
+        $this->dataSetConnector->fetchData();
+
+        foreach ($this->dataSetConnector as $source) {
+            $rowData = new Table\Internal\Row();
+            $rowData->setSource($source);
+
+            foreach ($this->callRows as $call) {
+                call_user_func_array([$rowData, $call->getFunctionName()], $call->getFunctionArgs());
+            }
+
+            foreach ($this->columns as $column) {
+                $col = clone $column;
+                $rowData->addColumn($col);
+            }
+
+            $this->tableData[] = $rowData;
+        }
     }
 
     /**
@@ -293,171 +458,6 @@ class Table
             $this->pager->getPager()->getLimit()
         );
         return $this;
-    }
-
-    /**
-     * Returns column to another update
-     * @param int $position
-     * @return IColumn|null
-     */
-    public function getColumn(int $position): ?IColumn
-    {
-        return $this->columns[$position] ?? null ;
-    }
-
-    /**
-     * Return columns
-     * @return Table\Internal\Row[]|Table[]
-     */
-    public function &getTableData(): array
-    {
-        return $this->tableData;
-    }
-
-    /**
-     * @return IColumn[]
-     */
-    public function &getColumns(): array
-    {
-        return $this->columns;
-    }
-
-    /**
-     * Return classes used for styles
-     * @return string[]
-     */
-    public function &getClasses(): array
-    {
-        return $this->classes;
-    }
-
-    public function getClassesInString(): string
-    {
-        if (!empty($this->classes)) {
-            return implode(" ", $this->classes);
-        } else {
-            return '';
-        }
-    }
-
-    /**
-     * @param string $headerText
-     * @param IColumn $column
-     * @param IField|null $headerFilterField
-     * @param IField|null $footerFilterField
-     * @return $this
-     * @throws TableException
-     */
-    public function addColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
-    {
-        $column->setHeaderText($headerText);
-
-        if (isset($headerFilterField)) {
-            $headerFilterField->setAttributes($this->defaultHeaderFilterFieldAttributes);
-            $column->setHeaderFiltering($headerFilterField);
-        }
-
-        if ($column->hasHeaderFilterField() && $this->headerFilter) {
-            $this->headerFilter->addHeaderColumn($column);
-        }
-
-        if (isset($footerFilterField)) {
-            $footerFilterField->setAttributes($this->defaultFooterFilterFieldAttributes);
-            $column->setFooterFiltering($footerFilterField);
-        }
-
-        if ($column->hasFooterFilterField() && $this->footerFilter) {
-            $this->footerFilter->addFooterColumn($column);
-        }
-
-        $this->columns[] = $column;
-
-        return $this;
-    }
-
-    /**
-     * @param string  $headerText
-     * @param IColumn $column
-     * @param IField|null $headerFilterField
-     * @param IField|null $footerFilterField
-     * @return $this
-     * @throws TableException
-     */
-    public function addOrderedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
-    {
-        if ($column->canOrder()) {
-            $this->checkOrder();
-            $this->order->addColumn($column);
-        }
-
-        $this->addColumn($headerText, $column, $headerFilterField, $footerFilterField);
-
-        return $this;
-    }
-
-    /**
-     * Add Css class to the table
-     * @param string $class
-     */
-    public function addClass(string $class): void
-    {
-        $this->classes[] = $class;
-    }
-
-    /**
-     * Remover Css class from the table
-     * @param string $class
-     */
-    public function removeClass($class): void
-    {
-        if (($key = array_search($class, $this->classes)) !== false) {
-            unset($this->classes[$key]);
-        }
-    }
-
-    /**
-     * Update columns to readable format
-     * @throws TableException
-     */
-    public function translateData(): void
-    {
-        if (is_null($this->dataSetConnector)) {
-            throw new TableException('Cannot create table from empty dataset');
-        }
-
-        if (empty($this->columns)) {
-            throw new TableException('You need to define at least one column');
-        }
-
-        foreach ($this->dataSetConnector as $source) {
-            $rowData = new Table\Internal\Row();
-            $rowData->setSource($source);
-
-            foreach ($this->callRows as $call) {
-                call_user_func_array([$rowData, $call->getFunctionName()], $call->getFunctionArgs());
-            }
-
-            foreach ($this->columns as $column) {
-                $col = clone $column;
-                $rowData->addColumn($col);
-            }
-
-            $this->tableData[] = $rowData;
-        }
-    }
-
-    /**
-     * Render complete table - just helper method
-     * @return string
-     * @throws TableException
-     */
-    public function render(): string
-    {
-        $this->translateData();
-        if (!$this->output) {
-            throw new TableException('Need to set output first!');
-        }
-        return $this->output->render();
     }
 
     public function rowCount(): int

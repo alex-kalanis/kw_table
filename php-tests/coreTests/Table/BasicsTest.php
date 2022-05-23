@@ -30,7 +30,7 @@ class BasicsTest extends CommonTestClass
         $lib->addDataSetConnector(new Connector($this->basicData()));
         $this->assertNotEmpty($lib->getColumns());
         $this->assertEmpty($lib->getTableData());
-        $this->assertNotEmpty($lib->getDataSetConnector());
+        $this->assertNotNull($lib->getDataSetConnector());
         $this->assertFalse($lib->showPagerOnHead());
         $this->assertTrue($lib->showPagerOnFoot());
 
