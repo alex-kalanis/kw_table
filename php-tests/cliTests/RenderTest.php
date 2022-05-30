@@ -30,7 +30,8 @@ class RenderTest extends CommonTestClass
     public function testBasics(): void
     {
         $lib = new Table();
-        $lib->setOutput(new CliRenderer($lib));
+        $render = new CliRenderer($lib);
+        $lib->setOutput($render);
 
         $lib->addColumn('id', new Columns\Basic('id'));
         $lib->addColumn('name', new Columns\Basic('name'));
@@ -53,6 +54,8 @@ class RenderTest extends CommonTestClass
             . '| 9   | yz-   | love   |' . PHP_EOL
             . '| --- | ----- | ------ |' . PHP_EOL
             , $lib->render());
+
+        $this->assertNotEmpty($render->getTableEngine());
     }
 
     /**

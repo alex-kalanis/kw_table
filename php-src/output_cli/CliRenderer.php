@@ -101,4 +101,9 @@ class CliRenderer extends Table\AOutput
     {
         return $this->table->getPager() ? PHP_EOL . $this->table->getPager()->render() . PHP_EOL : '' ;
     }
+
+    public function getTableEngine(): PrettyTable
+    {
+        return $this->prettyTable;
+    }
 }
