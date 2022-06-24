@@ -445,7 +445,7 @@ class Table
         $this->order->process();
         foreach ($this->order->getOrdering() as $attributes) {
             /** @var Table\Internal\Attributes $attributes */
-            $this->dataSetConnector->setOrdering($attributes->getColumnName(), $attributes->getProperty());
+            $this->dataSetConnector->/** @scrutinizer ignore-call */setOrdering($attributes->getColumnName(), $attributes->getProperty());
         }
         return $this;
     }
