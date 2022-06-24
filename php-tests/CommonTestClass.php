@@ -1,7 +1,7 @@
 <?php
 
-use kalanis\kw_connect\core\Interfaces\IConnector;
 use kalanis\kw_connect\core\Interfaces\IFilterFactory;
+use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\core\Interfaces\Table\IFilterMulti;
 use kalanis\kw_table\core\Interfaces\Table\IFilterRender;
@@ -45,7 +45,7 @@ class XField implements IField
     {
     }
 
-    public function setDataSourceConnector(IConnector $dataSource): void
+    public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
     }
 
@@ -81,7 +81,7 @@ class XRenderField implements IField, IFilterRender
     {
     }
 
-    public function setDataSourceConnector(IConnector $dataSource): void
+    public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
     }
 
@@ -124,7 +124,7 @@ class XRenderMultiField implements IField, IFilterRender, IFilterMulti
     {
     }
 
-    public function setDataSourceConnector(IConnector $dataSource): void
+    public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
     }
 

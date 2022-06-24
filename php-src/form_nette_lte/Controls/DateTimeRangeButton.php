@@ -14,12 +14,13 @@ class DateTimeRangeButton extends DateTimeRange
     /** @var  Html */
     protected $span;
     protected $script;
+    /** @var string */
     protected $uniqueInputId;
     protected $value;
 
     public function __construct(string $name, $label = null, $maxLength = null, $searchFormat = null, \DateTime $startTime = null, \DateTime $endTime = null)
     {
-        $this->uniqueId = uniqid('adminLteDateTimeRange');
+        $this->uniqueId = strval(uniqid('adminLteDateTimeRange'));
         $this->uniqueInputId = $this->uniqueId . 'Input';
         parent::__construct($name, $label, $maxLength, $searchFormat, $startTime, $endTime);
     }
@@ -116,7 +117,7 @@ class DateTimeRangeButton extends DateTimeRange
         $divGroup = Html::el('div', ['class' => "input-group dateTimeRangeButtonDiv"]);
         $button = Html::el('button', ['class' => "btn btn-default pull-right", 'type' => "button", 'id' => $this->uniqueId]);
         $span = $this->span = Html::el('span');
-        $iCalendar = Html::el('i', ['class' => "fa fa-calendar"]);
+//        $iCalendar = Html::el('i', ['class' => "fa fa-calendar"]);
         $spanText = _('Vše');
         $iCaret = Html::el('i', ['class' => "fa fa-caret-down"]);
 

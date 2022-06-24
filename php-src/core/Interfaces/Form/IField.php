@@ -3,7 +3,7 @@
 namespace kalanis\kw_table\core\Interfaces\Form;
 
 
-use kalanis\kw_connect\core\Interfaces\IConnector;
+use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 
 
 /**
@@ -32,9 +32,9 @@ interface IField
 
     /**
      * From which source it will read values
-     * @param IConnector $dataSource
+     * @param IIterableConnector $dataSource
      */
-    public function setDataSourceConnector(IConnector $dataSource): void;
+    public function setDataSourceConnector(IIterableConnector $dataSource): void;
 
     /**
      * Get filter which will modify results

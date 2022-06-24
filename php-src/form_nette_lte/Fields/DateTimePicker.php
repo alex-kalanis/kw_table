@@ -13,8 +13,11 @@ use kalanis\kw_table\form_nette\Fields;
  */
 class DateTimePicker extends Fields\AField
 {
+    /** @var \DateTime|null */
     protected $startTime;
+    /** @var \DateTime|null */
     protected $endTime;
+    /** @var string|null */
     protected $searchFormat;
 
     public function __construct(?\DateTime $startTime = null, ?\DateTime $endTime = null, ?string $searchFormat = null, array $attributes = [])

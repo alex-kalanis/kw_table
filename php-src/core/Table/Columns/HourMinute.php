@@ -20,7 +20,7 @@ class HourMinute extends AColumn
 
     public function getValue(IRow $source)
     {
-        $minutes = parent::getValue($source);
+        $minutes = intval(parent::getValue($source));
 
         if (empty($minutes)) {
             return '0:00';

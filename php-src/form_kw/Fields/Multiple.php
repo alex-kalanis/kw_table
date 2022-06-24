@@ -3,8 +3,8 @@
 namespace kalanis\kw_table\form_kw\Fields;
 
 
-use kalanis\kw_connect\core\Interfaces\IConnector;
 use kalanis\kw_connect\core\Interfaces\IFilterFactory;
+use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_forms\Exceptions\RenderException;
 use kalanis\kw_forms\Form;
 use kalanis\kw_table\core\Interfaces\Table\IFilterMulti;
@@ -61,7 +61,7 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
         }
     }
 
-    public function setDataSourceConnector(IConnector $dataSource): void
+    public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
         parent::setDataSourceConnector($dataSource);
         foreach ($this->fields as &$field) {

@@ -22,10 +22,10 @@ class TableHeadSorted extends ATemplate
         $this->addInput('{SORTER_LINK}');
     }
 
-    public function setData(string $headContent, string $sorterLink): self
+    public function setData(string $headContent, ?string $sorterLink): self
     {
         $this->updateItem('{HEAD_CONTENT}', $headContent);
-        $this->updateItem('{SORTER_LINK}', $sorterLink);
+        $this->updateItem('{SORTER_LINK}', is_null($sorterLink) ? '#' : $sorterLink);
         return $this;
     }
 }

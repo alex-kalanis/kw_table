@@ -16,8 +16,11 @@ use kalanis\kw_table\form_nette\Fields\AField;
  */
 class DateTimeRangePickerButton extends AField
 {
+    /** @var string|null */
     protected $searchFormat;
+    /** @var \DateTime|null */
     protected $startTime;
+    /** @var \DateTime|null */
     protected $endTime;
 
     public function __construct(?string $searchFormat = null, ?\DateTime $startTime = null, ?\DateTime $endTime = null, array $attributes = [])

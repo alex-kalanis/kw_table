@@ -3,7 +3,7 @@
 namespace kalanis\kw_table\form_kw\Fields;
 
 
-use kalanis\kw_connect\core\Interfaces\IConnector;
+use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_forms\Form;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 
@@ -20,7 +20,7 @@ abstract class AField implements IField
     protected $alias = '';
     /** @var array<string, string> */
     protected $attributes = [];
-    /** @var IConnector */
+    /** @var IIterableConnector|null */
     protected $connector = null;
 
     /**
@@ -51,7 +51,7 @@ abstract class AField implements IField
         return $this->alias;
     }
 
-    public function setDataSourceConnector(IConnector $dataSource): void
+    public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
         $this->connector = $dataSource;
     }

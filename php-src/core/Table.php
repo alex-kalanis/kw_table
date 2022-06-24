@@ -287,7 +287,7 @@ class Table
     {
         if ($column->canOrder()) {
             $this->checkOrder();
-            $this->order->addColumn($column);
+            $this->order->/** @scrutinizer ignore-call */addColumn($column);
         }
 
         $this->addColumn($headerText, $column, $headerFilterField, $footerFilterField);
@@ -407,7 +407,7 @@ class Table
      * @throws ConnectException
      * @return $this
      */
-    public function applyFilter(): self
+    protected function applyFilter(): self
     {
         if (empty($this->headerFilter)) {
             return $this;
@@ -420,8 +420,8 @@ class Table
 
                 $filterField = $column->getHeaderFilterField();
                 if ($filterField) {
-                    $filterField->setDataSourceConnector($this->dataSetConnector);
-                    $this->dataSetConnector->setFiltering(
+                    $filterField->setDataSourceConnector(/** @scrutinizer ignore-type */$this->dataSetConnector);
+                    $this->dataSetConnector->/** @scrutinizer ignore-call */setFiltering(
                         $column->getSourceName(),
                         $filterField->getFilterAction(),
                         $this->headerFilter->getValue($column)
@@ -436,7 +436,7 @@ class Table
      * @throws ConnectException
      * @return $this
      */
-    public function applyOrder(): self
+    protected function applyOrder(): self
     {
         if (empty($this->order)) {
             return $this;
@@ -454,7 +454,7 @@ class Table
      * @throws ConnectException
      * @return $this
      */
-    public function applyPager(): self
+    protected function applyPager(): self
     {
         if (empty($this->pager)) {
             return $this;

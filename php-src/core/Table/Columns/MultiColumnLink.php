@@ -34,6 +34,7 @@ class MultiColumnLink extends AColumn
 
     public function getValue(IRow $source)
     {
+        $return = [];
         $return[] = parent::getValue($source);
         foreach ($this->params AS $param) {
             $return[] = $param->getValue($source);

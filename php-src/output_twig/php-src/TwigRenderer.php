@@ -32,7 +32,7 @@ class TwigRenderer extends Table\AOutput
 
     public function render(): string
     {
-        $source = @file_get_contents($this->templatePath);
+        $source = strval(@file_get_contents($this->templatePath));
         $this->loader->setTemplate('kw_table', $source);
         return $this->twig->render('kw_table', ['table' => $this->table]);
     }

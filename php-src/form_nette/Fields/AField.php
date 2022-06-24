@@ -3,11 +3,13 @@
 namespace kalanis\kw_table\form_nette\Fields;
 
 
-use kalanis\kw_connect\core\Interfaces\IConnector;
+use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IFilterType;
+use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\form_nette\NetteForm;
 use Nette\Application\UI\Form as BaseForm;
+use Nette\Forms\Controls\BaseControl;
 
 
 /**
@@ -18,13 +20,13 @@ abstract class AField implements IField
 {
     const ATTR_SIZE = 'size';
 
-    /** @var BaseForm|NetteForm */
+    /** @var BaseForm|NetteForm<string, BaseControl> */
     protected $form;
     /** @var string */
     protected $alias;
     /** @var array */
     protected $attributes = [];
-    /** @var IConnector|null */
+    /** @var IIterableConnector|null */
     protected $dataSource;
 
     public function __construct(array $attributes = [])
@@ -47,7 +49,7 @@ abstract class AField implements IField
         $this->alias = $alias;
     }
 
-    public function setDataSourceConnector(IConnector $dataSource): void
+    public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
         $this->dataSource = $dataSource;
     }
@@ -75,11 +77,15 @@ abstract class AField implements IField
 
     public function processAttributes()
     {
-        foreach ($this->attributes AS $name => $value) {
+        foreach ($this->attributes as $name => $value) {
             $this->form[$this->alias]->setAttribute($name, $value);
         }
     }
 
+    /**
+     * @throws ConnectException
+     * @return IFilterType
+     */
     public function getFilterType(): IFilterType
     {
         return $this->dataSource->getFilterFactory()->getFilter($this->getFilterAction());
