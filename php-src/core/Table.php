@@ -3,9 +3,8 @@
 namespace kalanis\kw_table\core;
 
 
-use kalanis\kw_connect\core\AIterator;
 use kalanis\kw_connect\core\ConnectException;
-use kalanis\kw_connect\core\Interfaces\IConnector;
+use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_paging\Interfaces\IOutput;
 use kalanis\kw_table\core\Interfaces\Form\IField;
 use kalanis\kw_table\core\Interfaces\Form\IFilterForm;
@@ -22,7 +21,7 @@ class Table
 {
     const PAGER_LIMIT_DEFAULT = 30;
 
-    /** @var IConnector|AIterator|null */
+    /** @var IIterableConnector|null */
     protected $dataSetConnector = null;
 
     /** @var IColumn[] */
@@ -65,9 +64,9 @@ class Table
     protected $showPagerOnFoot = true;
 
     /**
-     * @param IConnector|null $dataSetConnector
+     * @param IIterableConnector|null $dataSetConnector
      */
-    public function __construct(IConnector $dataSetConnector = null)
+    public function __construct(IIterableConnector $dataSetConnector = null)
     {
         if (!is_null($dataSetConnector)) {
             $this->addDataSetConnector($dataSetConnector);
@@ -152,7 +151,7 @@ class Table
     public function addOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
         $this->checkOrder();
-        $this->order->addOrdering($columnName, $order);
+        $this->order->/** @scrutinizer ignore-call */addOrdering($columnName, $order);
         return $this;
     }
 
@@ -166,7 +165,7 @@ class Table
     public function addPrimaryOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
         $this->checkOrder();
-        $this->order->addPrependOrdering($columnName, $order);
+        $this->order->/** @scrutinizer ignore-call */addPrependOrdering($columnName, $order);
         return $this;
     }
 
@@ -217,16 +216,16 @@ class Table
 
     /**
      * Change data source
-     * @param IConnector $dataSetConnector
+     * @param IIterableConnector $dataSetConnector
      * @return $this
      */
-    public function addDataSetConnector(IConnector $dataSetConnector): self
+    public function addDataSetConnector(IIterableConnector $dataSetConnector): self
     {
         $this->dataSetConnector = $dataSetConnector;
         return $this;
     }
 
-    public function getDataSetConnector(): ?IConnector
+    public function getDataSetConnector(): ?IIterableConnector
     {
         return $this->dataSetConnector;
     }
@@ -385,7 +384,7 @@ class Table
         $this->applyOrder();
         $this->applyPager();
 
-        $this->dataSetConnector->fetchData();
+        $this->dataSetConnector->/** @scrutinizer ignore-call */fetchData();
 
         foreach ($this->dataSetConnector as $source) {
             $rowData = new Table\Internal\Row();

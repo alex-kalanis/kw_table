@@ -51,6 +51,6 @@ class Options extends AField
 
     public function add(): void
     {
-        $this->form->addSelect($this->alias, '', null, $this->options, $this->attributes);
+        $this->form->/** @scrutinizer ignore-call */addSelect($this->alias, '', null, $this->options, $this->attributes);
     }
 }

@@ -19,6 +19,6 @@ class TextExact extends AField
 
     public function add(): void
     {
-        $this->form->addText($this->alias, '', null, $this->attributes);
+        $this->form->/** @scrutinizer ignore-call */addText($this->alias, '', null, $this->attributes);
     }
 }

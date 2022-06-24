@@ -26,7 +26,7 @@ class KwFilter implements IFilterForm
     public function __construct(BaseForm $form)
     {
         $form->setMethod('get');
-        $form->addHidden('apply' . ucfirst($form->getAlias()), 'apply');
+        $form->addHidden('apply' . ucfirst(strval($form->getAlias())), 'apply');
         $this->form = $form;
     }
 
@@ -62,7 +62,7 @@ class KwFilter implements IFilterForm
 
     public function getFormName(): string
     {
-        return $this->form->getAttribute('name');
+        return strval($this->form->getAttribute('name'));
     }
 
     public function renderStart(): string
@@ -87,7 +87,7 @@ class KwFilter implements IFilterForm
             return $this->formProcess;
         }
 
-        $this->formProcess = $this->form->process('apply' . ucfirst($this->form->getAlias()));
+        $this->formProcess = $this->form->process('apply' . ucfirst(strval($this->form->getAlias())));
         $this->formData = $this->form->getValues();
         return $this->formProcess;
     }

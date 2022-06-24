@@ -117,7 +117,7 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
     {
         $values = [];
         foreach ($this->fields as $field) {
-            $control = $this->form->getControl($field->getAlias());
+            $control = $this->form->/** @scrutinizer ignore-call */getControl($field->getAlias());
             if (!empty($control->getValue())) {
                 $values[] = [$field->getField()->getFilterAction(), $control->getValue()];
             }

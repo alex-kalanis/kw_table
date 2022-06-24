@@ -50,7 +50,7 @@ class Set implements IRule
             }
         }
 
-        if (false == $this->all && 0 < $trueCount) {
+        if ((false === $this->all) && (0 < $trueCount)) {
             return true;
         }
 

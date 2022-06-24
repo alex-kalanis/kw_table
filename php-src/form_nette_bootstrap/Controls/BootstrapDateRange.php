@@ -19,7 +19,7 @@ class BootstrapDateRange extends DateRange
         $divSince = Html::el('div', ['class' => "input-group dateTimePickerRange"]);
         $divTo = clone $divSince;
 
-        $divGroup = Html::el('div', ['class' => "input-group-addon"]);
+//        $divGroup = Html::el('div', ['class' => "input-group-addon"]);
         $start = $this->start = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',

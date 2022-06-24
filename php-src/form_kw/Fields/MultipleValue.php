@@ -56,7 +56,7 @@ class MultipleValue extends AMultipleValue
 
     public function renderContent(): string
     {
-        $control = $this->field->getForm()->getControl($this->getAlias());
+        $control = $this->field->getForm()->/** @scrutinizer ignore-call */getControl($this->getAlias());
         $control->setLabel($this->getLabel());
         return $control->render();
     }
