@@ -461,9 +461,9 @@ class Table
         }
 
         if (empty($this->pager->getPager()->getMaxResults())) {
-            $this->pager->getPager()->setMaxResults($this->dataSetConnector->getTotalCount());
+            $this->pager->getPager()->setMaxResults($this->dataSetConnector->/** @scrutinizer ignore-call */getTotalCount());
         }
-        $this->dataSetConnector->setPagination(
+        $this->dataSetConnector->/** @scrutinizer ignore-call */setPagination(
             $this->pager->getPager()->getOffset(),
             $this->pager->getPager()->getLimit()
         );
