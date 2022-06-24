@@ -38,13 +38,13 @@ class DateRange extends TextInput
     protected function setControlHtml(string $name)
     {
         $span = Html::el('span');
-        $divSince = Html::el('div', ['class' => "input-group dateTimePickerRange"]);
+        $divSince = Html::el('div', ['class' => 'input-group dateTimePickerRange']);
         $divTo = clone $divSince;
 
         $start = $this->start = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',
-            'placeholder' => _("From"),
+            'placeholder' => _('From'),
             'id'          => $name . 'StartId',
             'class'       => 'form-control cleanable listingDateTimePicker',
             'aria-label'  => _('Time from')
@@ -52,7 +52,7 @@ class DateRange extends TextInput
         $end = $this->end = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',
-            'placeholder' => _("To"),
+            'placeholder' => _('To'),
             'id'          => $name . 'StartId',
             'class'       => 'form-control cleanable listingDateTimePicker',
             'aria-label'  => _('Time to')

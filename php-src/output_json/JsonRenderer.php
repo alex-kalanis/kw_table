@@ -22,23 +22,23 @@ class JsonRenderer extends Table\AOutput
     public function __construct(Table $table)
     {
         parent::__construct($table);
-        if ($table->getPager() && $table->getPager()->getPager()) {
+        if ($table->getPager()) {
             $this->positions = new Positions($table->getPager()->getPager());
         }
     }
 
     /**
-     * @return string
      * @throws ConnectException
+     * @return string
      */
     public function render(): string
     {
-        return json_encode($this->renderData());
+        return strval(json_encode($this->renderData()));
     }
 
     /**
-     * @return array
      * @throws ConnectException
+     * @return array<string, array<string|int, string|int|float|bool|array<string|int, string|int|float|bool|null>|null>>
      */
     public function renderData(): array
     {
@@ -51,6 +51,9 @@ class JsonRenderer extends Table\AOutput
         ];
     }
 
+    /**
+     * @return array<string|int, string>
+     */
     protected function getHeaders(): array
     {
         $line = [];
@@ -60,6 +63,9 @@ class JsonRenderer extends Table\AOutput
         return $line;
     }
 
+    /**
+     * @return array<string|int, array<string, string|int>>
+     */
     protected function getSorters(): array
     {
         $order = $this->table->getOrder();
@@ -78,6 +84,9 @@ class JsonRenderer extends Table\AOutput
         return $line;
     }
 
+    /**
+     * @return array<string|int, string|int|float|bool|null>
+     */
     protected function getHeaderFilters(): array
     {
         $headerFilter = $this->table->getHeaderFilter();
@@ -100,13 +109,14 @@ class JsonRenderer extends Table\AOutput
     }
 
     /**
-     * @return array
      * @throws ConnectException
+     * @return array<int, array<string|int, string|int|float|bool|null>>
      */
     protected function getCells(): array
     {
         $cell = [];
         foreach ($this->table->getTableData() as $row) {
+            /** @var Table\Internal\Row $row */
             $line = [];
             foreach ($row as $column) {
                 /** @var Table\Columns\AColumn $column */
@@ -117,6 +127,9 @@ class JsonRenderer extends Table\AOutput
         return $cell;
     }
 
+    /**
+     * @return array<string, array<string, int>>
+     */
     protected function getPager(): array
     {
         if (empty($this->positions)) {

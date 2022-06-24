@@ -12,6 +12,7 @@ namespace kalanis\kw_table\core\Table\Columns;
  */
 trait TEscapedValue
 {
+    /** @var int|null */
     protected $flags = null;
 
     /**
@@ -23,10 +24,14 @@ trait TEscapedValue
         $this->flags = $flags;
     }
 
+    /**
+     * @param float|int|string|bool|null $content
+     * @return float|int|string|bool|null
+     */
     protected function valueEscape($content)
     {
         return (is_null($this->flags))
             ? $content
-            : htmlspecialchars($content, $this->flags, 'UTF-8', false);
+            : htmlspecialchars(strval($content), $this->flags, 'UTF-8', false);
     }
 }

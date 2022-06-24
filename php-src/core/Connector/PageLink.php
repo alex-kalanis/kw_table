@@ -57,7 +57,7 @@ class PageLink implements ILink
         $this->urlVariable = new SingleVariable($urlHandler->getParams());
         $this->urlVariable->setVariableName($variableName);
         $this->page = intval($this->urlVariable->getVariableValue() ?: Positions::FIRST_PAGE);
-        $this->urlVariable->setVariableValue($this->page);
+        $this->urlVariable->setVariableValue(strval($this->page));
         $this->pager = $pager;
     }
 

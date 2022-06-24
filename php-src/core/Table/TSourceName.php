@@ -10,14 +10,21 @@ namespace kalanis\kw_table\core\Table;
  */
 trait TSourceName
 {
+    /** @var string|int */
     protected $sourceName = '';
 
+    /**
+     * @param string|int $sourceName
+     */
     public function setSourceName($sourceName): void
     {
         $this->sourceName = $sourceName;
     }
 
-    public function getSourceName(): string
+    /**
+     * @return string|int
+     */
+    public function getSourceName()
     {
         return $this->sourceName;
     }

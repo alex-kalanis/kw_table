@@ -18,7 +18,7 @@ class MultiSelect extends AField
 
     /**
      * @param string $value
-     * @param array $attributes
+     * @param array<string, string> $attributes
      */
     public function __construct($value = '0', array $attributes = [])
     {
@@ -31,7 +31,11 @@ class MultiSelect extends AField
         return IFilterFactory::ACTION_EXACT;
     }
 
-    public function setValue($value)
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setValue($value): self
     {
         $this->value = $value;
         return $this;

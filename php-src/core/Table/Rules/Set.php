@@ -19,21 +19,26 @@ class Set implements IRule
     /** @var bool */
     protected $all = true;
 
-    public function addRule(IRule $rule)
+    public function addRule(IRule $rule): void
     {
         $this->rules[] = $rule;
     }
 
-    public function allMustPass($all = true)
+    /**
+     * @param bool $all
+     * @return $this
+     */
+    public function allMustPass($all = true): self
     {
-        $this->all = (bool)$all;
+        $this->all = boolval($all);
+        return $this;
     }
 
     /**
      * Check each item
      * @param string $value
-     * @return bool
      * @throws TableException
+     * @return bool
      */
     public function validate($value): bool
     {

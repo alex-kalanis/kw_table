@@ -44,7 +44,7 @@ class Filter
 
     /**
      * @param IColumn $column
-     * @return string|int|array
+     * @return float|int|string|bool|null
      */
     public function getValue(IColumn $column)
     {
@@ -61,8 +61,8 @@ class Filter
 
     /**
      * @param IColumn $column
-     * @return $this
      * @throws TableException
+     * @return $this
      */
     public function addHeaderColumn(IColumn $column): self
     {
@@ -77,8 +77,8 @@ class Filter
 
     /**
      * @param IColumn $column
-     * @return $this
      * @throws TableException
+     * @return $this
      */
     public function addFooterColumn(IColumn $column): self
     {
@@ -111,9 +111,9 @@ class Filter
 
     /**
      * @param IColumn $column
-     * @return string
-     * @throws TableException
      * @throws RenderException
+     * @throws TableException
+     * @return string
      */
     public function renderHeaderInput(IColumn $column): string
     {
@@ -132,9 +132,9 @@ class Filter
 
     /**
      * @param IColumn $column
-     * @return string
-     * @throws TableException
      * @throws RenderException
+     * @throws TableException
+     * @return string
      */
     public function renderFooterInput(IColumn $column): string
     {
@@ -183,6 +183,12 @@ class Filter
         return $this;
     }
 
+    /**
+     * @param array<string|int, float|int|string|bool|null> $formValues
+     * @param string $filterName
+     * @param IField|null $filterField
+     * @return float|int|string|bool|array<int, array<int, float|int|string|bool|null>>|null
+     */
     protected function getValuesFromFilters(array $formValues, string $filterName, ?IField $filterField)
     {
         if ($filterField instanceof IFilterMulti) {
@@ -196,11 +202,11 @@ class Filter
 
     /**
      * @param string[]|string[][] $original
-     * @param string $sourceName
-     * @param string|string[] $values
+     * @param string|int $sourceName
+     * @param string|int|float|bool|array<int, array<int, string|int|float|bool|null>>|null $values
      * @todo: idea - probably make it array in full, then problems with detection will disappear
      */
-    protected function addValuesToArray(array &$original, string $sourceName, $values): void
+    protected function addValuesToArray(array &$original, $sourceName, $values): void
     {
         if (empty($values)) {
             return;

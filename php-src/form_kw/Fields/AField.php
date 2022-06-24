@@ -18,13 +18,13 @@ abstract class AField implements IField
     protected $form = null;
     /** @var string */
     protected $alias = '';
-    /** @var string[]|int[] */
+    /** @var array<string, string> */
     protected $attributes = [];
     /** @var IConnector */
     protected $connector = null;
 
     /**
-     * @param string[] $attributes
+     * @param array<string, string> $attributes
      */
     public function __construct(array $attributes = [])
     {
@@ -61,6 +61,9 @@ abstract class AField implements IField
         $this->attributes[$name] = $value;
     }
 
+    /**
+     * @param array<string, string> $attributes
+     */
     public function setAttributes(array $attributes): void
     {
         $this->attributes = $attributes + $this->attributes;

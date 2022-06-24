@@ -30,11 +30,12 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
 {
     /** @var MultipleValue[] */
     protected $fields = [];
+    /** @var string */
     protected $separator = '<br />';
 
     /**
      * @param MultipleValue[] $fields
-     * @param string[] $attributes
+     * @param array<string, string> $attributes
      * @throws TableException
      */
     public function __construct(array $fields = [], array $attributes = [])
@@ -109,6 +110,9 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
         return $field->renderContent();
     }
 
+    /**
+     * @return array<int, array<int, float|int|string|true>>
+     */
     public function getPairs(): array
     {
         $values = [];

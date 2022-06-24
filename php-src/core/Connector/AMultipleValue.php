@@ -14,8 +14,11 @@ use kalanis\kw_forms\Exceptions\RenderException;
  */
 abstract class AMultipleValue
 {
+    /** @var string */
     protected $alias = '';
+    /** @var string|null */
     protected $label = null;
+    /** @var string */
     protected $columnName = '';
 
     public function setColumn(string $columnName): void

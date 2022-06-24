@@ -4,16 +4,16 @@ namespace coreTests\Connector;
 
 
 use CommonTestClass;
-use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_forms\Exceptions\RenderException;
 use kalanis\kw_table\core\Connector\ArrayFilterForm;
+use kalanis\kw_table\core\TableException;
 
 
 class ArrayFilterTest extends CommonTestClass
 {
     /**
-     * @throws ConnectException
      * @throws RenderException
+     * @throws TableException
      */
     public function testSimple(): void
     {

@@ -3,6 +3,7 @@
 namespace kalanis\kw_table\core;
 
 
+use kalanis\kw_connect\core\AIterator;
 use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IConnector;
 use kalanis\kw_paging\Interfaces\IOutput;
@@ -21,7 +22,7 @@ class Table
 {
     const PAGER_LIMIT_DEFAULT = 30;
 
-    /** @var IConnector|null */
+    /** @var IConnector|AIterator|null */
     protected $dataSetConnector = null;
 
     /** @var IColumn[] */
@@ -51,10 +52,10 @@ class Table
     /** @var Table\Internal\Row[]|Table[] */
     protected $tableData = [];
 
-    /** @var string[] */
+    /** @var array<string, string> */
     protected $defaultHeaderFilterFieldAttributes = [];
 
-    /** @var array  */
+    /** @var array<string, string>  */
     protected $defaultFooterFilterFieldAttributes = [];
 
     /** @var bool */
@@ -77,6 +78,7 @@ class Table
      * Add external function to row for processing data
      * @param string $function
      * @param string[] $arguments
+     * @return mixed|null|void
      */
     public function __call($function, $arguments)
     {
@@ -91,7 +93,7 @@ class Table
      * @param IRule  $rule
      * @param string $cell
      */
-    public function rowClass(string $class, IRule $rule, $cell)
+    public function rowClass(string $class, IRule $rule, $cell): void
     {
         $this->callRows[] = new Table\Rows\ClassRow($class, $rule, $cell);
     }
@@ -114,12 +116,20 @@ class Table
         return $this;
     }
 
+    /**
+     * @param array<string, string> $attributes
+     * @return $this
+     */
     public function setDefaultHeaderFilterFieldAttributes(array $attributes): self
     {
         $this->defaultHeaderFilterFieldAttributes = $attributes;
         return $this;
     }
 
+    /**
+     * @param array<string, string> $attributes
+     * @return $this
+     */
     public function setDefaultFooterFilterFieldAttributes(array $attributes): self
     {
         $this->defaultFooterFilterFieldAttributes = $attributes;
@@ -136,8 +146,8 @@ class Table
      * Basic order
      * @param string $columnName
      * @param string $order
-     * @return $this
      * @throws TableException
+     * @return $this
      */
     public function addOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
@@ -150,8 +160,8 @@ class Table
      * More important order when some is already set
      * @param string $columnName
      * @param string $order
-     * @return $this
      * @throws TableException
+     * @return $this
      */
     public function addPrimaryOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
@@ -195,7 +205,7 @@ class Table
         return $this->headerFilter ? $this->headerFilter->getFormName() : ( $this->footerFilter ? $this->footerFilter->getFormName() : '' );
     }
 
-    public function setOutput(Table\AOutput $output)
+    public function setOutput(Table\AOutput $output): void
     {
         $this->output = $output;
     }
@@ -260,7 +270,7 @@ class Table
     public function getClassesInString(): string
     {
         if (!empty($this->classes)) {
-            return implode(" ", $this->classes);
+            return implode(' ', $this->classes);
         } else {
             return '';
         }
@@ -271,8 +281,8 @@ class Table
      * @param IColumn $column
      * @param IField|null $headerFilterField
      * @param IField|null $footerFilterField
-     * @return $this
      * @throws TableException
+     * @return $this
      */
     public function addOrderedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {
@@ -291,8 +301,8 @@ class Table
      * @param IColumn $column
      * @param IField|null $headerFilterField
      * @param IField|null $footerFilterField
-     * @return $this
      * @throws TableException
+     * @return $this
      */
     public function addColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {
@@ -343,9 +353,9 @@ class Table
 
     /**
      * Render complete table - just helper method
-     * @return string
      * @throws ConnectException
      * @throws TableException
+     * @return string
      */
     public function render(): string
     {
@@ -395,8 +405,8 @@ class Table
     }
 
     /**
-     * @return $this
      * @throws ConnectException
+     * @return $this
      */
     public function applyFilter(): self
     {
@@ -424,8 +434,8 @@ class Table
     }
 
     /**
-     * @return $this
      * @throws ConnectException
+     * @return $this
      */
     public function applyOrder(): self
     {
@@ -434,15 +444,16 @@ class Table
         }
 
         $this->order->process();
-        foreach ($this->order->getOrdering() as list($columnName, $direction)) {
-            $this->dataSetConnector->setOrdering($columnName, $direction);
+        foreach ($this->order->getOrdering() as $attributes) {
+            /** @var Table\Internal\Attributes $attributes */
+            $this->dataSetConnector->setOrdering($attributes->getColumnName(), $attributes->getProperty());
         }
         return $this;
     }
 
     /**
-     * @return $this
      * @throws ConnectException
+     * @return $this
      */
     public function applyPager(): self
     {

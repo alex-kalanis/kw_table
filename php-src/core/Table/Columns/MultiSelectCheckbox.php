@@ -21,4 +21,9 @@ class MultiSelectCheckbox extends AColumn
     {
         return '<input type="checkbox" name="multiselect[' . parent::getValue($source) . ']" class="multiselect">';
     }
+
+    public function canOrder(): bool
+    {
+        return false;
+    }
 }

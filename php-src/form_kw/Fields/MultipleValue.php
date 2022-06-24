@@ -14,6 +14,7 @@ use kalanis\kw_table\core\Connector\AMultipleValue;
  */
 class MultipleValue extends AMultipleValue
 {
+    /** @var AField */
     protected $field = null;
 
     public function __construct(AField $field, ?string $label = null, string $alias = '')

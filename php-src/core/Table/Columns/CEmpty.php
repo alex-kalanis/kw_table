@@ -17,4 +17,9 @@ class CEmpty extends AColumn
     {
         return '';
     }
+
+    public function canOrder(): bool
+    {
+        return false;
+    }
 }

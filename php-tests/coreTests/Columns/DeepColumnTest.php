@@ -18,6 +18,7 @@ class DeepColumnTest extends CommonTestClass
     {
         $lib = new Columns\MultiSelectCheckbox('id');
         $this->assertEquals('<input type="checkbox" name="multiselect[2]" class="multiselect">', $lib->getValue($this->getRow()));
+        $this->assertFalse($lib->canOrder());
     }
 
     /**
@@ -38,6 +39,7 @@ class DeepColumnTest extends CommonTestClass
         $lib->addColumn(new Columns\Bold('name'));
         $lib->addColumn(new Columns\Currency('size', 'EUR'));
         $this->assertEquals('<strong>def</strong>!!!456 EUR', $lib->getValue($this->getRow()));
+        $this->assertFalse($lib->canOrder());
     }
 
     /**
@@ -50,6 +52,7 @@ class DeepColumnTest extends CommonTestClass
             new Columns\Currency('size', 'EUR'),
         ], [$this, 'mergeSize']);
         $this->assertEquals('2::<strong>def</strong>::456 EUR', $lib->getValue($this->getRow()));
+        $this->assertFalse($lib->canOrder());
     }
 
     protected function getRow(): Row

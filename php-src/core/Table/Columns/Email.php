@@ -13,8 +13,6 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class Email extends AColumn
 {
-    protected $format = '';
-
     public function __construct(string $sourceName)
     {
         $this->sourceName = $sourceName;

@@ -16,11 +16,14 @@ class Multi extends AColumn
 {
     /** @var string */
     protected $delimiter;
-
     /** @var IColumn[] */
     protected $columns = [];
 
-    public function __construct($delimiter = ' ', $sourceName = 'primaryKey')
+    /**
+     * @param string $delimiter
+     * @param string|int $sourceName
+     */
+    public function __construct(string $delimiter = ' ', $sourceName = 'primaryKey')
     {
         $this->delimiter = $delimiter;
         $this->sourceName = $sourceName;
@@ -44,5 +47,10 @@ class Multi extends AColumn
         }
 
         return implode($this->delimiter, $result);
+    }
+
+    public function canOrder(): bool
+    {
+        return false;
     }
 }

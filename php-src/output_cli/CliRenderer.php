@@ -4,7 +4,7 @@ namespace kalanis\kw_table\output_cli;
 
 
 use kalanis\kw_clipr\Output\PrettyTable;
-use kalanis\kw_connect\core\ConnectException;
+use kalanis\kw_table\core\Interfaces;
 use kalanis\kw_table\core\Table;
 
 
@@ -27,7 +27,6 @@ class CliRenderer extends Table\AOutput
 
     /**
      * @return string
-     * @throws ConnectException
      */
     public function render(): string
     {
@@ -35,8 +34,7 @@ class CliRenderer extends Table\AOutput
     }
 
     /**
-     * @return array
-     * @throws ConnectException
+     * @return array<string>
      */
     public function renderData(): array
     {
@@ -48,7 +46,7 @@ class CliRenderer extends Table\AOutput
         $lines[] = $this->prettyTable->getHeader();
         $lines[] = $this->prettyTable->getSeparator();
         foreach ($this->prettyTable as $row) {
-            $lines[] = $row;
+            $lines[] = strval($row);
         }
         $lines[] = $this->prettyTable->getSeparator();
         $lines[] = $this->getPager();
@@ -69,7 +67,7 @@ class CliRenderer extends Table\AOutput
         $this->prettyTable->setHeaders($line);
     }
 
-    protected function withOrderDirection(Table\Order $order, Table\Columns\AColumn $column): string
+    protected function withOrderDirection(Table\Order $order, Interfaces\Table\IColumn $column): string
     {
         return $order->getActiveDirection($column) == Table\Order::ORDER_ASC
             ? ($order->isActive($column) ? '*^' : 'v')
@@ -77,20 +75,18 @@ class CliRenderer extends Table\AOutput
         ;
     }
 
-    protected function withFilter(Table\Columns\AColumn $column): string
+    protected function withFilter(Interfaces\Table\IColumn $column): string
     {
         return ($column->hasHeaderFilterField() ? '>' : '');
     }
 
-    /**
-     * @throws ConnectException
-     */
     protected function fillCells(): void
     {
         foreach ($this->table->getTableData() as $row) {
+            /** @var Table\Internal\Row $row */
             $line = [];
             foreach ($row as $column) {
-                /** @var Table\Columns\AColumn $column */
+                /** @var Interfaces\Table\IColumn $column */
                 $line[] = $column->getValue($row->getSource());
             }
             $this->prettyTable->setDataLine($line);

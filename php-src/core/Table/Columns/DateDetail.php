@@ -19,7 +19,7 @@ class DateDetail extends Date
         if (empty($result)) {
             return 0;
         } else {
-            return '<span title="' . date('Y-m-d H:i:s', $result) . '">' . date($this->format, $result) . '</span>';
+            return '<span title="' . date('Y-m-d H:i:s', intval($result)) . '">' . date($this->format, intval($result)) . '</span>';
         }
     }
 }

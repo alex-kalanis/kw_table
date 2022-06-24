@@ -10,17 +10,18 @@ use kalanis\kw_connect\core\Interfaces\IFilterType;
 /**
  * Class Options
  * @package kalanis\kw_table\form_kw\Fields
+ * Contains empty value
  */
 class Options extends AField
 {
     /** @var string */
     protected $emptyItem = '- all -';
-    /** @var string[]|int[] */
+    /** @var array<string, string|int|float> */
     protected $options = [];
 
     /**
-     * @param string[] $options
-     * @param string[] $attributes
+     * @param array<string, string|int|float> $options
+     * @param array<string, string> $attributes
      */
     public function __construct(array $options = [], array $attributes = [])
     {
@@ -34,7 +35,7 @@ class Options extends AField
     }
 
     /**
-     * @param string[]|int[] $options
+     * @param array<string, string|int|float> $options
      * @return $this
      */
     public function setOptions(array $options): self

@@ -32,11 +32,6 @@ class SimpleColumnTest extends CommonTestClass
 
         $this->assertEquals('def', $lib->translate($data));
 
-        $lib->addWrapper('li', ['baz' => 'uiy']);
-        $this->assertEquals('<li baz="uiy">def</li>', $lib->translate($data));
-        $lib->addWrapper('ul', 'foo="bar"');
-        $this->assertEquals('<ul foo="bar"><li baz="uiy">def</li></ul>', $lib->translate($data));
-
         $this->assertFalse($lib->hasHeaderFilterField());
         $this->assertFalse($lib->hasFooterFilterField());
         $this->assertEmpty($lib->getHeaderFilterField());
@@ -45,6 +40,15 @@ class SimpleColumnTest extends CommonTestClass
         $lib->setFooterFiltering(new \XField());
         $this->assertTrue($lib->hasHeaderFilterField());
         $this->assertTrue($lib->hasFooterFilterField());
+    }
+
+    public function testWrapper(): void
+    {
+        $lib = new XWrapper();
+        $lib->addWrapper('li', ['baz' => 'uiy']);
+        $this->assertEquals('<li baz="uiy">def</li>', $lib->formattedData('def'));
+        $lib->addWrapper('ul', 'foo="bar"');
+        $this->assertEquals('<ul foo="bar"><li baz="uiy">def</li></ul>', $lib->formattedData('def'));
     }
 
     /**
@@ -93,6 +97,7 @@ class SimpleColumnTest extends CommonTestClass
     {
         $lib = new Columns\CEmpty();
         $this->assertEmpty($lib->getValue($this->getRow()));
+        $this->assertFalse($lib->canOrder());
     }
 
     /**
@@ -143,5 +148,16 @@ class XColumn extends Columns\AColumn
     public function __construct($sourceName)
     {
         $this->sourceName = $sourceName;
+    }
+}
+
+
+class XWrapper
+{
+    use Columns\TWrappers;
+
+    public function formattedData($data): string
+    {
+        return $this->formatData($data);
     }
 }

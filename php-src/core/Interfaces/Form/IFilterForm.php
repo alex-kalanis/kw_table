@@ -24,20 +24,20 @@ interface IFilterForm
     /**
      * Set value to the form entry
      * @param string $alias
-     * @param string|int $value
+     * @param string|int|float|bool|null $value
      */
     public function setValue(string $alias, $value): void;
 
     /**
      * Get all values in form
-     * @return string[]|int[]
+     * @return array<string, string|int|float|bool|null>
      */
     public function getValues(): array;
 
     /**
      * Get value from form by entry alias
      * @param string $alias
-     * @return mixed
+     * @return string|int|float|bool|null
      */
     public function getValue(string $alias);
 

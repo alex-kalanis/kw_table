@@ -13,8 +13,11 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class DateTime extends AColumn
 {
+    /** @var string */
     protected $format = '';
+    /** @var bool */
     protected $timestamp = false;
+    /** @var \DateTime */
     protected $dateTime;
 
     public function __construct(string $sourceName, string $format = 'Y-m-d', bool $timestamp = false, \DateTime $dateTime = null)
@@ -32,8 +35,8 @@ class DateTime extends AColumn
         if ($isEmpty) {
             return 0;
         } else {
-            $result = $this->timestamp ? $result : strtotime($result);
-            $this->dateTime->setTimestamp($result);
+            $result = $this->timestamp ? $result : strtotime(strval($result));
+            $this->dateTime->setTimestamp(intval($result));
 
             return $this->dateTime->format($this->format);
         }

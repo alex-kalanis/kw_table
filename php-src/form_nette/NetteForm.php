@@ -24,7 +24,7 @@ class NetteForm extends \Nette\Application\UI\Form
     public function __construct(IContainer $parent = null, string $name = null)
     {
         parent::__construct($parent, $name);
-        $this->setMethod("GET");
+        $this->setMethod('GET');
         $this->addSubmit('apply');
     }
 

@@ -7,6 +7,7 @@ use kalanis\kw_connect\core\AIterator;
 use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IRow;
 use kalanis\kw_table\core\Interfaces\Table\IRule;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -16,17 +17,12 @@ use kalanis\kw_table\core\Interfaces\Table\IRule;
  */
 abstract class AStyle extends AIterator
 {
-    const KEY_STYLE = 'style';
-    const KEY_CONDITION = 'condition';
-    const KEY_OVERRIDE = 'override';
-
+    /** @var array<int, Internal\Attributes> */
     protected $styles = [];
+    /** @var string|int */
     protected $sourceName = '';
-
+    /** @var array<string, array<Internal\Attributes>> */
     protected $attributes = [];
-
-    /** @var string[] */
-    protected $wrappers = [];
 
     protected function getIterableName(): string
     {
@@ -47,15 +43,16 @@ abstract class AStyle extends AIterator
     /**
      * Add attribute
      * @param string $function
-     * @param string[] $arguments
+     * @param array<string|int, string|IRule> $arguments
+     * @return mixed|null|void
      */
     public function __call($function, $arguments)
     {
-        $this->attributes[$function][] = [
-            static::KEY_STYLE => $arguments[0],
-            static::KEY_CONDITION => (isset($arguments[1]) ? $arguments[1] : null),
-            static::KEY_OVERRIDE => (isset($arguments[2]) ? $arguments[2] : null)
-        ];
+        $this->attributes[$function][] = new Internal\Attributes(
+            (isset($arguments[2]) && is_string($arguments[2]) ? $arguments[2] : ''),
+            (isset($arguments[0]) && is_string($arguments[0]) ? $arguments[0] : ''),
+            (isset($arguments[1]) && ($arguments[1] instanceof IRule) ? $arguments[1] : null)
+        );
     }
 
     /**
@@ -83,20 +80,18 @@ abstract class AStyle extends AIterator
      * When condition value equals current value then add cell style
      * @param string $style
      * @param IRule|null $condition
-     * @param string|null $sourceName
+     * @param string|int $sourceName
      */
-    public function style(string $style, ?IRule $condition, ?string $sourceName = null): void
+    public function style(string $style, ?IRule $condition, $sourceName = ''): void
     {
-        $this->styles[] = [
-            static::KEY_STYLE => $style,
-            static::KEY_CONDITION => $condition,
-            static::KEY_OVERRIDE => $sourceName
-        ];
+        $this->styles[] = new Internal\Attributes($sourceName, $style, $condition);
     }
 
     /**
      * Return attribute content by obtained conditions
      * @param IRow $source
+     * @throws ConnectException
+     * @throws TableException
      * @return string
      */
     public function getCellStyle(IRow $source): string
@@ -107,6 +102,8 @@ abstract class AStyle extends AIterator
     /**
      * Return all attributes to output
      * @param IRow $source
+     * @throws ConnectException
+     * @throws TableException
      * @return string
      */
     public function getAttributes(IRow $source): string
@@ -115,8 +112,9 @@ abstract class AStyle extends AIterator
         foreach ($this->attributes as $key => $attr) {
             $attribute = [];
             foreach ($attr as $style) {
-                if (empty($style[static::KEY_CONDITION]) || $this->isStyleApplied($source, $style)) {
-                    $attribute[] = $this->getAttributeRealValue($source, $style[static::KEY_STYLE]);
+                /** @var Internal\Attributes $style */
+                if (empty($style->getCondition()) || $this->isStyleApplied($source, $style)) {
+                    $attribute[] = $this->getAttributeRealValue($source, $style->getProperty());
                 }
             }
             $return[] = $key . '="' . $this->joinAttributeParts($attribute) . '"';
@@ -129,14 +127,15 @@ abstract class AStyle extends AIterator
      * Returns attribute value with checking if we do not want any value from row
      * @param IRow $source
      * @param string $value
-     * @return mixed
+     * @throws ConnectException
+     * @return string
      */
-    protected function getAttributeRealValue(IRow $source, string $value)
+    protected function getAttributeRealValue(IRow $source, string $value): string
     {
         if (preg_match('/value\:(.*)/i', $value, $matches)) {
-            return $this->getOverrideValue($source, $matches[1]);
+            return strval($this->getOverrideValue($source, $matches[1]));
         } else {
-            return $value;
+            return strval($value);
         }
     }
 
@@ -154,14 +153,17 @@ abstract class AStyle extends AIterator
     /**
      * Merge attribute Style - different for a bit different ordering
      * @param IRow $source
+     * @throws ConnectException
+     * @throws TableException
      * @return string
      */
     protected function getStyleAttribute(IRow $source)
     {
         $return = [];
         foreach ($this->styles as $style) {
-            if (empty($style[static::KEY_CONDITION]) || $this->isStyleApplied($source, $style)) {
-                $return[] = $style[static::KEY_STYLE];
+            /** @var Internal\Attributes $style */
+            if (empty($style->getCondition()) || $this->isStyleApplied($source, $style)) {
+                $return[] = $style->getProperty();
             }
         }
 
@@ -171,21 +173,29 @@ abstract class AStyle extends AIterator
     /**
      * Apply style?
      * @param IRow $source
-     * @param array $style
+     * @param Internal\Attributes $style
+     * @throws ConnectException
+     * @throws TableException
      * @return bool
      */
-    protected function isStyleApplied(IRow $source, array $style): bool
+    protected function isStyleApplied(IRow $source, Internal\Attributes $style): bool
     {
-        $property = (!empty($style[static::KEY_OVERRIDE])) ? $style[static::KEY_OVERRIDE] : $this->getSourceName();
-        return (bool)$style[static::KEY_CONDITION]->validate($this->getOverrideValue($source, $property));
+        $property = (!empty($style->getColumnName())) ? $style->getColumnName() : $this->getSourceName();
+        return (bool) $style->getCondition()->validate($this->getOverrideValue($source, $property));
     }
 
     /**
-     * @return string
+     * @return string|int
      */
-    abstract public function getSourceName(): string;
+    abstract public function getSourceName();
 
-    protected function getOverrideValue(IRow $source, string $overrideProperty)
+    /**
+     * @param IRow $source
+     * @param string|int $overrideProperty
+     * @throws ConnectException
+     * @return mixed
+     */
+    protected function getOverrideValue(IRow $source, $overrideProperty)
     {
         return $source->getValue($overrideProperty);
     }

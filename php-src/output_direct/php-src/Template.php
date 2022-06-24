@@ -13,6 +13,7 @@ use kalanis\kw_table\core\Table;
  */
 class Template implements ITemplate
 {
+    /** @var string */
     protected $templatePath = null;
 
     public function __construct()
@@ -29,6 +30,6 @@ class Template implements ITemplate
     {
         ob_start();
         include($this->templatePath);
-        return ob_get_clean();
+        return strval(ob_get_clean());
     }
 }

@@ -13,8 +13,9 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class Bold extends AColumn
 {
-    protected $format = '';
-
+    /**
+     * @param string|int $sourceName
+     */
     public function __construct($sourceName)
     {
         $this->sourceName = $sourceName;

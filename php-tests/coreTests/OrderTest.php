@@ -49,11 +49,11 @@ class OrderTest extends CommonTestClass
 
         $ord = $lib->getOrdering();
         $ordered = reset($ord);
-        $this->assertEquals('id', $ordered[0]);
-        $this->assertEquals('ASC', $ordered[1]);
+        $this->assertEquals('id', $ordered->getColumnName());
+        $this->assertEquals('ASC', $ordered->getProperty());
         $ordered = next($ord);
-        $this->assertEquals('name', $ordered[0]);
-        $this->assertEquals('ASC', $ordered[1]);
+        $this->assertEquals('name', $ordered->getColumnName());
+        $this->assertEquals('ASC', $ordered->getProperty());
         $this->assertTrue(false === next($ord));
 
         $this->assertEmpty($lib->getAddressColumnName());
@@ -85,14 +85,14 @@ class OrderTest extends CommonTestClass
         // see that direction is written as default for columns ordering
         $ord = $lib->getOrdering();
         $ordered = reset($ord);
-        $this->assertEquals('id', $ordered[0]);
-        $this->assertEquals('DESC', $ordered[1]);
+        $this->assertEquals('id', $ordered->getColumnName());
+        $this->assertEquals('DESC', $ordered->getProperty());
         $ordered = next($ord);
-        $this->assertEquals('id', $ordered[0]);
-        $this->assertEquals('DESC', $ordered[1]);
+        $this->assertEquals('id', $ordered->getColumnName());
+        $this->assertEquals('DESC', $ordered->getProperty());
         $ordered = next($ord);
-        $this->assertEquals('name', $ordered[0]);
-        $this->assertEquals('DESC', $ordered[1]);
+        $this->assertEquals('name', $ordered->getColumnName());
+        $this->assertEquals('DESC', $ordered->getProperty());
         $this->assertTrue(false === next($ord));
 
         $this->assertEquals('id', $lib->getAddressColumnName());
@@ -125,11 +125,11 @@ class OrderTest extends CommonTestClass
 
         $ord = $lib->getOrdering();
         $ordered = reset($ord);
-        $this->assertEquals('id', $ordered[0]);
-        $this->assertEquals('DESC', $ordered[1]);
+        $this->assertEquals('id', $ordered->getColumnName());
+        $this->assertEquals('DESC', $ordered->getProperty());
         $ordered = next($ord);
-        $this->assertEquals('name', $ordered[0]);
-        $this->assertEquals('ASC', $ordered[1]);
+        $this->assertEquals('name', $ordered->getColumnName());
+        $this->assertEquals('ASC', $ordered->getProperty());
         $this->assertTrue(false === next($ord));
 
         $this->assertEmpty($lib->getAddressColumnName());
@@ -162,14 +162,14 @@ class OrderTest extends CommonTestClass
         // ordering by preset columns, not just that defined ones
         $ord = $lib->getOrdering();
         $ordered = reset($ord); // first from address
-        $this->assertEquals('name', $ordered[0]);
-        $this->assertEquals('DESC', $ordered[1]);
+        $this->assertEquals('name', $ordered->getColumnName());
+        $this->assertEquals('DESC', $ordered->getProperty());
         $ordered = next($ord); // then from definitions
-        $this->assertEquals('id', $ordered[0]);
-        $this->assertEquals('DESC', $ordered[1]);
+        $this->assertEquals('id', $ordered->getColumnName());
+        $this->assertEquals('DESC', $ordered->getProperty());
         $ordered = next($ord);
-        $this->assertEquals('name', $ordered[0]);
-        $this->assertEquals('ASC', $ordered[1]);
+        $this->assertEquals('name', $ordered->getColumnName());
+        $this->assertEquals('ASC', $ordered->getProperty());
         $this->assertTrue(false === next($ord));
 
         $this->assertEquals('name', $lib->getAddressColumnName());

@@ -13,10 +13,17 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class Map extends AColumn
 {
+    /** @var array<string|int, float|int|string|bool|null> */
     protected $map;
-    protected $emptyValue;
+    /** @var string */
+    protected $emptyValue = '';
 
-    public function __construct(string $sourceName, array $map, string $emptyValue = '')
+    /**
+     * @param string|int $sourceName
+     * @param array<string|int, float|int|string|bool|null> $map
+     * @param string $emptyValue
+     */
+    public function __construct($sourceName, array $map, string $emptyValue = '')
     {
         $this->sourceName = $sourceName;
         $this->map = $map;

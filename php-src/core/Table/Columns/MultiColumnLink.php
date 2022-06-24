@@ -25,7 +25,7 @@ class MultiColumnLink extends AColumn
      * @param AColumn[]  $params      another data columns
      * @param callable   $callback    function, which will process that
      */
-    public function __construct(string $sourceName, array $params, callable $callback)
+    public function __construct(string $sourceName, array $params, $callback)
     {
         $this->sourceName = $sourceName;
         $this->callback = $callback;
@@ -39,5 +39,10 @@ class MultiColumnLink extends AColumn
             $return[] = $param->getValue($source);
         }
         return call_user_func($this->callback, $return);
+    }
+
+    public function canOrder(): bool
+    {
+        return false;
     }
 }

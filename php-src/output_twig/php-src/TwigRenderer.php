@@ -15,8 +15,11 @@ use Twig\Loader\ArrayLoader;
  */
 class TwigRenderer extends Table\AOutput
 {
-    protected $templatePath = null;
+    /** @var string */
+    protected $templatePath = '';
+    /** @var ArrayLoader */
     protected $loader = null;
+    /** @var Environment */
     protected $twig = null;
 
     public function __construct(Table $table)

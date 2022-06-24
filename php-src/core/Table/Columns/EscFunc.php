@@ -18,7 +18,11 @@ class EscFunc extends AColumn
     /** @var callable */
     protected $callback;
 
-    public function __construct(string $sourceName, callable $callback)
+    /**
+     * @param string $sourceName
+     * @param callable $callback
+     */
+    public function __construct(string $sourceName, $callback)
     {
         $this->sourceName = $sourceName;
         $this->callback = $callback;

@@ -20,16 +20,23 @@ interface IColumn
     /**
      * Obtained value - formatted
      * @param IRow $source
-     * @return string
      * @throws ConnectException
+     * @return string
      */
     public function translate(IRow $source): string;
 
     /**
-     * Source key which is used in search
-     * @return string
+     * Obtained value - usually raw one
+     * @param IRow $source
+     * @return mixed
      */
-    public function getSourceName(): string;
+    public function getValue(IRow $source);
+
+    /**
+     * Source key which is used in search
+     * @return string|int
+     */
+    public function getSourceName();
 
     /**
      * Filter key which is used in filters

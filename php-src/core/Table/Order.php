@@ -7,6 +7,7 @@ use kalanis\kw_address_handler\Handler;
 use kalanis\kw_address_handler\SingleVariable;
 use kalanis\kw_connect\core\Interfaces\IOrder;
 use kalanis\kw_table\core\Interfaces\Table\IColumn;
+use kalanis\kw_table\core\Table\Internal\Attributes;
 
 
 /**
@@ -32,15 +33,15 @@ class Order implements IOrder
     protected $urlHandler = null;
     /** @var SingleVariable */
     protected $urlVariable = null;
-    /** @var string */
+    /** @var string|int */
     protected $masterColumnName = '';
     /** @var string */
     protected $masterDirection = '';
-    /** @var string */
+    /** @var string|int */
     protected $addressColumnName = '';
     /** @var string */
     protected $addressDirection = '';
-    /** @var string[][] */
+    /** @var array<int, Attributes> */
     protected $ordering = [];
 
     public function __construct(Handler $urlHandler)
@@ -72,12 +73,15 @@ class Order implements IOrder
         }
 
         if (!empty($this->addressColumnName) && $this->checkColumn($this->addressColumnName)) {
-            $this->addPrependOrdering($this->addressColumnName, $this->addressDirection);
+            $this->addPrependOrdering(strval($this->addressColumnName), $this->addressDirection);
         }
 
         $first = reset($this->ordering);
-        $this->masterColumnName = $first[0];
-        $this->masterDirection = $first[1];
+        if (false !== $first) {
+            /** @var Attributes $first */
+            $this->masterColumnName = $first->getColumnName();
+            $this->masterDirection = $first->getProperty();
+        }
 
         return $this;
     }
@@ -87,16 +91,27 @@ class Order implements IOrder
         return in_array($direction, [static::ORDER_ASC, static::ORDER_DESC]);
     }
 
-    public function checkOrder(array $ordering): bool
+    /**
+     * @param Attributes $ordering
+     * @return bool
+     */
+    public function checkOrder(Attributes $ordering): bool
     {
-        return $this->checkColumn(reset($ordering));
+        return $this->checkColumn($ordering->getColumnName());
     }
 
-    public function checkColumn(string $columnName): bool
+    /**
+     * @param string|int $columnName
+     * @return bool
+     */
+    public function checkColumn($columnName): bool
     {
         return array_key_exists($columnName, $this->columns);
     }
 
+    /**
+     * @return array<int, Attributes>
+     */
     public function getOrdering(): array
     {
         return $this->ordering;
@@ -104,22 +119,22 @@ class Order implements IOrder
 
     /**
      * Basic ordering
-     * @param string $columnName
+     * @param string|int $columnName
      * @param string $direction
      */
-    public function addOrdering(string $columnName, string $direction = self::ORDER_ASC)
+    public function addOrdering($columnName, string $direction = self::ORDER_ASC): void
     {
-        $this->ordering[] = [$columnName, $direction];
+        $this->ordering[] = new Attributes($columnName, $direction);
     }
 
     /**
      * Add more important ordering
-     * @param string $columnName
+     * @param string|int $columnName
      * @param string $direction
      */
-    public function addPrependOrdering(string $columnName, string $direction = self::ORDER_ASC)
+    public function addPrependOrdering($columnName, string $direction = self::ORDER_ASC): void
     {
-        array_unshift($this->ordering, [$columnName, $direction]);
+        array_unshift($this->ordering, new Attributes($columnName, $direction));
     }
 
     public function addColumn(IColumn $column): self
@@ -134,7 +149,7 @@ class Order implements IOrder
             return null;
         }
 
-        $this->urlVariable->setVariableName(static::PARAM_COLUMN)->setVariableValue($column->getSourceName());
+        $this->urlVariable->setVariableName(static::PARAM_COLUMN)->setVariableValue(strval($column->getSourceName()));
         $this->urlVariable->setVariableName(static::PARAM_DIRECTION)->setVariableValue($this->getActiveDirection($column));
         return $this->urlHandler->getAddress();
     }
@@ -168,7 +183,10 @@ class Order implements IOrder
         return $column->getSourceName() == $this->masterColumnName;
     }
 
-    public function getMasterColumnName(): string
+    /**
+     * @return int|string
+     */
+    public function getMasterColumnName()
     {
         return $this->masterColumnName;
     }
@@ -178,7 +196,10 @@ class Order implements IOrder
         return $this->masterDirection;
     }
 
-    public function getAddressColumnName(): string
+    /**
+     * @return int|string
+     */
+    public function getAddressColumnName()
     {
         return $this->addressColumnName;
     }

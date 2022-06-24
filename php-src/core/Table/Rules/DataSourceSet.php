@@ -7,6 +7,7 @@ use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IConnector;
 use kalanis\kw_connect\core\Interfaces\IRow;
 use kalanis\kw_table\core\Interfaces\Table\IRule;
+use kalanis\kw_table\core\Table\Internal\Attributes;
 use kalanis\kw_table\core\TableException;
 
 
@@ -19,34 +20,44 @@ class DataSourceSet implements IRule
 {
     /** @var IConnector */
     protected $dataSource = null;
-    /** @var mixed[string, IRule] key on orm , rule itself */
+    /** @var array<Attributes> */
     protected $rules = [];
+    /** @var bool */
     protected $all = true;
 
-    public function setDataSource(IConnector $dataSource)
+    public function setDataSource(IConnector $dataSource): self
     {
         $this->dataSource = $dataSource;
         return $this;
     }
 
-    public function addRule(IRule $rule, $key)
+    /**
+     * @param IRule $rule
+     * @param string|int $key
+     * @return $this
+     */
+    public function addRule(IRule $rule, $key): self
     {
-        $this->rules[] = [$key, $rule];
+        $this->rules[] = new Attributes($key, '', $rule);
         return $this;
     }
 
-    public function allMustPass($all = true)
+    /**
+     * @param bool $all
+     * @return $this
+     */
+    public function allMustPass($all = true): self
     {
-        $this->all = (bool)$all;
+        $this->all = (bool) $all;
         return $this;
     }
 
     /**
      * Check each item
      * @param string|int $value key to get data object in source
-     * @return bool
-     * @throws TableException
      * @throws ConnectException
+     * @throws TableException
+     * @return bool
      *
      * It is not defined what came from the data source, so for that it has check
      */
@@ -55,9 +66,9 @@ class DataSourceSet implements IRule
         $trueCount = 0;
         $data = $this->dataSource->getByKey($value);
 
-        foreach ($this->rules as list($key, $rule)) {
-            /** @var IRule $rule */
-            if ($rule->validate($this->valueToCheck($data, $key))) {
+        foreach ($this->rules as $attr) {
+            /** @var Attributes $attr */
+            if ($attr->getCondition()->validate($this->valueToCheck($data, $attr->getColumnName()))) {
                 $trueCount++;
             }
         }
@@ -76,8 +87,8 @@ class DataSourceSet implements IRule
     /**
      * @param mixed $data
      * @param string|int $key
-     * @return mixed|null
      * @throws ConnectException
+     * @return mixed|null
      */
     protected function valueToCheck($data, $key)
     {

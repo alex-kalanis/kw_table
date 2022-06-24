@@ -4,6 +4,7 @@ namespace kalanis\kw_table\output_kw;
 
 
 use kalanis\kw_connect\core\ConnectException;
+use kalanis\kw_forms\Exceptions\RenderException;
 use kalanis\kw_table\core\Table;
 use kalanis\kw_table\core\TableException;
 
@@ -43,9 +44,10 @@ class KwRenderer extends Table\AOutput
     }
 
     /**
-     * @return string
      * @throws ConnectException
+     * @throws RenderException
      * @throws TableException
+     * @return string
      */
     public function render(): string
     {
@@ -75,6 +77,9 @@ class KwRenderer extends Table\AOutput
         }
     }
 
+    /**
+     * @throws RenderException
+     */
     protected function renderFilter(): void
     {
         $headerFilter = $this->table->getHeaderFilter();
@@ -98,13 +103,15 @@ class KwRenderer extends Table\AOutput
     }
 
     /**
-     * @return string
      * @throws ConnectException
+     * @throws TableException
+     * @return string
      */
     protected function getCells(): string
     {
         $cell = [];
         foreach ($this->table->getTableData() as $row) {
+            /** @var Table\Internal\Row $row */
             $this->templateRow->reset()->setData($row->getCellStyle($row->getSource()));
             foreach ($row as $column) {
                 /** @var Table\Columns\AColumn $column */
@@ -137,8 +144,9 @@ class KwRenderer extends Table\AOutput
     }
 
     /**
-     * @return string
+     * @throws RenderException
      * @throws TableException
+     * @return string
      */
     protected function getHeadFilter(): string
     {
@@ -157,8 +165,9 @@ class KwRenderer extends Table\AOutput
     }
 
     /**
-     * @return string
+     * @throws RenderException
      * @throws TableException
+     * @return string
      */
     protected function getFootFilter(): string
     {

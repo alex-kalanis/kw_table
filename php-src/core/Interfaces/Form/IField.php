@@ -26,7 +26,7 @@ interface IField
 
     /**
      * CSS styles for each input
-     * @param array $attributes
+     * @param array<string, string> $attributes
      */
     public function setAttributes(array $attributes): void;
 

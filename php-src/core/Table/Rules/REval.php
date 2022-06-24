@@ -16,9 +16,9 @@ class REval extends ARule implements IRule
 {
     public function validate($value): bool
     {
-        if (preg_match('/([^\s]+)\s(.*)/i', $this->base, $matches)) {
+        if (preg_match('/([^\s]+)\s(.*)/i', strval($this->base), $matches)) {
             return $this->compare($value, $matches[1], $matches[2]);
-        } elseif(preg_match('/(<|>|<=|>=|=|==)(.*)/i', $this->base, $matches)) {
+        } elseif(preg_match('/(<|>|<=|>=|=|==)(.*)/i', strval($this->base), $matches)) {
             return $this->compare($value, $matches[1], $matches[2]);
         } else {
             throw new TableException('Unrecognized expression pattern');
@@ -29,25 +29,25 @@ class REval extends ARule implements IRule
      * @param mixed $value
      * @param string $expression
      * @param string $against
-     * @return bool
      * @throws TableException
+     * @return bool
      */
     protected function compare($value, $expression, $against): bool
     {
         switch ($expression) {
-            case "<":
+            case '<':
                 return $value < $against;
-            case ">":
+            case '>':
                 return $value > $against;
-            case "<=":
+            case '<=':
                 return $value <= $against;
-            case ">=":
+            case '>=':
                 return $value >= $against;
-            case "=":
+            case '=':
                 return $value == $against;
-            case "!=":
+            case '!=':
                 return $value != $against;
-            case "==":
+            case '==':
                 return $value === $against;
             default:
                 throw new TableException('Unrecognized expression sign');

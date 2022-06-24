@@ -14,11 +14,12 @@ use kalanis\kw_table\core\Interfaces\Table\IFilterRender;
  */
 class InputCallback extends AField implements IFilterRender
 {
+    /** @var callable */
     protected $callback = null;
 
     /**
      * @param callable $callback
-     * @param string[] $attributes
+     * @param array<string, string> $attributes
      */
     public function __construct($callback, array $attributes = [])
     {

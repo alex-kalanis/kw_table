@@ -13,6 +13,7 @@ use kalanis\kw_table\core\Table;
  */
 abstract class AOutput
 {
+    /** @var Table */
     protected $table = null;
 
     public function __construct(Table $table)

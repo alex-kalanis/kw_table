@@ -19,7 +19,7 @@ class SubTabled extends Table
     /** @var Table\Rows\TableRow[] */
     private $rowCallback = [];
 
-    final public function setOutput(Table\AOutput $output)
+    final public function setOutput(Table\AOutput $output): void
     {
         // cannot be set
         $this->output = new KwRenderer($this);
@@ -76,7 +76,7 @@ class SubTabled extends Table
      * @param callable $function
      * @param string[] $arguments styles
      */
-    protected function addRowCallback($function, array $arguments = [])
+    protected function addRowCallback($function, array $arguments = []): void
     {
         $this->rowCallback[] = new Table\Rows\TableRow($function, $arguments);
     }

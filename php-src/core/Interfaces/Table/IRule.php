@@ -15,9 +15,9 @@ interface IRule
 {
     /**
      * @param string $value
-     * @return bool
      * @throws TableException
+     * @return bool
      * @see \kalanis\kw_table\core\Table\AStyle::isStyleApplied
      */
-    public function validate(string $value): bool;
+    public function validate($value): bool;
 }

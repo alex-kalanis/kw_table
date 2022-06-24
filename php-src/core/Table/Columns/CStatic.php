@@ -13,7 +13,9 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class CStatic extends AColumn
 {
+    /** @var string */
     private $value = '';
+    /** @var string */
     private $class = '';
 
     public function __construct(string $value, string $class = '', string $sourceName = '')
@@ -28,7 +30,7 @@ class CStatic extends AColumn
         return !empty($this->class) ? $this->returnWithClass() : $this->value;
     }
 
-    private function returnWithClass()
+    private function returnWithClass(): string
     {
         return '<span class="' . $this->class . '">' . $this->value . '</span>';
     }

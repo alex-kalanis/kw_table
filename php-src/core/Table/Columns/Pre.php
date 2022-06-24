@@ -22,6 +22,6 @@ class Pre extends AColumn
 
     public function getValue(IRow $source)
     {
-        return nl2br($this->valueEscape(parent::getValue($source)));
+        return nl2br(strval($this->valueEscape(parent::getValue($source))));
     }
 }

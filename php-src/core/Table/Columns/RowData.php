@@ -13,16 +13,18 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class RowData extends AColumn
 {
+    /** @var callable */
     protected $callback;
+    /** @var string[] */
     protected $columns;
 
     /**
      * @param string[] $columns
      * @param callable $callback
      */
-    public function __construct(array $columns, callable $callback)
+    public function __construct(array $columns, $callback)
     {
-        $this->sourceName = reset($columns);
+        $this->sourceName = false !== ($val = reset($columns)) ? $val : '';
         $this->columns = $columns;
         $this->callback = $callback;
     }

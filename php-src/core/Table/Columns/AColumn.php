@@ -18,9 +18,9 @@ use kalanis\kw_table\core\Table\TSourceName;
 abstract class AColumn extends AStyle implements IColumn
 {
     use TSourceName;
+    use TWrappers;
 
-    protected $source;
-    /** @var string */
+    /** @var string|int */
     protected $sourceName = '';
     /** @var string */
     protected $filterName = '';
@@ -53,19 +53,19 @@ abstract class AColumn extends AStyle implements IColumn
 
     public function translate(IRow $source): string
     {
-        return $this->formatData($this->getValue($source));
+        return $this->formatData(strval($this->getValue($source)));
     }
 
     public function getFilterName(): string
     {
-        return empty($this->filterName) ? $this->getSourceName() : $this->filterName ;
+        return empty($this->filterName) ? strval($this->getSourceName()) : $this->filterName ;
     }
 
     /**
      * Returns value from row
      * @param IRow $source
-     * @return mixed|null
      * @throws ConnectException
+     * @return string|int|float|bool|null
      */
     public function getValue(IRow $source)
     {
@@ -74,11 +74,11 @@ abstract class AColumn extends AStyle implements IColumn
 
     /**
      * @param IRow $source
-     * @param string $overrideProperty
-     * @return mixed
+     * @param string|int $overrideProperty
      * @throws ConnectException
+     * @return string|int|float|bool|null
      */
-    public function getOverrideValue(IRow $source, string $overrideProperty)
+    public function getOverrideValue(IRow $source, $overrideProperty)
     {
         return $this->value($source, $overrideProperty);
     }
@@ -86,45 +86,12 @@ abstract class AColumn extends AStyle implements IColumn
     /**
      * @param IRow $source
      * @param string|int $property
-     * @return mixed
      * @throws ConnectException
+     * @return string|int|float|bool
      */
     protected function value(IRow $source, $property)
     {
         return $source->getValue($property);
-    }
-
-    /**
-     * Add wrap tag
-     * @param        $htmlTag
-     * @param string $attributes
-     * @return $this
-     */
-    public function addWrapper($htmlTag, $attributes = '')
-    {
-        $this->wrappers[$htmlTag] = $attributes;
-        return $this;
-    }
-
-    /**
-     * Format data into tag with attributes
-     * @param string $data
-     * @return string
-     */
-    protected function formatData($data)
-    {
-        foreach ($this->wrappers as $tag => $attribute) {
-            if (is_array($attribute)) {
-                $fill = '';
-                foreach ($attribute as $k => $v) {
-                    $fill .= sprintf('%s="%s"', $k, $v);
-                }
-            } else {
-                $fill = $attribute;
-            }
-            $data = sprintf('<%s %s>%s</%s>', $tag, $fill, $data, $tag);
-        }
-        return $data;
     }
 
     public function canOrder(): bool

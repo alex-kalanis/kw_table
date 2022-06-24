@@ -20,7 +20,7 @@ class KwFilter implements IFilterForm
     protected $form;
     /** @var bool */
     protected $formProcess = false;
-    /** @var string[] */
+    /** @var array<string, string|int|float|bool|null> */
     protected $formData = [];
 
     public function __construct(BaseForm $form)

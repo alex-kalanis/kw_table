@@ -1,0 +1,40 @@
+parameters:
+	level: 6
+	paths:
+		- 'php-src/core'
+		- 'php-src/form_kw'
+		- 'php-src/kw'
+		- 'php-src/output_cli'
+		- 'php-src/output_direct/php-src'
+		- 'php-src/output_json'
+		- 'php-src/output_kw/php-src'
+	scanFiles:
+		- 'php-tests/CommonTestClass.php'
+#	scanDirectories:
+#		- 'php-tests/discard'
+#		- 'php-tests/discard/nette/application/src'
+#		- 'php-tests/discard/nette/forms/src'
+	excludePaths:
+		- 'php-tests/_autoload.php'
+		- 'php-tests/_bootstrap.php'
+		- 'php-tests/CommonTestClass.php'
+	bootstrapFiles:
+		- 'php-tests/_bootstrap.php'
+	checkGenericClassInNonGenericObjectType: false
+#	ignoreErrors:
+#		-
+#			message: '#Call to an undefined method kalanis\\kw_templates\\Interfaces\\IHtmlElement\:\:getKey\(\)#'
+#			path: 'php-src/Controls/Radio.php'
+#			# quality WTF - already covered in that "instaceof" check
+#		-
+#			message: '#Method kalanis\\kw_forms\\Controls\\Radio\:\:set\(\) has parameter#'
+#			path: 'php-src/Controls/Radio.php'
+#			# quality WTF - multiple types
+#		-
+#			message: '#Method kalanis\\kw_forms\\Controls\\AnyControl\:\:getValues\(\) should return#'
+#			path: 'php-src/Controls/TSubControls.php'
+#			# return IFileEntry which is usually not possible to store
+#		-
+#			message: '#Method kalanis\\kw_forms\\Form\:\:getValues\(\) should return#'
+#			path: 'php-src/Controls/TSubControls.php'
+#			# return IFileEntry which is usually not possible to store
