@@ -64,9 +64,9 @@ class BootstrapRange extends Range
         Container::extensionMethod('addBootstrapRange', function ($container, $name, $label = null, $maxLength = null) use ($inputFormat, $searchFormat) {
             $picker = $container[$name] = new BootstrapRange($name, $label, $maxLength);
 
-            if ($inputFormat !== null)
+            if (null !== $inputFormat)
                 $picker->setInputFormat($inputFormat);
-            if ($searchFormat !== null)
+            if (null !== $searchFormat)
                 $picker->setSearchFormat($searchFormat);
 
             return $picker;

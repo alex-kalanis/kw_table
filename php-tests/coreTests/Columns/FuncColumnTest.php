@@ -38,7 +38,7 @@ class FuncColumnTest extends CommonTestClass
     {
         $first = reset($params);
         $next = next($params);
-        $next = ($next !== false) ? $next : '';
+        $next = (false !== $next) ? $next : '';
         return '>==> ' . strval($first) . strval($next);
     }
 }

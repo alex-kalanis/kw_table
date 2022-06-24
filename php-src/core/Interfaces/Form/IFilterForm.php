@@ -49,23 +49,23 @@ interface IFilterForm
 
     /**
      * Beginning of form
-     * @return string
      * @throws RenderException
+     * @return string
      */
     public function renderStart(): string;
 
     /**
      * End of form
-     * @return string
      * @throws RenderException
+     * @return string
      */
     public function renderEnd(): string;
 
     /**
      * Single form entry
      * @param string $alias
-     * @return string
      * @throws RenderException
+     * @return string
      */
     public function renderField(string $alias): string;
 }

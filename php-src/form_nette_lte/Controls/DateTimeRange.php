@@ -126,9 +126,8 @@ class DateTimeRange extends TextInput
 
     public function setValue($value)
     {
-        $startValue = $endValue = null;
         $exploded = explode('-', $value, 2);
-        if (sizeof($exploded) > 1) {
+        if (1 < count($exploded)) {
             $this->startValue = new \DateTime(trim($exploded[0]));
             $this->endValue = new \DateTime(trim($exploded[1]));
         }

@@ -102,8 +102,8 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
 
     /**
      * @param MultipleValue $field
-     * @return string
      * @throws RenderException
+     * @return string
      */
     public function renderField(MultipleValue $field): string
     {

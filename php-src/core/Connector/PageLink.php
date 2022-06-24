@@ -78,7 +78,7 @@ class PageLink implements ILink
 
     public function getPageLink(): string
     {
-        $this->urlVariable->setVariableValue((string)$this->page);
-        return (string)$this->urlHandler->getAddress();
+        $this->urlVariable->setVariableValue(strval($this->page));
+        return strval($this->urlHandler->getAddress());
     }
 }

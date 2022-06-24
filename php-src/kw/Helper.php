@@ -39,8 +39,8 @@ class Helper
     /**
      * @param InputInterface\IVariables $inputs
      * @param string $alias
-     * @return $this
      * @throws FormsException
+     * @return $this
      */
     public function fillKwPage(InputInterface\IVariables $inputs, string $alias = 'filter'): self
     {
@@ -69,8 +69,8 @@ class Helper
     /**
      * @param InputInterface\IVariables $inputs
      * @param string $alias
-     * @return $this
      * @throws FormsException
+     * @return $this
      */
     public function fillKwCli(InputInterface\IVariables $inputs, string $alias = 'filter'): self
     {
@@ -99,8 +99,8 @@ class Helper
     /**
      * @param InputInterface\IVariables $inputs
      * @param string $alias
-     * @return $this
      * @throws FormsException
+     * @return $this
      */
     public function fillKwJson(InputInterface\IVariables $inputs, string $alias = 'filter'): self
     {

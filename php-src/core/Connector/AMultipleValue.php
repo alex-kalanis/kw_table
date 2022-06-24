@@ -48,8 +48,8 @@ abstract class AMultipleValue
     abstract public function add(): void;
 
     /**
-     * @return string
      * @throws RenderException
+     * @return string
      */
     abstract public function renderContent(): string;
 }

@@ -134,9 +134,9 @@ class DateRange extends TextInput
         Container::extensionMethod('addTbDateRange', function ($container, $name, $label = null, $maxLength = null) use ($inputFormat, $searchFormat) {
             $picker = $container[$name] = new DateRange($name, $label, $maxLength);
 
-            if ($inputFormat !== null)
+            if (null !== $inputFormat)
                 $picker->setInputFormat($inputFormat);
-            if ($searchFormat !== null)
+            if (null !== $searchFormat)
                 $picker->setSearchFormat($searchFormat);
 
             return $picker;

@@ -115,9 +115,9 @@ class Range extends TextInput
         Container::extensionMethod('addRange', function ($container, $name, $label = null, $maxLength = null) use ($inputFormat, $searchFormat) {
             $picker = $container[$name] = new Range($name, $label, $maxLength);
 
-            if ($inputFormat !== null)
+            if (null !== $inputFormat)
                 $picker->setInputFormat($inputFormat);
-            if ($searchFormat !== null)
+            if (null !== $searchFormat)
                 $picker->setSearchFormat($searchFormat);
 
             return $picker;

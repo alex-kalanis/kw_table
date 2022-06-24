@@ -69,7 +69,7 @@ class CliRenderer extends Table\AOutput
 
     protected function withOrderDirection(Table\Order $order, Interfaces\Table\IColumn $column): string
     {
-        return $order->getActiveDirection($column) == Table\Order::ORDER_ASC
+        return Table\Order::ORDER_ASC == $order->getActiveDirection($column)
             ? ($order->isActive($column) ? '*^' : 'v')
             : ($order->isActive($column) ? '*v' : '^')
         ;

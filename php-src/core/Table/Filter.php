@@ -39,7 +39,7 @@ class Filter
 
     public function hasValue(IColumn $column): bool
     {
-        return isset($this->columnsValues[$column->getSourceName()]) && $this->columnsValues[$column->getSourceName()] !== IFilterType::EMPTY_FILTER;
+        return isset($this->columnsValues[$column->getSourceName()]) && IFilterType::EMPTY_FILTER !== $this->columnsValues[$column->getSourceName()];
     }
 
     /**
@@ -92,8 +92,8 @@ class Filter
     }
 
     /**
-     * @return string
      * @throws RenderException
+     * @return string
      */
     public function renderStart(): string
     {
@@ -101,8 +101,8 @@ class Filter
     }
 
     /**
-     * @return string
      * @throws RenderException
+     * @return string
      */
     public function renderEnd(): string
     {

@@ -67,10 +67,10 @@ class BootstrapDateRange extends DateRange
         Container::extensionMethod('addBootstrapDateRange', function ($container, $name, $label = null, $maxLength = null) use ($inputFormat, $searchFormat) {
             $picker = $container[$name] = new BootstrapDateRange($name, $label, $maxLength);
 
-            if ($inputFormat !== null) {
+            if (null !== $inputFormat) {
                 $picker->setInputFormat($inputFormat);
             }
-            if ($searchFormat !== null) {
+            if (null !== $searchFormat) {
                 $picker->setSearchFormat($searchFormat);
             }
 
