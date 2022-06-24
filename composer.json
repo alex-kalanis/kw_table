@@ -21,7 +21,6 @@
     "require-dev": {
         "ext-json": "*",
         "alex-kalanis/kw_clipr": ">=1.0",
-        "nette/application": "~2",
         "latte/latte": ">=2.0",
         "twig/twig": "~3.4",
         "jenssegers/blade": "~1.4",
