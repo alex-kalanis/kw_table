@@ -1,6 +1,6 @@
 <?php
 
-namespace kalanis\kw_table\form_nette_lte\Controls;
+namespace kalanis\kw_table\form_nette_lte\Fields;
 
 
 use kalanis\kw_connect\core\Interfaces\IFilterFactory;
