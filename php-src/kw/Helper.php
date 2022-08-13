@@ -68,11 +68,12 @@ class Helper
 
     /**
      * @param InputInterface\IFiltered $inputs
+     * @param int $currentPage
      * @param string $alias
      * @throws FormsException
      * @return $this
      */
-    public function fillKwCli(InputInterface\IFiltered $inputs, string $alias = 'filter'): self
+    public function fillKwCli(InputInterface\IFiltered $inputs, ?int $currentPage = null, string $alias = 'filter'): self
     {
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
@@ -88,6 +89,9 @@ class Helper
         // pager
         $pager = new BasicPager();
         $pageLink = new PageLink(new Handler(new Sources\Inputs($inputs)), $pager);
+        if (!is_null($currentPage)) {
+            $pageLink->setPageNumber($currentPage);
+        }
         $pager->setActualPage($pageLink->getPageNumber());
         $this->table->addPager(new Render\CliPager(new Positions($pager)));
 
