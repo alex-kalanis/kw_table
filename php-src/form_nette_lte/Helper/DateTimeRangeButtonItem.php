@@ -3,7 +3,7 @@
 namespace kalanis\kw_table\form_nette_lte\Helper;
 
 
-class DateTimeRangeButton
+class DateTimeRangeButtonItem
 {
     public $text;
     public $startJs;

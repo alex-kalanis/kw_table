@@ -13,7 +13,7 @@
         "alex-kalanis/kw_address_handler": ">=2.0",
         "alex-kalanis/kw_connect": ">=3.2",
         "alex-kalanis/kw_forms": ">=2.0",
-        "alex-kalanis/kw_input": ">=2.0",
+        "alex-kalanis/kw_input": ">=2.3",
         "alex-kalanis/kw_paging": ">=1.0",
         "ext-mbstring": "*",
         "php": ">=7.2.0"

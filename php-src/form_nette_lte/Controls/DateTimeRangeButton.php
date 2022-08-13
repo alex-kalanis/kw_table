@@ -3,7 +3,7 @@
 namespace kalanis\kw_table\form_nette_lte\Controls;
 
 
-use kalanis\kw_table\form_nette_lte\Helper\DateTimeRangeButton as DateTimeRangeButtonHelper;
+use kalanis\kw_table\form_nette_lte\Helper\DateTimeRangeButtonItem;
 use Nette\Forms\Container;
 use Nette\Utils\Html;
 use Nette\Utils\DateTime;
@@ -26,19 +26,19 @@ class DateTimeRangeButton extends DateTimeRange
     }
 
     /**
-     * @return DateTimeRangeButtonHelper[]
+     * @return DateTimeRangeButtonItem[]
      */
     public static function getRangeTimes()
     {
         return [
-            _('All')          => new DateTimeRangeButtonHelper(_('All'), 'moment().subtract(1, \'days\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().add(1, \'days\').hour(23).minute(55).seconds(0).millisecond(0)', null, null),
-            _('Next 7 days')  => new DateTimeRangeButtonHelper(_('Next 7 days'), 'moment().hour(0).minute(0).seconds(0).millisecond(0)', 'moment().add(6, \'days\').hour(23).minute(55).seconds(0).millisecond(0)', 'today', '+6days'),
-            _('Today')        => new DateTimeRangeButtonHelper(_('Today'), 'moment().hour(0).minute(0).seconds(0).millisecond(0)', 'moment().hour(23).minute(55).seconds(0).millisecond(0)', 'today', 'today'),
-            _('Yesterday')    => new DateTimeRangeButtonHelper(_('Yesterday'), 'moment().subtract(1, \'days\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().subtract(1, \'days\').hour(23).minute(55).seconds(0).millisecond(0)', 'yesterday', 'yesterday'),
-            _('Last 7 days')  => new DateTimeRangeButtonHelper(_('Last 7 days'), 'moment().hour(0).minute(0).seconds(0).millisecond(0).subtract(6, \'days\')', 'moment().hour(23).minute(55).seconds(0).millisecond(0)', '-7days', 'today'),
-            _('Last 30 days') => new DateTimeRangeButtonHelper(_('Last 30 days'), 'moment().hour(0).minute(0).seconds(0).millisecond(0).subtract(29, \'days\')', 'moment().hour(23).minute(55).seconds(0).millisecond(0)', '-30days', 'today'),
-            _('This month')   => new DateTimeRangeButtonHelper(_('This month'), 'moment().startOf(\'month\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().endOf(\'month\').hour(23).minute(55).seconds(0).millisecond(0)', 'first day of this month', 'last day of this  month'),
-            _('Last month')   => new DateTimeRangeButtonHelper(_('Last month'), 'moment().subtract(1, \'month\').startOf(\'month\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().subtract(1, \'month\').endOf(\'month\').hour(23).minute(55).seconds(0).millisecond(0)', 'first day of last month', 'last day of last month'),
+            _('All')          => new DateTimeRangeButtonItem(_('All'), 'moment().subtract(1, \'days\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().add(1, \'days\').hour(23).minute(55).seconds(0).millisecond(0)', null, null),
+            _('Next 7 days')  => new DateTimeRangeButtonItem(_('Next 7 days'), 'moment().hour(0).minute(0).seconds(0).millisecond(0)', 'moment().add(6, \'days\').hour(23).minute(55).seconds(0).millisecond(0)', 'today', '+6days'),
+            _('Today')        => new DateTimeRangeButtonItem(_('Today'), 'moment().hour(0).minute(0).seconds(0).millisecond(0)', 'moment().hour(23).minute(55).seconds(0).millisecond(0)', 'today', 'today'),
+            _('Yesterday')    => new DateTimeRangeButtonItem(_('Yesterday'), 'moment().subtract(1, \'days\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().subtract(1, \'days\').hour(23).minute(55).seconds(0).millisecond(0)', 'yesterday', 'yesterday'),
+            _('Last 7 days')  => new DateTimeRangeButtonItem(_('Last 7 days'), 'moment().hour(0).minute(0).seconds(0).millisecond(0).subtract(6, \'days\')', 'moment().hour(23).minute(55).seconds(0).millisecond(0)', '-7days', 'today'),
+            _('Last 30 days') => new DateTimeRangeButtonItem(_('Last 30 days'), 'moment().hour(0).minute(0).seconds(0).millisecond(0).subtract(29, \'days\')', 'moment().hour(23).minute(55).seconds(0).millisecond(0)', '-30days', 'today'),
+            _('This month')   => new DateTimeRangeButtonItem(_('This month'), 'moment().startOf(\'month\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().endOf(\'month\').hour(23).minute(55).seconds(0).millisecond(0)', 'first day of this month', 'last day of this  month'),
+            _('Last month')   => new DateTimeRangeButtonItem(_('Last month'), 'moment().subtract(1, \'month\').startOf(\'month\').hour(0).minute(0).seconds(0).millisecond(0)', 'moment().subtract(1, \'month\').endOf(\'month\').hour(23).minute(55).seconds(0).millisecond(0)', 'first day of last month', 'last day of last month'),
         ];
     }
 
@@ -118,12 +118,12 @@ class DateTimeRangeButton extends DateTimeRange
         $button = Html::el('button', ['class' => "btn btn-default pull-right", 'type' => "button", 'id' => $this->uniqueId]);
         $span = $this->span = Html::el('span');
 //        $iCalendar = Html::el('i', ['class' => "fa fa-calendar"]);
-        $spanText = _('Vše');
+        $spanText = _('All');
         $iCaret = Html::el('i', ['class' => "fa fa-caret-down"]);
 
         $rangeTimes = static::getRangeTimes();
-        $addedScriptText = '$(\'#' . $this->uniqueId . '\').data(\'daterangepicker\').setStartDate(' . $rangeTimes[_('Vše')]->startJs . ');
-							$(\'#' . $this->uniqueId . '\').data(\'daterangepicker\').setEndDate(' . $rangeTimes[_('Vše')]->endJs . ');';
+        $addedScriptText = '$(\'#' . $this->uniqueId . '\').data(\'daterangepicker\').setStartDate(' . $rangeTimes[_('All')]->startJs . ');
+							$(\'#' . $this->uniqueId . '\').data(\'daterangepicker\').setEndDate(' . $rangeTimes[_('All')]->endJs . ');';
         $script = $this->setScriptText($addedScriptText);
 
         $input = $this->input = Html::el('input', [

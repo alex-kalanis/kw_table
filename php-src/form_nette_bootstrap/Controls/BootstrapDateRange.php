@@ -23,7 +23,7 @@ class BootstrapDateRange extends DateRange
         $start = $this->start = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',
-            'placeholder' => _("From"),
+            'placeholder' => _('From'),
             'id'          => $name . 'StartId',
             'class'       => 'form-control cleanable listingDateTimePicker',
             'aria-label'  => _('Time from')
@@ -31,7 +31,7 @@ class BootstrapDateRange extends DateRange
         $end = $this->end = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',
-            'placeholder' => _("To"),
+            'placeholder' => _('To'),
             'id'          => $name . 'EndId',
             'class'       => 'form-control cleanable listingDateTimePicker',
             'aria-label'  => _('Time to')

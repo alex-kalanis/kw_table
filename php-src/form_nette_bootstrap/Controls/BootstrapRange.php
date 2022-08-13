@@ -19,7 +19,7 @@ class BootstrapRange extends Range
         $start = $this->start = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',
-            'placeholder' => _("From"),
+            'placeholder' => _('From'),
             'id'          => $name . 'StartId',
             'class'       => 'form-control cleanable',
             'aria-label'  => _('Time from')
@@ -27,7 +27,7 @@ class BootstrapRange extends Range
         $end = $this->end = Html::el('input', [
             'type'        => 'text',
             'name'        => $name . '[]',
-            'placeholder' => _("To"),
+            'placeholder' => _('To'),
             'id'          => $name . 'StartId',
             'class'       => 'form-control cleanable',
             'aria-label'  => _('Time to')

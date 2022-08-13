@@ -37,12 +37,12 @@ class Helper
     }
 
     /**
-     * @param InputInterface\IVariables $inputs
+     * @param InputInterface\IFiltered $inputs
      * @param string $alias
      * @throws FormsException
      * @return $this
      */
-    public function fillKwPage(InputInterface\IVariables $inputs, string $alias = 'filter'): self
+    public function fillKwPage(InputInterface\IFiltered $inputs, string $alias = 'filter'): self
     {
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
@@ -67,12 +67,12 @@ class Helper
     }
 
     /**
-     * @param InputInterface\IVariables $inputs
+     * @param InputInterface\IFiltered $inputs
      * @param string $alias
      * @throws FormsException
      * @return $this
      */
-    public function fillKwCli(InputInterface\IVariables $inputs, string $alias = 'filter'): self
+    public function fillKwCli(InputInterface\IFiltered $inputs, string $alias = 'filter'): self
     {
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
@@ -97,12 +97,12 @@ class Helper
     }
 
     /**
-     * @param InputInterface\IVariables $inputs
+     * @param InputInterface\IFiltered $inputs
      * @param string $alias
      * @throws FormsException
      * @return $this
      */
-    public function fillKwJson(InputInterface\IVariables $inputs, string $alias = 'filter'): self
+    public function fillKwJson(InputInterface\IFiltered $inputs, string $alias = 'filter'): self
     {
         // filter form
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
