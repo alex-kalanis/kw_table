@@ -23,10 +23,12 @@ class KwFilter implements IFilterForm
     /** @var array<string, string|int|float|bool|null> */
     protected $formData = [];
 
-    public function __construct(BaseForm $form)
+    public function __construct(BaseForm $form, bool $useApplyCheck = true)
     {
         $form->setMethod('get');
-        $form->addHidden('apply' . ucfirst(strval($form->getAlias())), 'apply');
+        if ($useApplyCheck) {
+            $form->addHidden('apply' . ucfirst(strval($form->getAlias())), 'apply');
+        }
         $this->form = $form;
     }
 

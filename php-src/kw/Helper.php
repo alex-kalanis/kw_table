@@ -78,7 +78,8 @@ class Helper
         $inputVariables = new Adapters\InputVarsAdapter($inputs);
         $inputFiles = new Adapters\InputFilesAdapter($inputs);
         $form = new Form($alias);
-        $this->table->addHeaderFilter(new KwFilter($form));
+        $form->setMethod(InputInterface\IEntry::SOURCE_CLI);
+        $this->table->addHeaderFilter(new KwFilter($form, false));
         $form->setInputs($inputVariables, $inputFiles);
 
         // order links
