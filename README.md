@@ -45,6 +45,5 @@ When you have enough experiences, then you can make your own extensions of provi
 Especially filtering forms are really complicated - so try them first as normal, external
 libraries for generating forms. Used mapper is also something difficult to grasp.
 
-On the other side - it's possible with a few changes to render whole table into CLI or Json.
-As it's shown in Helper. Cli version uses kw_clipr/PrettyTable, so the result is in Markdown.
-
+On the other side - it's possible with a few changes to render the whole table into CLI or Json.
+As it's shown in Helper. Cli version uses kw_clipr/PrettyTable, so the result is in the Markdown.
