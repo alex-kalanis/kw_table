@@ -8,7 +8,7 @@
 [![License](https://poser.pugx.org/alex-kalanis/kw_table/license.svg?v=1)](https://packagist.org/packages/alex-kalanis/kw_table)
 [![Code Coverage](https://scrutinizer-ci.com/g/alex-kalanis/kw_table/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/alex-kalanis/kw_table/?branch=master)
 
-Table engine for managing entries from datasources.
+Table engine for managing entries from datasources. Can use many input and output styles.
 
 ## PHP Installation
 

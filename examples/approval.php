@@ -23,8 +23,6 @@ class FileApproval
 
     /**
      * @param \kalanis\kw_mapper\Search\Search $search
-     * @throws \kalanis\kw_mapper\MapperException
-     * @throws \kalanis\kw_connect\core\ConnectException
      * @throws \kalanis\kw_table\core\TableException
      */
     public function composeTable($search)
