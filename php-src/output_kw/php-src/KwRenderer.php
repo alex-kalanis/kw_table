@@ -65,10 +65,12 @@ class KwRenderer extends Table\AOutput
 
     protected function renderPagers(): void
     {
-        if (empty($this->table->getPager())) {
+        try {
+            $paging = $this->table->getPager();
+        } catch (TableException $ex) {
             return;
         }
-        $paging = $this->table->getPager();
+
         if ($this->table->showPagerOnHead()) {
             $this->templateBase->addPagerHead($paging->render());
         }
@@ -127,7 +129,7 @@ class KwRenderer extends Table\AOutput
 
     protected function getHeader(): string
     {
-        $order = $this->table->getOrder();
+        $order = $this->table->getOrderOrNull();
         $this->templateRow->reset()->setData();
         foreach ($this->table->getColumns() as $column) {
             if ($order && $order->isInOrder($column)) {

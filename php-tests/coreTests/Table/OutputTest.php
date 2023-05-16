@@ -42,6 +42,19 @@ class OutputTest extends CommonTestClass
         $this->expectExceptionMessage('Need to set output first!');
         $lib->render();
     }
+
+    /**
+     * @throws TableException
+     */
+    public function testNoDataset(): void
+    {
+        $lib = new Table();
+        $lib->addColumn('id', new Columns\Basic('id'));
+
+        $this->expectException(TableException::class);
+        $this->expectExceptionMessage('Need to set dataset connector library first!');
+        $lib->getDataSetConnector();
+    }
 }
 
 

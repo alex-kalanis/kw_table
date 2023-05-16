@@ -81,6 +81,15 @@ class FileApproval
         return $filesizeMB . ' kB';
     }
 
+    public static function getStatuses(): array
+    {
+        return [
+            'abc' => 'foo',
+            'def' => 'bar',
+            'ghi' => 'baz',
+        ];
+    }
+
     public function getTable(): \kalanis\kw_table\core\Table
     {
         return $this->table;

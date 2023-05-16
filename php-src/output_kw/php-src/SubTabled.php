@@ -44,9 +44,9 @@ class SubTabled extends Table
         $this->applyOrder();
         $this->applyPager();
 
-        $this->dataSetConnector->fetchData();
+        $this->getDataSetConnector()->fetchData();
 
-        foreach ($this->dataSetConnector as $source) {
+        foreach ($this->getDataSetConnector() as $source) {
             $rowData = new Table\Internal\Row();
             $rowData->setSource($source);
 

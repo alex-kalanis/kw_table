@@ -26,7 +26,7 @@ class PagerTest extends CommonTestClass
     public function testNormal(): void
     {
         $lib = new Table();
-        $this->assertEmpty($lib->getPager());
+        $this->assertEmpty($lib->getPagerOrNull());
 
         $src = new Sources();
         $src->setAddress('//foo/bar');
@@ -41,6 +41,18 @@ class PagerTest extends CommonTestClass
         $lib->addDataSetConnector(new Connector($this->basicData()));
 
         $lib->translateData();
+        $this->assertNotEmpty($lib->getPagerOrNull());
         $this->assertNotEmpty($lib->getPager());
+    }
+
+    /**
+     * @throws TableException
+     */
+    public function testNoPager(): void
+    {
+        $lib = new Table(new Connector($this->basicData()));
+        $this->expectException(TableException::class);
+        $this->expectExceptionMessage('Need to set paging library first!');
+        $lib->getPager();
     }
 }

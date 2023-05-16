@@ -1,5 +1,5 @@
-{if $table->showPagerOnHead() && $table->getOutputPager() }
-    {$table->getOutputPager()->render()|noescape}
+{if $table->showPagerOnHead() && $table->getPagerOrNull() }
+    {$table->getPagerOrNull()->render()|noescape}
 {/if}
 
 {if $table->getHeaderFilter()}
@@ -11,10 +11,10 @@
 <table class="{$table->getClassesInString()}">
     <thead>
     <tr>
-        {var $sorter = $table->getSorter()}
-        {foreach $table->getColumns() as $column}
-            {if $sorter && $sorter->isSorted($column)}
-                <th><a href="{$sorter->getHref($column)}">{$sorter->getHeaderText($column)}</a></th>
+        {var $order = $table->getOrderOrNull()}
+        {foreach $order->getColumns() as $column}
+            {if $order && $order->isInOrder($column)}
+                <th><a href="{$order->getHref($column)}">{$order->getHeaderText($column)}</a></th>
             {else}
                 <th>{$column->getHeaderText()}</th>
             {/if}
@@ -62,8 +62,8 @@
     {$table->getFooterFilter()->renderEnd()}
 {/if}
 
-{if $table->showPagerOnFoot() && $table->getOutputPager() }
-    {$table->getOutputPager()->render()|noescape}
+{if $table->showPagerOnFoot() && $table->getPagerOrNull() }
+    {$table->getPagerOrNull()->render()|noescape}
 {/if}
 
 <div class="clearfix"></div>

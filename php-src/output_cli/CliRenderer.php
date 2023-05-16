@@ -6,6 +6,7 @@ namespace kalanis\kw_table\output_cli;
 use kalanis\kw_clipr\Output\PrettyTable;
 use kalanis\kw_table\core\Interfaces;
 use kalanis\kw_table\core\Table;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -55,7 +56,7 @@ class CliRenderer extends Table\AOutput
 
     protected function fillHeaders(): void
     {
-        $order = $this->table->getOrder();
+        $order = $this->table->getOrderOrNull();
         $line = [];
         foreach ($this->table->getColumns() as $column) {
             if ($order && $order->isInOrder($column)) {
@@ -95,7 +96,11 @@ class CliRenderer extends Table\AOutput
 
     protected function getPager(): string
     {
-        return $this->table->getPager() ? PHP_EOL . $this->table->getPager()->render() . PHP_EOL : '' ;
+        try {
+            return PHP_EOL . $this->table->getPager()->render() . PHP_EOL;
+        } catch (TableException $ex) {
+            return '';
+        }
     }
 
     public function getTableEngine(): PrettyTable

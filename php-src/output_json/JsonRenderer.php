@@ -7,6 +7,7 @@ use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_paging\Positions;
 use kalanis\kw_table\core\Interfaces\Table\IFilterMulti;
 use kalanis\kw_table\core\Table;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -22,8 +23,10 @@ class JsonRenderer extends Table\AOutput
     public function __construct(Table $table)
     {
         parent::__construct($table);
-        if ($table->getPager()) {
+        try {
             $this->positions = new Positions($table->getPager()->getPager());
+        } catch (TableException $ex) {
+            // nothing to do
         }
     }
 
@@ -68,10 +71,12 @@ class JsonRenderer extends Table\AOutput
      */
     protected function getSorters(): array
     {
-        $order = $this->table->getOrder();
-        if (!$order) {
+        try {
+            $order = $this->table->getOrder();
+        } catch (TableException $ex) {
             return [];
         }
+
         $line = [];
         foreach ($this->table->getColumns() as $column) {
             if ($order->isInOrder($column)) {

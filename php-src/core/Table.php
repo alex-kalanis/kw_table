@@ -150,8 +150,7 @@ class Table
      */
     public function addOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
-        $this->checkOrder();
-        $this->order->/** @scrutinizer ignore-call */addOrdering($columnName, $order);
+        $this->getOrder()->addOrdering($columnName, $order);
         return $this;
     }
 
@@ -164,27 +163,46 @@ class Table
      */
     public function addPrimaryOrdering(string $columnName, string $order = Table\Order::ORDER_ASC): self
     {
-        $this->checkOrder();
-        $this->order->/** @scrutinizer ignore-call */addPrependOrdering($columnName, $order);
+        $this->getOrder()->addPrependOrdering($columnName, $order);
         return $this;
     }
 
     /**
      * @throws TableException
+     * @return IOutput
      */
-    protected function checkOrder(): void
+    public function getPager(): IOutput
     {
-        if (empty($this->order)) {
-            throw new TableException('Need to set order library first!');
+        if (empty($this->pager)) {
+            throw new TableException('Need to set paging library first!');
         }
+        return $this->pager;
     }
 
-    public function getPager(): ?IOutput
+    /**
+     * @return IOutput|null
+     */
+    public function getPagerOrNull(): ?IOutput
     {
         return $this->pager;
     }
 
-    public function getOrder(): ?Table\Order
+    /**
+     * @throws TableException
+     * @return Table\Order
+     */
+    public function getOrder(): Table\Order
+    {
+        if (empty($this->order)) {
+            throw new TableException('Need to set order library first!');
+        }
+        return $this->order;
+    }
+
+    /**
+     * @return Table\Order|null
+     */
+    public function getOrderOrNull(): ?Table\Order
     {
         return $this->order;
     }
@@ -225,8 +243,15 @@ class Table
         return $this;
     }
 
-    public function getDataSetConnector(): ?IIterableConnector
+    /**
+     * @throws TableException
+     * @return IIterableConnector
+     */
+    public function getDataSetConnector(): IIterableConnector
     {
+        if (empty($this->dataSetConnector)) {
+            throw new TableException('Need to set dataset connector library first!');
+        }
         return $this->dataSetConnector;
     }
 
@@ -286,8 +311,7 @@ class Table
     public function addOrderedColumn(string $headerText, IColumn $column, ?IField $headerFilterField = null, ?IField $footerFilterField = null): self
     {
         if ($column->canOrder()) {
-            $this->checkOrder();
-            $this->order->/** @scrutinizer ignore-call */addColumn($column);
+            $this->getOrder()->addColumn($column);
         }
 
         $this->addColumn($headerText, $column, $headerFilterField, $footerFilterField);
@@ -384,9 +408,9 @@ class Table
         $this->applyOrder();
         $this->applyPager();
 
-        $this->dataSetConnector->/** @scrutinizer ignore-call */fetchData();
+        $this->getDataSetConnector()->fetchData();
 
-        foreach ($this->dataSetConnector as $source) {
+        foreach ($this->getDataSetConnector() as $source) {
             $rowData = new Table\Internal\Row();
             $rowData->setSource($source);
 
@@ -405,6 +429,7 @@ class Table
 
     /**
      * @throws ConnectException
+     * @throws TableException
      * @return $this
      */
     protected function applyFilter(): self
@@ -420,8 +445,8 @@ class Table
 
                 $filterField = $column->getHeaderFilterField();
                 if ($filterField) {
-                    $filterField->setDataSourceConnector(/** @scrutinizer ignore-type */$this->dataSetConnector);
-                    $this->dataSetConnector->/** @scrutinizer ignore-call */setFiltering(
+                    $filterField->setDataSourceConnector($this->getDataSetConnector());
+                    $this->getDataSetConnector()->setFiltering(
                         $column->getSourceName(),
                         $filterField->getFilterAction(),
                         $this->headerFilter->getValue($column)
@@ -434,6 +459,7 @@ class Table
 
     /**
      * @throws ConnectException
+     * @throws TableException
      * @return $this
      */
     protected function applyOrder(): self
@@ -442,16 +468,17 @@ class Table
             return $this;
         }
 
-        $this->order->process();
-        foreach ($this->order->getOrdering() as $attributes) {
+        $this->getOrder()->process();
+        foreach ($this->getOrder()->getOrdering() as $attributes) {
             /** @var Table\Internal\Attributes $attributes */
-            $this->dataSetConnector->/** @scrutinizer ignore-call */setOrdering($attributes->getColumnName(), $attributes->getProperty());
+            $this->getDataSetConnector()->setOrdering($attributes->getColumnName(), $attributes->getProperty());
         }
         return $this;
     }
 
     /**
      * @throws ConnectException
+     * @throws TableException
      * @return $this
      */
     protected function applyPager(): self
@@ -460,12 +487,12 @@ class Table
             return $this;
         }
 
-        if (empty($this->pager->getPager()->getMaxResults())) {
-            $this->pager->getPager()->setMaxResults($this->dataSetConnector->/** @scrutinizer ignore-call */getTotalCount());
+        if (empty($this->getPager()->getPager()->getMaxResults())) {
+            $this->getPager()->getPager()->setMaxResults($this->getDataSetConnector()->getTotalCount());
         }
-        $this->dataSetConnector->/** @scrutinizer ignore-call */setPagination(
-            $this->pager->getPager()->getOffset(),
-            $this->pager->getPager()->getLimit()
+        $this->getDataSetConnector()->setPagination(
+            $this->getPager()->getPager()->getOffset(),
+            $this->getPager()->getPager()->getLimit()
         );
         return $this;
     }

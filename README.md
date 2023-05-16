@@ -1,6 +1,6 @@
 # kw_table
 
-[![Build Status](https://travis-ci.org/alex-kalanis/kw_table.svg?branch=master)](https://travis-ci.org/alex-kalanis/kw_table)
+[![Build Status](https://app.travis-ci.com/alex-kalanis/kw_table.svg?branch=master)](https://app.travis-ci.com/github/alex-kalanis/kw_table)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alex-kalanis/kw_table/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alex-kalanis/kw_table/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/alex-kalanis/kw_table/v/stable.svg?v=1)](https://packagist.org/packages/alex-kalanis/kw_table)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
@@ -15,7 +15,7 @@ Table engine for managing entries from datasources. Can use many input and outpu
 ```
 {
     "require": {
-        "alex-kalanis/kw_table": "1.0"
+        "alex-kalanis/kw_table": "1.3"
     }
 }
 ```

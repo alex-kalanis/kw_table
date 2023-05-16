@@ -1,5 +1,5 @@
-{% if table.showPagerOnHead and table.pager %}
-    {% table.pager.render|raw %}
+{% if table.showPagerOnHead and table.pagerOrNull %}
+    {% table.pagerOrNull.render|raw %}
 {% endif %}
 
 {{ table.headerFilter ? table.headerFilter.renderStart|raw : (table.footerFilter ? table.footerFilter.renderStart|raw : '') }}
@@ -8,8 +8,8 @@
     <thead>
     <tr>
         {% for column in table.columns %}
-            {% if table.order and table.order.inOrder(column)) %}
-                <th><a href="{{ table.order.href(column) }}">{{ table.order.headerText(column) }}</a></th>
+            {% if table.orderOrNull and table.orderOrNull.isInOrder(column)) %}
+                <th><a href="{{ table.getOrderOrNull.href(column) }}">{{ table.getOrderOrNull.headerText(column) }}</a></th>
             {% else %}
                 <th>{{ column.headerText }}</th>
             {% endif %}
@@ -53,8 +53,8 @@
 
 {{ table.headerFilter ? table.headerFilter.renderEnd|raw : (table.footerFilter ? table.footerFilter.renderEnd|raw : '') }}
 
-{% if table.showPagerOnFoot and table.pager %}
-    {% table.pager.render|raw %}
+{% if table.showPagerOnFoot and table.pagerOrNull %}
+    {% table.pagerOrNull.render|raw %}
 {% endif %}
 
 <div class="clearfix"></div>
