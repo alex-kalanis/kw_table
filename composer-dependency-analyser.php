@@ -18,5 +18,6 @@ return $config
     ->ignoreErrorsOnPackageAndPath('twig/twig', __DIR__ . '/php-src/output_twig', [ErrorType::DEV_DEPENDENCY_IN_PROD])
     ->ignoreUnknownClasses(['Nette\Application\UI\Form'])
     ->ignoreErrorsOnPath(__DIR__ . '/php-src/form_nette', [ErrorType::SHADOW_DEPENDENCY])
+    ->ignoreErrorsOnPath(__DIR__ . '/php-src/nette', [ErrorType::SHADOW_DEPENDENCY])
     ->ignoreErrorsOnPath(__DIR__ . '/php-src/output_blade', [ErrorType::SHADOW_DEPENDENCY])
 ;
