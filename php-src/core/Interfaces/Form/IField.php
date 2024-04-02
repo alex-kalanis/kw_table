@@ -4,6 +4,7 @@ namespace kalanis\kw_table\core\Interfaces\Form;
 
 
 use kalanis\kw_connect\core\Interfaces\IIterableConnector;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -21,6 +22,7 @@ interface IField
 
     /**
      * Add form input
+     * @throws TableException
      */
     public function add(): void;
 

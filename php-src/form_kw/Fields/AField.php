@@ -6,6 +6,7 @@ namespace kalanis\kw_table\form_kw\Fields;
 use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_forms\Form;
 use kalanis\kw_table\core\Interfaces\Form\IField;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -14,14 +15,11 @@ use kalanis\kw_table\core\Interfaces\Form\IField;
  */
 abstract class AField implements IField
 {
-    /** @var Form|null */
-    protected $form = null;
-    /** @var string */
-    protected $alias = '';
+    protected ?Form $form = null;
+    protected string $alias = '';
     /** @var array<string, string> */
-    protected $attributes = [];
-    /** @var IIterableConnector|null */
-    protected $connector = null;
+    protected array $attributes = [];
+    protected ?IIterableConnector $connector = null;
 
     /**
      * @param array<string, string> $attributes
@@ -41,6 +39,18 @@ abstract class AField implements IField
         return $this->form;
     }
 
+    /**
+     * @throws TableException
+     * @return Form
+     */
+    public function getFormInstance(): Form
+    {
+        if (empty($this->form)) {
+            throw new TableException('Set the form first!');
+        }
+        return $this->form;
+    }
+
     public function setAlias(string $alias): void
     {
         $this->alias = $alias;
@@ -54,6 +64,18 @@ abstract class AField implements IField
     public function setDataSourceConnector(IIterableConnector $dataSource): void
     {
         $this->connector = $dataSource;
+    }
+
+    /**
+     * @throws TableException
+     * @return IIterableConnector
+     */
+    public function getDataSourceConnectorInstance(): IIterableConnector
+    {
+        if (empty($this->connector)) {
+            throw new TableException('Set the datasource connector first!');
+        }
+        return $this->connector;
     }
 
     public function addAttribute(string $name, string $value): void

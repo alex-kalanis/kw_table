@@ -18,7 +18,7 @@ class MultiColumnLink extends AColumn
     /** @var callable */
     protected $callback;
     /** @var AColumn[] */
-    protected $params;
+    protected array $params;
 
     /**
      * @param string     $sourceName  basic column (for sorting or filtering)

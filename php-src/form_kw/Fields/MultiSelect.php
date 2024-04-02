@@ -13,8 +13,7 @@ use kalanis\kw_connect\core\Interfaces\IFilterFactory;
  */
 class MultiSelect extends AField
 {
-    /** @var string */
-    protected $value = '0';
+    protected string $value = '0';
 
     /**
      * @param string $value
@@ -43,6 +42,6 @@ class MultiSelect extends AField
 
     public function add(): void
     {
-        $this->form->/** @scrutinizer ignore-call */addCheckbox($this->alias, '', null, $this->value, $this->attributes);
+        $this->getFormInstance()->addCheckbox($this->alias, '', null, $this->value, $this->attributes);
     }
 }

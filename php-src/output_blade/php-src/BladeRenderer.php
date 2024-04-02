@@ -14,8 +14,7 @@ use Illuminate\View\Compilers\BladeCompiler;
  */
 class BladeRenderer extends Table\AOutput
 {
-    /** @var string */
-    protected $templatePath = '';
+    protected string $templatePath = '';
 
     public function __construct(Table $table)
     {

@@ -4,7 +4,7 @@ namespace coreTests;
 
 
 use CommonTestClass;
-use kalanis\kw_connect\arrays\Row;
+use kalanis\kw_connect\core\Rows\SimpleArrayRow;
 use kalanis\kw_table\core\Table\Columns\Basic;
 use kalanis\kw_table\core\Table\Rows;
 use kalanis\kw_table\core\Table\Internal;
@@ -54,9 +54,9 @@ class RowsTest extends CommonTestClass
         $this->assertEquals(['preferred', 'some rule', 'where'], $lib->getFunctionArgs());
     }
 
-    protected function getRow(): Row
+    protected function getRow(): SimpleArrayRow
     {
-        return new Row(['id' => 2, 'name' => 'def', 'desc' => '<lang_to_"convert">', 'size' => 456, 'enabled' => 0]);
+        return new SimpleArrayRow(['id' => 2, 'name' => 'def', 'desc' => '<lang_to_"convert">', 'size' => 456, 'enabled' => 0]);
     }
 }
 

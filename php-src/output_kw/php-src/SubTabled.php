@@ -17,7 +17,7 @@ use kalanis\kw_table\core\TableException;
 class SubTabled extends Table
 {
     /** @var Table\Rows\TableRow[] */
-    private $rowCallback = [];
+    private array $rowCallback = [];
 
     final public function setOutput(Table\AOutput $output): void
     {

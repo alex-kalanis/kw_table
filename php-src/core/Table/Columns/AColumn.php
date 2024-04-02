@@ -22,16 +22,11 @@ abstract class AColumn extends AStyle implements IColumn
 
     /** @var string|int */
     protected $sourceName = '';
-    /** @var string */
-    protected $filterName = '';
-    /** @var bool */
-    protected $sortable = false;
-    /** @var IField|null */
-    protected $headerFilterField = null;
-    /** @var IField|null */
-    protected $footerFilterField = null;
-    /** @var string|null */
-    protected $headerText = '';
+    protected string $filterName = '';
+    protected bool $sortable = false;
+    protected ?IField $headerFilterField = null;
+    protected ?IField $footerFilterField = null;
+    protected ?string $headerText = '';
 
     /**
      * @param string $text

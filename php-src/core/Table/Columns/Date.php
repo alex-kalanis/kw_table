@@ -13,10 +13,8 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class Date extends AColumn
 {
-    /** @var string */
-    protected $format = '';
-    /** @var bool */
-    protected $timestamp = true;
+    protected string $format = '';
+    protected bool $timestamp = true;
 
     public function __construct(string $sourceName, string $format = 'Y-m-d', bool $timestamp = true)
     {

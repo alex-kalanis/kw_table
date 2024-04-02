@@ -12,8 +12,7 @@ namespace kalanis\kw_table\core\Table\Columns;
  */
 trait TEscapedValue
 {
-    /** @var int|null */
-    protected $flags = null;
+    protected ?int $flags = null;
 
     /**
      * @param int|null $flags example: ENT_NOQUOTES | ENT_HTML5

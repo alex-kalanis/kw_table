@@ -13,7 +13,7 @@ abstract class ARow
     /** @var callable|string|array<string|object> */
     protected $functionName = '';
     /** @var array<int, mixed> */
-    protected $functionArgs = [];
+    protected array $functionArgs = [];
 
     /**
      * @param callable|string|array<string|object> $functionName

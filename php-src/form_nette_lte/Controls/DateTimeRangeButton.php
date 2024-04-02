@@ -11,11 +11,10 @@ use Nette\Utils\DateTime;
 
 class DateTimeRangeButton extends DateTimeRange
 {
-    /** @var  Html */
-    protected $span;
+    protected ?Html $span;
     protected $script;
     /** @var string */
-    protected $uniqueInputId;
+    protected string $uniqueInputId = '';
     protected $value;
 
     public function __construct(string $name, $label = null, $maxLength = null, $searchFormat = null, \DateTime $startTime = null, \DateTime $endTime = null)

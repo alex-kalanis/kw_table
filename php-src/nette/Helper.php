@@ -4,6 +4,7 @@ namespace kalanis\kw_table\nette;
 
 
 use kalanis\kw_address_handler\Handler;
+use kalanis\kw_address_handler\HandlerException;
 use kalanis\kw_address_handler\Sources;
 use kalanis\kw_pager\BasicPager;
 use kalanis\kw_paging\Positions;
@@ -24,8 +25,7 @@ use Nette\ComponentModel\IContainer;
  */
 class Helper
 {
-    /** @var Table */
-    protected $table = null;
+    protected Table $table;
 
     public function __construct()
     {
@@ -35,6 +35,7 @@ class Helper
     /**
      * @param IContainer $container
      * @param string $alias
+     * @throws HandlerException
      * @return $this
      */
     public function fillNetteTable(IContainer $container, string $alias = 'filter'): self

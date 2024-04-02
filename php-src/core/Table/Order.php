@@ -24,25 +24,21 @@ use kalanis\kw_table\core\Table\Internal\Attributes;
  */
 class Order implements IOrder
 {
-    const PARAM_COLUMN = 'column';
-    const PARAM_DIRECTION = 'direction';
+    public const PARAM_COLUMN = 'column';
+    public const PARAM_DIRECTION = 'direction';
 
     /** @var IColumn[] */
-    protected $columns = [];
-    /** @var Handler */
-    protected $urlHandler = null;
-    /** @var SingleVariable */
-    protected $urlVariable = null;
+    protected array $columns = [];
+    protected Handler $urlHandler;
+    protected SingleVariable $urlVariable;
     /** @var string|int */
     protected $masterColumnName = '';
-    /** @var string */
-    protected $masterDirection = '';
+    protected string $masterDirection = '';
     /** @var string|int */
     protected $addressColumnName = '';
-    /** @var string */
-    protected $addressDirection = '';
+    protected string $addressDirection = '';
     /** @var array<int, Attributes> */
-    protected $ordering = [];
+    protected array $ordering = [];
 
     public function __construct(Handler $urlHandler)
     {

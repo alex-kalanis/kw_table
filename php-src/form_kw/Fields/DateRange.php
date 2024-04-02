@@ -19,6 +19,6 @@ class DateRange extends AField
 
     public function add(): void
     {
-        $this->form->/** @scrutinizer ignore-call */addDateRange($this->alias, '', null, $this->attributes);
+        $this->getFormInstance()->addDateRange($this->alias, '', null, $this->attributes);
     }
 }

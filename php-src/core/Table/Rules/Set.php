@@ -15,9 +15,8 @@ use kalanis\kw_table\core\TableException;
 class Set implements IRule
 {
     /** @var IRule[] */
-    protected $rules = [];
-    /** @var bool */
-    protected $all = true;
+    protected array $rules = [];
+    protected bool $all = true;
 
     public function addRule(IRule $rule): void
     {

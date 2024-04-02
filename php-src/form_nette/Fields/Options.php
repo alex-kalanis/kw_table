@@ -13,14 +13,10 @@ use kalanis\kw_connect\core\Interfaces\IFilterType;
  */
 class Options extends AField
 {
-    /** @var string */
-    protected $emptyItem;
-
+    protected string $emptyItem = '';
     /** @var string[] */
-    protected $options = [];
-
-    /** @var int|null */
-    protected $size = null;
+    protected array $options = [];
+    protected ?int $size = null;
 
     public function __construct(array $options = [], array $attributes = [], string $emptyItem = '- all -')
     {

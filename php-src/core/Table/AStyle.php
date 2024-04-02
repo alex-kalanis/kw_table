@@ -18,11 +18,11 @@ use kalanis\kw_table\core\TableException;
 abstract class AStyle extends AIterator
 {
     /** @var array<int, Internal\Attributes> */
-    protected $styles = [];
+    protected array $styles = [];
     /** @var string|int */
     protected $sourceName = '';
     /** @var array<string, array<Internal\Attributes>> */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     protected function getIterableName(): string
     {

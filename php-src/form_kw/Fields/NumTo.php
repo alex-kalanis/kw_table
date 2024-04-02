@@ -19,6 +19,6 @@ class NumTo extends AField
 
     public function add(): void
     {
-        $this->form->/** @scrutinizer ignore-call */addText($this->alias, '', null, $this->attributes);
+        $this->getFormInstance()->addText($this->alias, '', null, $this->attributes);
     }
 }

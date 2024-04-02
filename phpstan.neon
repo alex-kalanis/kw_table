@@ -8,14 +8,14 @@ parameters:
 		- 'php-src/output_direct/php-src'
 		- 'php-src/output_json'
 		- 'php-src/output_kw/php-src'
-	scanFiles:
-		- 'php-tests/CommonTestClass.php'
+#	scanFiles:
+#		- 'php-tests/CommonTestClass.php'
 #	scanDirectories:
 #		- 'php-tests/discard'
 	excludePaths:
 		- 'php-tests/_autoload.php'
 		- 'php-tests/_bootstrap.php'
-		- 'php-tests/CommonTestClass.php'
+#		- 'php-tests/CommonTestClass.php'
 	bootstrapFiles:
 		- 'php-tests/_bootstrap.php'
 	checkGenericClassInNonGenericObjectType: false

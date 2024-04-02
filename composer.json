@@ -16,19 +16,20 @@
         "alex-kalanis/kw_input": ">=2.3",
         "alex-kalanis/kw_paging": ">=1.0",
         "ext-mbstring": "*",
-        "php": ">=7.2.0"
+        "php": ">=7.4.0"
     },
     "require-dev": {
         "ext-json": "*",
-        "alex-kalanis/kw_clipr": ">=1.0",
-        "latte/latte": ">=2.0",
+        "alex-kalanis/kw_clipr": ">=6.0 <7",
+        "latte/latte": ">=2.0 <4",
         "twig/twig": "~3.4",
         "jenssegers/blade": "~1.4",
         "nette/forms": "~3.1",
+        "shipmonk/composer-dependency-analyser": "^1.4",
         "friendsofphp/php-cs-fixer": "^3.0",
         "phpstan/phpstan": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": ">=7.2 <=9"
+        "phpunit/phpunit": ">=8.0 <=9"
     },
     "suggest": {
         "alex-kalanis/kw_mapper": "Mapper for accessing resources in KWCMS",

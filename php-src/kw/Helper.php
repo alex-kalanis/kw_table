@@ -4,6 +4,7 @@ namespace kalanis\kw_table\kw;
 
 
 use kalanis\kw_address_handler\Handler;
+use kalanis\kw_address_handler\HandlerException;
 use kalanis\kw_address_handler\Sources;
 use kalanis\kw_forms\Adapters;
 use kalanis\kw_forms\Exceptions\FormsException;
@@ -28,8 +29,7 @@ use kalanis\kw_table\output_kw\KwRenderer;
  */
 class Helper
 {
-    /** @var Table */
-    protected $table = null;
+    protected Table $table;
 
     public function __construct()
     {
@@ -40,6 +40,7 @@ class Helper
      * @param InputInterface\IFiltered $inputs
      * @param string $alias
      * @throws FormsException
+     * @throws HandlerException
      * @return $this
      */
     public function fillKwPage(InputInterface\IFiltered $inputs, string $alias = 'filter'): self
@@ -71,6 +72,7 @@ class Helper
      * @param int $currentPage
      * @param string $alias
      * @throws FormsException
+     * @throws HandlerException
      * @return $this
      */
     public function fillKwCli(InputInterface\IFiltered $inputs, ?int $currentPage = null, string $alias = 'filter'): self
@@ -105,6 +107,7 @@ class Helper
      * @param InputInterface\IFiltered $inputs
      * @param string $alias
      * @throws FormsException
+     * @throws HandlerException
      * @return $this
      */
     public function fillKwJson(InputInterface\IFiltered $inputs, string $alias = 'filter'): self

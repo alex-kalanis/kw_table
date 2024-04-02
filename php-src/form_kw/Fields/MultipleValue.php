@@ -4,8 +4,10 @@ namespace kalanis\kw_table\form_kw\Fields;
 
 
 use kalanis\kw_connect\core\Interfaces\IIterableConnector;
+use kalanis\kw_forms\Exceptions\RenderException;
 use kalanis\kw_forms\Form;
 use kalanis\kw_table\core\Connector\AMultipleValue;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -14,8 +16,7 @@ use kalanis\kw_table\core\Connector\AMultipleValue;
  */
 class MultipleValue extends AMultipleValue
 {
-    /** @var AField */
-    protected $field = null;
+    protected AField $field;
 
     public function __construct(AField $field, ?string $label = null, string $alias = '')
     {
@@ -54,9 +55,14 @@ class MultipleValue extends AMultipleValue
         $this->field->add();
     }
 
+    /**
+     * @throws RenderException
+     * @throws TableException
+     * @return string
+     */
     public function renderContent(): string
     {
-        $control = $this->field->getForm()->/** @scrutinizer ignore-call */getControl($this->getAlias());
+        $control = $this->field->getFormInstance()->getControl($this->getAlias());
         $control->setLabel($this->getLabel());
         return $control->render();
     }

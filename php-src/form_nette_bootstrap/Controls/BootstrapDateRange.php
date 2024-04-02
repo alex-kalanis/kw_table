@@ -10,8 +10,8 @@ use Nette\Utils\Html;
 
 class BootstrapDateRange extends DateRange
 {
-    protected $inputFormat = 'd.m.Y';
-    protected $searchFormat = 'Y-m-d 00:00:00';
+    protected string $inputFormat = 'd.m.Y';
+    protected string $searchFormat = 'Y-m-d 00:00:00';
 
     protected function setControlHtml(string $name)
     {

@@ -14,8 +14,7 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class Currency extends AColumn
 {
-    /** @var string */
-    protected $currency = '';
+    protected string $currency = '';
 
     public function __construct(string $sourceName, string $currency)
     {

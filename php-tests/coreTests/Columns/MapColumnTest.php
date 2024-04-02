@@ -4,8 +4,8 @@ namespace coreTests\Columns;
 
 
 use CommonTestClass;
-use kalanis\kw_connect\arrays\Row;
 use kalanis\kw_connect\core\ConnectException;
+use kalanis\kw_connect\core\Rows\SimpleArrayRow;
 use kalanis\kw_table\core\Table\Columns;
 
 
@@ -38,9 +38,9 @@ class MapColumnTest extends CommonTestClass
         $this->assertEquals('456', $lib->getValue($this->getRow()));
     }
 
-    protected function getRow(): Row
+    protected function getRow(): SimpleArrayRow
     {
-        return new Row(['id' => 2, 'here' => 1, 'far' => 0, 'out' => 456]);
+        return new SimpleArrayRow(['id' => 2, 'here' => 1, 'far' => 0, 'out' => 456]);
     }
 
     protected function mapTrans(): array

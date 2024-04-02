@@ -18,12 +18,10 @@ use kalanis\kw_table\core\TableException;
  */
 class DataSourceSet implements IRule
 {
-    /** @var IConnector */
-    protected $dataSource = null;
+    protected IConnector $dataSource;
     /** @var array<Attributes> */
-    protected $rules = [];
-    /** @var bool */
-    protected $all = true;
+    protected array $rules = [];
+    protected bool $all = true;
 
     public function setDataSource(IConnector $dataSource): self
     {

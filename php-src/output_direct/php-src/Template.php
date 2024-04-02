@@ -13,8 +13,7 @@ use kalanis\kw_table\core\Table;
  */
 class Template implements ITemplate
 {
-    /** @var string */
-    protected $templatePath = null;
+    protected string $templatePath = '';
 
     public function __construct()
     {

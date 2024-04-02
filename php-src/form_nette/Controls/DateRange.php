@@ -16,19 +16,13 @@ use Nette\Utils\DateTime;
  */
 class DateRange extends TextInput
 {
-    /** @var string */
-    protected $inputFormat = 'd.m.Y H:i:s';
-    /** @var string */
-    protected $searchFormat = 'Y-m-d H:i:s';
+    protected string $inputFormat = 'd.m.Y H:i:s';
+    protected string $searchFormat = 'Y-m-d H:i:s';
 
-    /** @var Html|null */
-    protected $start;
-    /** @var Html|null */
-    protected $end;
-    /** @var  DateTime | null */
-    protected $startValue;
-    /** @var  DateTime | null */
-    protected $endValue;
+    protected ?Html $start;
+    protected ?Html $end;
+    protected ?DateTime $startValue;
+    protected ?DateTime $endValue;
 
     protected $started = false;
 

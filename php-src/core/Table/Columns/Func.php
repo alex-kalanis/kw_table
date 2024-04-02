@@ -16,7 +16,7 @@ class Func extends AColumn
     /** @var callable */
     protected $callback;
     /** @var array<int, float|int|string|bool|null> */
-    protected $param;
+    protected array $param;
 
     /**
      * @param string $sourceName

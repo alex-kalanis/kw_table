@@ -14,10 +14,9 @@ use kalanis\kw_table\core\Interfaces\Table\IColumn;
  */
 class Multi extends AColumn
 {
-    /** @var string */
-    protected $delimiter;
+    protected string $delimiter;
     /** @var IColumn[] */
-    protected $columns = [];
+    protected array $columns = [];
 
     /**
      * @param string $delimiter

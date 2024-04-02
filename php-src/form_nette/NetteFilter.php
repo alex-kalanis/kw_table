@@ -18,12 +18,10 @@ use Nette\Forms\Controls\BaseControl;
  */
 class NetteFilter implements IFilterForm
 {
-    /** @var BaseForm */
-    protected $form;
-    /** @var bool */
-    protected $formProcess = null;
-    /** @var string[]|int[] */
-    protected $formData = [];
+    protected BaseForm $form;
+    protected bool $formProcess = null;
+    /** @var array<string|int> */
+    protected array $formData = [];
 
     public function __construct(BaseForm $form)
     {

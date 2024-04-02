@@ -14,9 +14,8 @@ use kalanis\kw_connect\core\Interfaces\IRow;
 class Map extends AColumn
 {
     /** @var array<string|int, float|int|string|bool|null> */
-    protected $map;
-    /** @var string */
-    protected $emptyValue = '';
+    protected array $map;
+    protected string $emptyValue = '';
 
     /**
      * @param string|int $sourceName

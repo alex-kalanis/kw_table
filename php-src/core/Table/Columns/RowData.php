@@ -16,7 +16,7 @@ class RowData extends AColumn
     /** @var callable */
     protected $callback;
     /** @var string[] */
-    protected $columns;
+    protected array $columns;
 
     /**
      * @param string[] $columns

@@ -5,6 +5,7 @@ namespace kalanis\kw_table\core\Connector;
 
 use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_forms\Exceptions\RenderException;
+use kalanis\kw_table\core\TableException;
 
 
 /**
@@ -14,12 +15,9 @@ use kalanis\kw_forms\Exceptions\RenderException;
  */
 abstract class AMultipleValue
 {
-    /** @var string */
-    protected $alias = '';
-    /** @var string|null */
-    protected $label = null;
-    /** @var string */
-    protected $columnName = '';
+    protected string $alias = '';
+    protected ?string $label = null;
+    protected string $columnName = '';
 
     public function setColumn(string $columnName): void
     {
@@ -45,6 +43,9 @@ abstract class AMultipleValue
 
     abstract public function setDataSourceConnector(IIterableConnector $dataSource): void;
 
+    /**
+     * @throws TableException
+     */
     abstract public function add(): void;
 
     /**

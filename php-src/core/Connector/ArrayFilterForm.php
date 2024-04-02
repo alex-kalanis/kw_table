@@ -14,12 +14,12 @@ use kalanis\kw_table\core\Interfaces\Form;
 class ArrayFilterForm implements Form\IFilterForm
 {
     /** @var array<string, string|int|float|bool|null> */
-    protected $formData = [];
+    protected array $formData = [];
 
     /**
      * @param array<string, string|int|float|bool|null> $filterParams
      */
-    public function __construct($filterParams = [])
+    public function __construct(array $filterParams = [])
     {
         $this->formData = $filterParams;
     }

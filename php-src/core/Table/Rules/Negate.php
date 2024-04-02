@@ -13,8 +13,7 @@ use kalanis\kw_table\core\Interfaces\Table\IRule;
  */
 class Negate implements IRule
 {
-    /** @var IRule */
-    protected $rule = null;
+    protected IRule $rule;
 
     public function __construct(IRule $rule)
     {

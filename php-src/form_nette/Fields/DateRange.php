@@ -15,10 +15,8 @@ use kalanis\kw_connect\core\Interfaces\IFilterFactory;
  */
 class DateRange extends AField
 {
-    /** @var string */
-    protected $inputFormat;
-    /** @var string */
-    protected $searchFormat;
+    protected string $inputFormat = '';
+    protected string $searchFormat = '';
 
     public function getFilterAction(): string
     {

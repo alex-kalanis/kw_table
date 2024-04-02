@@ -15,8 +15,7 @@ use Latte\Engine;
  */
 class LatteRenderer extends Table\AOutput
 {
-    /** @var Engine */
-    protected $engine = null;
+    protected Engine $engine = null;
 
     public function __construct(Table $table)
     {

@@ -15,10 +15,8 @@ class Attributes
 {
     /** @var int|string */
     protected $columnName = '';
-    /** @var string */
-    protected $property = '';
-    /** @var IRule|null */
-    protected $condition = null;
+    protected string $property = '';
+    protected ?IRule $condition = null;
 
     /**
      * @param string|int $columnName

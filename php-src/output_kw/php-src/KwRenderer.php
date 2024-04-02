@@ -16,20 +16,13 @@ use kalanis\kw_table\core\TableException;
  */
 class KwRenderer extends Table\AOutput
 {
-    /** @var Html\TableBase */
-    protected $templateBase = null;
-    /** @var Html\TableCell */
-    protected $templateCell = null;
-    /** @var Html\TableFoot */
-    protected $templateFoot = null;
-    /** @var Html\TableHead */
-    protected $templateHead = null;
-    /** @var Html\TableHeadSorted */
-    protected $templateHeadSorted = null;
-    /** @var Html\TableRow */
-    protected $templateRow = null;
-    /** @var Html\TableScript */
-    protected $templateScript = null;
+    protected Html\TableBase $templateBase;
+    protected Html\TableCell $templateCell;
+    protected Html\TableFoot $templateFoot;
+    protected Html\TableHead $templateHead;
+    protected Html\TableHeadSorted $templateHeadSorted;
+    protected Html\TableRow $templateRow;
+    protected Html\TableScript $templateScript;
 
     public function __construct(Table $table)
     {

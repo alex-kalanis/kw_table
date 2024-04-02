@@ -16,9 +16,8 @@ use kalanis\kw_table\core\TableException;
  */
 class CliRenderer extends Table\AOutput
 {
-    const HEADER_PARAM_SEPARATOR = ':';
-    /** @var PrettyTable */
-    protected $prettyTable = null;
+    protected const HEADER_PARAM_SEPARATOR = ':';
+    protected PrettyTable $prettyTable;
 
     public function __construct(Table $table)
     {

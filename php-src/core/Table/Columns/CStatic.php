@@ -13,10 +13,8 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class CStatic extends AColumn
 {
-    /** @var string */
-    private $value = '';
-    /** @var string */
-    private $class = '';
+    private string $value = '';
+    private string $class = '';
 
     public function __construct(string $value, string $class = '', string $sourceName = '')
     {

@@ -15,12 +15,36 @@ use kalanis\kw_table\form_kw\Fields;
 
 class FieldsTest extends CommonTestClass
 {
+    /**
+     * @throws TableException
+     */
+    public function testNoSource(): void
+    {
+        $lib = new Fields\TextExact();
+        $this->expectException(TableException::class);
+        $lib->getFormInstance();
+    }
+
+    /**
+     * @throws TableException
+     */
+    public function testNoConnect(): void
+    {
+        $lib = new Fields\TextExact();
+        $this->expectException(TableException::class);
+        $lib->getDataSourceConnectorInstance();
+    }
+
+    /**
+     * @throws TableException
+     */
     public function testExactBasic(): void
     {
         $form = new Form('testing');
         $lib = new Fields\TextExact();
         $this->assertEquals(IFilterFactory::ACTION_EXACT, $lib->getFilterAction());
         $lib->setDataSourceConnector(new Connector($this->basicData()));
+        $this->assertInstanceOf(Connector::class, $lib->getDataSourceConnectorInstance());
 
         $this->assertEmpty($lib->getForm());
         $lib->setForm($form);
@@ -35,6 +59,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testContains(): void
     {
         $form = new Form('testing');
@@ -45,6 +72,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testOptions(): void
     {
         $form = new Form('testing');
@@ -57,6 +87,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testOptionsFilled(): void
     {
         $form = new Form('testing');
@@ -67,6 +100,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testNumToW(): void
     {
         $form = new Form('testing');
@@ -77,6 +113,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testNumTo(): void
     {
         $form = new Form('testing');
@@ -87,6 +126,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testNumFromW(): void
     {
         $form = new Form('testing');
@@ -97,6 +139,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testNumFrom(): void
     {
         $form = new Form('testing');
@@ -107,6 +152,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testMultiSelect(): void
     {
         $form = new Form('testing');
@@ -117,6 +165,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testCallback(): void
     {
         $form = new Form('testing');
@@ -133,6 +184,9 @@ class FieldsTest extends CommonTestClass
         return 'prepared';
     }
 
+    /**
+     * @throws TableException
+     */
     public function testRange(): void
     {
         $form = new Form('testing');
@@ -143,6 +197,9 @@ class FieldsTest extends CommonTestClass
         $lib->add();
     }
 
+    /**
+     * @throws TableException
+     */
     public function testPicker(): void
     {
         $form = new Form('testing');

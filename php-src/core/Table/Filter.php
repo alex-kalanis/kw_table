@@ -19,18 +19,15 @@ use kalanis\kw_table\core\TableException;
  */
 class Filter
 {
-    /** @var IFilterForm */
-    protected $formConnector;
-    /** @var string[]|int[] */
-    protected $columnsValues = [];
+    protected IFilterForm $formConnector;
+    /** @var array<string|int> */
+    protected array $columnsValues = [];
     /** @var IColumn[] */
-    protected $headerColumns = [];
+    protected array $headerColumns = [];
     /** @var IColumn[] */
-    protected $footerColumns = [];
-    /** @var string */
-    protected $headerPrefix = '';
-    /** @var string */
-    protected $footerPrefix = 'foot_';
+    protected array $footerColumns = [];
+    protected string $headerPrefix = '';
+    protected string $footerPrefix = 'foot_';
 
     public function __construct(IFilterForm $connector)
     {

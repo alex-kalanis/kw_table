@@ -15,8 +15,7 @@ class Sprintf extends AColumn
 {
     use TEscapedValue;
 
-    /** @var string */
-    protected $format = '';
+    protected string $format = '';
 
     public function __construct(string $sourceName, string $format)
     {

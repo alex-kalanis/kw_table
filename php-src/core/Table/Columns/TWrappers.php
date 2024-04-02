@@ -10,7 +10,7 @@ namespace kalanis\kw_table\core\Table\Columns;
 trait TWrappers
 {
     /** @var array<string, string|array<string, string>> */
-    protected $wrappers = [];
+    protected array $wrappers = [];
 
     /**
      * Add wrap tag

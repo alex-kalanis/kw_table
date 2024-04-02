@@ -11,17 +11,12 @@ use Nette\Utils\DateTime;
 
 class DateTimeRange extends TextInput
 {
-    /** @var string */
-    protected $uniqueId;
-    /** @var string */
-    protected $searchFormat = 'Y-m-d H:i:s';
+    protected string $uniqueId = '';
+    protected string $searchFormat = 'Y-m-d H:i:s';
 
-    /** @var  Html */
-    protected $input;
-    /** @var  DateTime | null */
-    protected $startValue;
-    /** @var  DateTime | null */
-    protected $endValue;
+    protected ?Html $input;
+    protected ?DateTime $startValue;
+    protected ?DateTime $endValue;
 
     /** @var bool */
     protected $started = false;

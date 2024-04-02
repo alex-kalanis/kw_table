@@ -38,18 +38,13 @@ echo $urlLink->getPageLink(); // got page 3 -> okay
  */
 class PageLink implements ILink
 {
-    const DEFAULT_VAR_NAME = 'page';
+    protected const DEFAULT_VAR_NAME = 'page';
 
-    /** @var Handler */
-    protected $urlHandler;
-    /** @var SingleVariable */
-    protected $urlVariable;
-    /** @var IPager */
-    protected $pager;
-    /** @var int */
-    protected $page = 0;
-    /** @var string */
-    protected $varName = self::DEFAULT_VAR_NAME;
+    protected Handler $urlHandler;
+    protected SingleVariable $urlVariable;
+    protected IPager $pager;
+    protected int $page = 0;
+    protected string $varName = self::DEFAULT_VAR_NAME;
 
     public function __construct(Handler $urlHandler, IPager $pager, string $variableName = self::DEFAULT_VAR_NAME)
     {

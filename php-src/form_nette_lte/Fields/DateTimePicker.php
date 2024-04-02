@@ -3,6 +3,7 @@
 namespace kalanis\kw_table\form_nette_lte\Fields;
 
 
+use DateTime as dt;
 use kalanis\kw_connect\core\Interfaces\IFilterFactory;
 use kalanis\kw_table\form_nette\Fields;
 
@@ -13,14 +14,11 @@ use kalanis\kw_table\form_nette\Fields;
  */
 class DateTimePicker extends Fields\AField
 {
-    /** @var \DateTime|null */
-    protected $startTime;
-    /** @var \DateTime|null */
-    protected $endTime;
-    /** @var string|null */
-    protected $searchFormat;
+    protected ?dt $startTime;
+    protected ?dt $endTime;
+    protected ?string $searchFormat;
 
-    public function __construct(?\DateTime $startTime = null, ?\DateTime $endTime = null, ?string $searchFormat = null, array $attributes = [])
+    public function __construct(?dt $startTime = null, ?dt $endTime = null, ?string $searchFormat = null, array $attributes = [])
     {
         $this->startTime = $startTime;
         $this->endTime = $endTime;

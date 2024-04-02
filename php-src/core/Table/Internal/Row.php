@@ -19,9 +19,8 @@ class Row extends AStyle
     use TSourceName;
 
     /** @var IColumn[] */
-    protected $columns = [];
-    /** @var IRow */
-    protected $sourceData = null;
+    protected array $columns = [];
+    protected ?IRow $sourceData = null;
 
     /**
      * Add column with entry into the stack

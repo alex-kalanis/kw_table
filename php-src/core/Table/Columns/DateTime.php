@@ -3,6 +3,7 @@
 namespace kalanis\kw_table\core\Table\Columns;
 
 
+use DateTime as core;
 use kalanis\kw_connect\core\Interfaces\IRow;
 
 
@@ -13,19 +14,16 @@ use kalanis\kw_connect\core\Interfaces\IRow;
  */
 class DateTime extends AColumn
 {
-    /** @var string */
-    protected $format = '';
-    /** @var bool */
-    protected $timestamp = false;
-    /** @var \DateTime */
-    protected $dateTime;
+    protected string $format = '';
+    protected bool $timestamp = false;
+    protected core $dateTime;
 
-    public function __construct(string $sourceName, string $format = 'Y-m-d', bool $timestamp = false, \DateTime $dateTime = null)
+    public function __construct(string $sourceName, string $format = 'Y-m-d', bool $timestamp = false, ?core $dateTime = null)
     {
         $this->sourceName = $sourceName;
         $this->format = $format;
         $this->timestamp = $timestamp;
-        $this->dateTime = $dateTime ?: new \DateTime();
+        $this->dateTime = $dateTime ?: new core();
     }
 
     public function getValue(IRow $source)

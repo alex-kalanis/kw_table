@@ -16,12 +16,10 @@ use kalanis\kw_table\core\TableException;
  */
 class KwFilter implements IFilterForm
 {
-    /** @var BaseForm */
-    protected $form;
-    /** @var bool */
-    protected $formProcess = false;
+    protected BaseForm $form;
+    protected bool $formProcess = false;
     /** @var array<string, string|int|float|bool|null> */
-    protected $formData = [];
+    protected array $formData = [];
 
     public function __construct(BaseForm $form, bool $useApplyCheck = true)
     {

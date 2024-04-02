@@ -7,6 +7,7 @@ use kalanis\kw_connect\core\ConnectException;
 use kalanis\kw_connect\core\Interfaces\IFilterType;
 use kalanis\kw_connect\core\Interfaces\IIterableConnector;
 use kalanis\kw_table\core\Interfaces\Form\IField;
+use kalanis\kw_table\core\TableException;
 use kalanis\kw_table\form_nette\NetteForm;
 use Nette\Application\UI\Form as BaseForm;
 use Nette\Forms\Controls\BaseControl;
@@ -18,16 +19,14 @@ use Nette\Forms\Controls\BaseControl;
  */
 abstract class AField implements IField
 {
-    const ATTR_SIZE = 'size';
+    protected const ATTR_SIZE = 'size';
 
     /** @var BaseForm|NetteForm<string, BaseControl> */
     protected $form;
-    /** @var string */
-    protected $alias;
+    protected string $alias = '';
     /** @var array */
-    protected $attributes = [];
-    /** @var IIterableConnector|null */
-    protected $dataSource;
+    protected array $attributes = [];
+    protected ?IIterableConnector $dataSource;
 
     public function __construct(array $attributes = [])
     {
@@ -84,11 +83,16 @@ abstract class AField implements IField
 
     /**
      * @throws ConnectException
+     * @throws TableException
      * @return IFilterType
      */
     public function getFilterType(): IFilterType
     {
-        return $this->dataSource->getFilterFactory()->getFilter($this->getFilterAction());
+        $ds = $this->dataSource;
+        if (!$ds || (!$ds instanceof IIterableConnector)) {
+            throw new TableException('Set the datasource first!');
+        }
+        return $ds->getFilterFactory()->getFilter($this->getFilterAction());
     }
 
     abstract public function getFilterAction(): string;

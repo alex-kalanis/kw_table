@@ -19,49 +19,40 @@ use kalanis\kw_table\core\Interfaces\Table\IRule;
  */
 class Table
 {
-    const PAGER_LIMIT_DEFAULT = 30;
+    public const PAGER_LIMIT_DEFAULT = 30;
 
-    /** @var IIterableConnector|null */
-    protected $dataSetConnector = null;
+    protected ?IIterableConnector $dataSetConnector = null;
 
     /** @var IColumn[] */
-    protected $columns = [];
+    protected array $columns = [];
 
     /** @var Table\Rows\ARow[] */
-    protected $callRows = [];
+    protected array $callRows = [];
 
     /** @var string[] */
-    protected $classes = ['table', 'table-bordered', 'table-striped', 'table-hover', 'table-condensed', 'bootstrap-datatable', 'listtable'];
+    protected array $classes = ['table', 'table-bordered', 'table-striped', 'table-hover', 'table-condensed', 'bootstrap-datatable', 'listtable'];
 
-    /** @var IOutput|null */
-    protected $pager = null;
+    protected ?IOutput $pager = null;
 
-    /** @var Table\Order|null */
-    protected $order = null;
+    protected ?Table\Order $order = null;
 
-    /** @var Table\Filter|null */
-    protected $headerFilter = null;
+    protected ?Table\Filter $headerFilter = null;
 
-    /** @var Table\Filter|null */
-    protected $footerFilter = null;
+    protected ?Table\Filter $footerFilter = null;
 
-    /** @var Table\AOutput|null */
-    protected $output = null;
+    protected ?Table\AOutput $output = null;
 
     /** @var Table\Internal\Row[]|Table[] */
-    protected $tableData = [];
+    protected array $tableData = [];
 
     /** @var array<string, string> */
-    protected $defaultHeaderFilterFieldAttributes = [];
+    protected array $defaultHeaderFilterFieldAttributes = [];
 
     /** @var array<string, string>  */
-    protected $defaultFooterFilterFieldAttributes = [];
+    protected array $defaultFooterFilterFieldAttributes = [];
 
-    /** @var bool */
-    protected $showPagerOnHead = false;
-
-    /** @var bool */
-    protected $showPagerOnFoot = true;
+    protected bool $showPagerOnHead = false;
+    protected bool $showPagerOnFoot = true;
 
     /**
      * @param IIterableConnector|null $dataSetConnector

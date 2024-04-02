@@ -17,8 +17,7 @@ use kalanis\kw_table\core\TableException;
  */
 class JsonRenderer extends Table\AOutput
 {
-    /** @var Positions|null */
-    protected $positions = null;
+    protected ?Positions $positions = null;
 
     public function __construct(Table $table)
     {

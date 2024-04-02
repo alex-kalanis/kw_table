@@ -4,8 +4,8 @@ namespace coreTests\Columns;
 
 
 use CommonTestClass;
-use kalanis\kw_connect\arrays\Row;
 use kalanis\kw_connect\core\ConnectException;
+use kalanis\kw_connect\core\Rows\SimpleArrayRow;
 use kalanis\kw_table\core\Table\Columns;
 
 
@@ -55,9 +55,9 @@ class DeepColumnTest extends CommonTestClass
         $this->assertFalse($lib->canOrder());
     }
 
-    protected function getRow(): Row
+    protected function getRow(): SimpleArrayRow
     {
-        return new Row(['id' => 2, 'name' => 'def', 'desc' => '<lang_to_"convert">', 'size' => 456, 'enabled' => 0]);
+        return new SimpleArrayRow(['id' => 2, 'name' => 'def', 'desc' => '<lang_to_"convert">', 'size' => 456, 'enabled' => 0]);
     }
 
     public function mergeSize($params): string

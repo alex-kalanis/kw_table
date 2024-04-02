@@ -15,9 +15,9 @@ use kalanis\kw_connect\core\Interfaces\IFilterType;
 class Options extends AField
 {
     /** @var string */
-    protected $emptyItem = '- all -';
+    protected string $emptyItem = '- all -';
     /** @var array<string, string|int|float> */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * @param array<string, string|int|float> $options
@@ -51,6 +51,6 @@ class Options extends AField
 
     public function add(): void
     {
-        $this->form->/** @scrutinizer ignore-call */addSelect($this->alias, '', null, $this->options, $this->attributes);
+        $this->getFormInstance()->addSelect($this->alias, '', null, $this->options, $this->attributes);
     }
 }

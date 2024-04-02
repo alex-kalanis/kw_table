@@ -13,8 +13,7 @@ use kalanis\kw_table\core\Table;
  */
 class DirectRenderer extends Table\AOutput
 {
-    /** @var Template */
-    protected $template = null;
+    protected Template $template;
 
     public function __construct(Table $table)
     {

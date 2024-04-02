@@ -4,8 +4,8 @@ namespace coreTests\Columns;
 
 
 use CommonTestClass;
-use kalanis\kw_connect\arrays\Row;
 use kalanis\kw_connect\core\ConnectException;
+use kalanis\kw_connect\core\Rows\SimpleArrayRow;
 use kalanis\kw_table\core\Table\Columns;
 
 
@@ -101,8 +101,8 @@ class DateColumnTest extends CommonTestClass
         $this->assertEquals('0:00', $lib->getValue($this->getRow()));
     }
 
-    protected function getRow(): Row
+    protected function getRow(): SimpleArrayRow
     {
-        return new Row(['id' => 4, 'name' => 'def', 'from' => 1652000000, 'to' => 0, 'add' => '2022-05-10 22:08', 'min' => 681, 'enabled' => 1]);
+        return new SimpleArrayRow(['id' => 4, 'name' => 'def', 'from' => 1652000000, 'to' => 0, 'add' => '2022-05-10 22:08', 'min' => 681, 'enabled' => 1]);
     }
 }

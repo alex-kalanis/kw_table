@@ -29,9 +29,8 @@ use kalanis\kw_table\core\TableException;
 class Multiple extends AField implements IFilterRender, IFilterMulti
 {
     /** @var MultipleValue[] */
-    protected $fields = [];
-    /** @var string */
-    protected $separator = '<br />';
+    protected array $fields = [];
+    protected string $separator = '<br />';
 
     /**
      * @param MultipleValue[] $fields
@@ -111,13 +110,14 @@ class Multiple extends AField implements IFilterRender, IFilterMulti
     }
 
     /**
+     * @throws TableException
      * @return array<int, array<int, float|int|string|true>>
      */
     public function getPairs(): array
     {
         $values = [];
         foreach ($this->fields as $field) {
-            $control = $this->form->/** @scrutinizer ignore-call */getControl($field->getAlias());
+            $control = $this->getFormInstance()->getControl($field->getAlias());
             if (!empty($control->getValue())) {
                 $values[] = [$field->getField()->getFilterAction(), $control->getValue()];
             }
